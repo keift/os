@@ -54,13 +54,16 @@ jobs:
           - arch: x86_64
             runner: ubuntu-latest
           - arch: aarch64
-            runner: ubuntu-24.04-arm
+            runner: ubuntu-latest
 
     runs-on: ${{ matrix.runner }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
 
       - name: Build it
         id: build
