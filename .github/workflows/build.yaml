@@ -1,13 +1,8 @@
 name: Build
 
-# on:
-#   release:
-#     types: [created]
-
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [created]
 
 permissions:
   contents: write
@@ -15,8 +10,6 @@ permissions:
 
 jobs:
   image:
-    if: false
-
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +39,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    # needs: image
+    needs: image
 
     strategy:
       matrix:
