@@ -82,6 +82,7 @@ jobs:
         run: |
           sudo podman run \
             --rm \
+            --privileged \
             -v ${{ github.workspace }}/dist:/work \
             -w /work \
             fedora:${{ env.FEDORA_VERSION }} \
