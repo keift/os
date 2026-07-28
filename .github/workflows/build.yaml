@@ -66,7 +66,7 @@ jobs:
       - name: Download Fedora Everything
         run: |
           releases="https://download.fedoraproject.org/pub/fedora/linux/releases/${{ env.FEDORA_VERSION }}/Everything/${{ matrix.arch }}/iso"
-          iso_filename=$(curl -sL "${releases}" | grep -o 'href="Fedora-Everything-netinst-[^"]*\.iso"' | cut -d '"' -f 2)
+          iso_filename=$(curl -sL "${releases}" | grep -o 'href="Fedora-Everything-netinst-[^"]*\.iso"' | cut -d '"' -f 2 | head -n 1)
 
           wget -O ./dist/fedora.iso "${releases}"/"${iso_filename}"
 
