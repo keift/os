@@ -60,6 +60,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Create dist directory
+        run: mkdir -p ./dist
+
       - name: Download Fedora Everything
         run: |
           releases="https://download.fedoraproject.org/pub/fedora/linux/releases/${{ env.FEDORA_VERSION }}/Everything/${{ matrix.arch }}/iso"
