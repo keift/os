@@ -8,8 +8,13 @@ permissions:
   contents: write
   packages: write
 
+env:
+  FEDORA_VERSION: 44
+
 jobs:
   image:
+    if: false
+
     runs-on: ubuntu-latest
 
     steps:
@@ -39,7 +44,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -55,23 +60,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Build it
-        id: build
-        uses: jasonn3/build-container-installer@main
-        with:
-          iso_name: keift-os-${{ matrix.arch }}.iso
-          image_repo: ghcr.io/${{ github.repository_owner }}
-          image_name: os
-          image_tag: latest
-          version: 44
-          variant: Silverblue
-          arch: ${{ matrix.arch }}
+      - name: Download Fedora Everything
+        run: |
+          releases="https://download.fedoraproject.org/pub/fedora/linux/releases/${{ env.FEDORA_VERSION }}/Everything/${{ matrix.arch }}/iso"
+          iso_filename=$(curl -sL "${releases}" | grep -o 'href="Fedora-Everything-netinst-[^"]*\.iso"' | cut -d '"' -f 2)
 
-      - name: Upload as artifact
-        uses: actions/upload-artifact@v4
+          wget -O ./dist/fedora.iso "${releases}"/"${iso_filename}"
+
+      - name: Create kickstart file
+        run: |
+          tee ./dist/custom.ks &>/dev/null << EOF
+          graphical
+
+          network --activate --bootproto=dhcp --device=link
+
+          ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
+
+          reboot
+          EOF
+
+      - name: Build it
+        run: |
+          sudo podman run \
+            --rm \
+            -v ${{ github.workspace }}/dist:/work \
+            -w /work \
+            fedora:${{ env.FEDORA_VERSION }} \
+            /bin/bash -c "dnf install -y lorax && mkksiso --ks custom.ks ./fedora.iso ./keift-os-${{ matrix.arch }}.iso"
+
+      - name: Generate checksum file
+        run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./keift-os-${{ matrix.arch }}.iso-CHECKSUM
+
+      - name: Update release
+        uses: softprops/action-gh-release@v3
         with:
-          name: ${{ steps.build.outputs.iso_name }}
-          path: |
-            ${{ steps.build.outputs.iso_path }}/${{ steps.build.outputs.iso_name }}
-            ${{ steps.build.outputs.iso_path }}/${{ steps.build.outputs.iso_name }}-CHECKSUM
-          compression-level: 0
+          name: ${{ github.ref_name }}
+          files: |
+            ./dist/keift-os-${{ matrix.arch }}.iso
+            ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
