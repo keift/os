@@ -89,7 +89,7 @@ jobs:
             /bin/bash -c "dnf install -y lorax && mkksiso --ks custom.ks ./fedora.iso ./keift-os-${{ matrix.arch }}.iso"
 
       - name: Generate checksum file
-        run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./keift-os-${{ matrix.arch }}.iso-CHECKSUM
+        run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
 
       - name: Update release
         uses: softprops/action-gh-release@v3
