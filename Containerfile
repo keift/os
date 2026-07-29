@@ -9,7 +9,7 @@ RUN dnf install -y \
   mesa-vulkan-drivers \
   mesa-dri-drivers \
   \
-  # Network and sounds
+  # Sounds and network
   pipewire \
   pipewire-pulseaudio \
   wireplumber \
@@ -25,7 +25,6 @@ RUN dnf install -y \
   gnome-control-center \
   nautilus \
   ptyxis
-# google-noto-sans-fonts
 
 RUN dnf clean all
 
