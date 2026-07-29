@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ls ~/
+echo "$(ls ~/)"
 
 flatpak remote-delete fedora
 flatpak remote-delete fedora-testing
