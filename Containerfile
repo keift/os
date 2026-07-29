@@ -3,7 +3,7 @@ FROM quay.io/fedora/fedora-bootc:44
 RUN dnf install -y \
   # Desktop
   gnome-shell \
-  gnome-session-wayland-session \
+  gnome-session \
   gdm \
   # Drivers
   mesa-vulkan-drivers \
@@ -16,7 +16,7 @@ RUN dnf install -y \
   NetworkManager-wifi \
   bluez \
   \
-  # Softwares
+  # Softwares and portals
   flatpak \
   gnome-software \
   xdg-desktop-portal-gnome \

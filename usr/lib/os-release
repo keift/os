@@ -1,8 +1,12 @@
 NAME="Keift OS"
 PRETTY_NAME="Keift OS 1 Moola"
+
 ID="keift-os"
 ID_LIKE="fedora"
+
 VERSION="1 Moola"
 VERSION_ID="1.0.0"
+VERSION_CODENAME="moola"
+
 ANSI_COLOR="0;34"
 LOGO="keift-os-logo"
