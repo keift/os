@@ -24,8 +24,8 @@ RUN dnf install -y \
   # Others
   gnome-control-center \
   nautilus \
-  ptyxis \
-  google-noto-sans-fonts
+  ptyxis
+# google-noto-sans-fonts
 
 RUN dnf clean all
 
@@ -33,8 +33,8 @@ RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
 COPY ./usr /usr
 
-RUN chmod +x /usr/bin/keift-os-init.sh
+RUN chmod +x /usr/bin/keiftd.sh
 
 RUN systemctl enable gdm.service \
   && systemctl set-default graphical.target \
-  && systemctl enable keift-os.service
+  && systemctl enable keiftd.service

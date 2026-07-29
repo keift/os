@@ -1,10 +1,10 @@
 [Unit]
-Description=Keift OS
+Description=Keift OS Maintenance
 After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/keift-os-init.sh
+ExecStart=/usr/bin/keiftd.sh
 RemainAfterExit=yes
 
 [Install]
