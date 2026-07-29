@@ -31,9 +31,6 @@ RUN dnf clean all
 
 RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
-RUN flatpak remote-delete --user fedora
-RUN flatpak remote-delete --user fedora-testing
-
 COPY ./usr /usr
 
 RUN systemctl enable gdm.service \
