@@ -31,7 +31,8 @@ RUN dnf clean all
 
 RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
-RUN flatpak remote-delete fedora fedora-testing
+RUN flatpak remote-delete fedora
+RUN flatpak remote-delete fedora-testing
 
 COPY ./usr /usr
 
