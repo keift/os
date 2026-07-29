@@ -34,6 +34,17 @@ COPY ./usr /usr
 
 RUN chmod +x /usr/bin/keiftd.sh
 
+RUN cat <<EOF > /usr/share/glib-2.0/schemas/99-keift-os.gschema.override
+[org.gnome.desktop.background]
+picture-uri="/usr/share/backgrounds/anders-jilden-cYrMQA7a3Wc-unsplash.jpg"
+picture-uri-dark="/usr/share/backgrounds/anders-jilden-cYrMQA7a3Wc-unsplash.jpg"
+
+[org.gnome.shell]
+favorite-apps=["org.gnome.Software.desktop", "org.gnome.Nautilus.desktop", "org.gnome.TextEditor.desktop", "org.gnome.Ptyxis.desktop", "org.gnome.Epiphany.desktop"]
+EOF
+
+RUN glib-compile-schemas /usr/share/glib-2.0/schemas
+
 RUN systemctl enable gdm.service \
   && systemctl set-default graphical.target \
   && systemctl enable keiftd.service
