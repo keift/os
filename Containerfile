@@ -1,7 +1,5 @@
 FROM quay.io/fedora/fedora-bootc:44
 
-COPY ./usr /usr
-
 RUN dnf install -y \
   # Desktop
   gnome-shell \
@@ -30,6 +28,12 @@ RUN dnf install -y \
   google-noto-sans-fonts
 
 RUN dnf clean all
+
+RUN rm -rf /usr/etc/yum.repos.d/*.repo
+
+RUN flatpak remote-delete fedora fedora-testing
+
+COPY ./usr /usr
 
 RUN systemctl enable gdm.service \
   && systemctl set-default graphical.target \
