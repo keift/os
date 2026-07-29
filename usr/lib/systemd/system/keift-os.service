@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/keift-os-startup.sh
+ExecStart=/usr/bin/keift-os-init.sh
 RemainAfterExit=yes
 
 [Install]
