@@ -2,9 +2,8 @@ NAME="Keift OS"
 PRETTY_NAME="Keift OS 1 Moola"
 VERSION="1 Moola"
 VERSION_CODENAME="moola"
+ANSI_COLOR="0;34"
+LOGO="keift-os-logo"
 
 ID="fedora"
 VERSION_ID="44"
-
-ANSI_COLOR="0;34"
-LOGO="keift-os-logo"
