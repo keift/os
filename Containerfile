@@ -24,7 +24,8 @@ RUN dnf install -y \
   # Others
   gnome-control-center \
   nautilus \
-  ptyxis
+  ptyxis \
+  glibc-all-langpacks
 
 RUN dnf clean all
 
