@@ -5,6 +5,7 @@ RUN dnf install -y \
   gnome-shell \
   gnome-session \
   gdm \
+  glibc-all-langpacks \
   # Drivers
   mesa-vulkan-drivers \
   mesa-dri-drivers \
@@ -21,15 +22,14 @@ RUN dnf install -y \
   gnome-software \
   xdg-desktop-portal-gnome \
   \
-  # Others
+  # Applications
   gnome-control-center \
   nautilus \
-  ptyxis \
-  glibc-all-langpacks
+  ptyxis
 
 RUN dnf clean all
 
-RUN rm -rf /usr/etc/yum.repos.d/*.repo
+# RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
 COPY ./usr /usr
 
