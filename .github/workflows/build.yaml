@@ -19,7 +19,7 @@ env:
 
 jobs:
   image:
-    if: true
+    if: false
 
     runs-on: ubuntu-latest
 
@@ -50,7 +50,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -77,9 +77,6 @@ jobs:
           sudo podman run \
             --rm \
             --privileged \
-            --runtime runc \
-            --pull always \
-            --security-opt label=disable \
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
@@ -99,9 +96,10 @@ jobs:
           reboot
           EOF
 
-          sudo apt install -y lorax
-
-          sudo mkksiso --ks keift-os.ks ./dist/keift-os-${{ matrix.arch }}.iso ./dist/keift-os-${{ matrix.arch }}.iso
+          sudo podman run --rm \
+            -v ./dist:/dist \
+            fedora:latest \
+            /bin/bash -c "dnf install -y lorax && mkksiso --ks /dist/keift-os.ks /dist/bootiso/install.iso /dist/keift-os-${{ matrix.arch }}.iso"
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
