@@ -66,13 +66,33 @@ jobs:
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
 
-      - name: Build it
-        uses: ublue-os/titanoboa@main
-        with:
-          image-ref: ghcr.io/${{ github.repository }}:latest
+      - name: Build ISO
+        run: |
+          sudo podman run \
+            --rm \
+            --privileged \
+            -v ./dist:/output \
+            -v /var/lib/containers/storage:/var/lib/containers/storage \
+            quay.io/centos-bootc/bootc-image-builder:latest \
+            --type anaconda-iso \
+            --rootfs xfs \
+            ghcr.io/${{ github.repository }}:latest
 
-      - name: Move to dist directory
-        run: mv ${{ steps.build.outputs.iso-dest }} ./dist/keift-os-${{ matrix.arch }}.iso
+      - name: Inject kickstart file
+        run: |
+          tee ./dist/keift-os.ks &>/dev/null << EOF
+          graphical
+
+          network --activate --bootproto dhcp --device link
+
+          ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
+
+          reboot
+          EOF
+
+          sudo apt install -y lorax
+
+          sudo mkksiso --ks keift-os.ks ./dist/keift-os-${{ matrix.arch }}.iso ./dist/keift-os-${{ matrix.arch }}.iso
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
