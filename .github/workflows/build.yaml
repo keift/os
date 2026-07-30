@@ -63,14 +63,12 @@ jobs:
       - name: Create dist directory
         run: mkdir -p ./dist
 
-      - name: Pull image
-        run: sudo podman pull ghcr.io/${{ github.repository }}:latest
-
       - name: Build ISO
         run: |
           sudo podman run \
             --rm \
             --privileged \
+            --pull always
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
