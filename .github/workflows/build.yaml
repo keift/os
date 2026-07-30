@@ -62,79 +62,25 @@ jobs:
       - name: Create dist directory
         run: mkdir -p ./dist
 
-      - name: Download Fedora Everything
-        run: wget -O ./dist/fedora.iso https://download.fedoraproject.org/pub/fedora/linux/releases/${{ env.FEDORA_VERSION }}/Everything/${{ matrix.arch }}/iso/Fedora-Everything-netinst-${{ matrix.arch }}-44-1.7.iso
-
-      - name: Create kickstart file
-        run: |
-          tee ./dist/keift-os.ks &>/dev/null << EOF
-          graphical
-
-          network --activate --bootproto=dhcp --device=link
-
-          ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
-
-          reboot
-          EOF
-
-      - name: Create build script
-        run: |
-          tee ./dist/build.sh &>/dev/null << 'EOF'
-          #!/usr/bin/env bash
-
-          dnf install -y lorax xorriso squashfs-tools
-
-          mkdir -p /tmp/product/etc/anaconda/profile.d
-
-          tee /tmp/product/etc/os-release &>/dev/null << 'OSREL'
-          NAME="Keift OS"
-          PRETTY_NAME="Keift OS 1 Moola"
-
-          ID="keift-os"
-          ID_LIKE="fedora"
-
-          VERSION="1 Moola"
-          VERSION_ID="1.0.0"
-          VERSION_CODENAME="moola"
-
-          ANSI_COLOR="0;34"
-          LOGO="keift-os-logo"
-          OSREL
-
-          tee /tmp/product/etc/anaconda/profile.d/keift-os.conf &>/dev/null << 'ANACONDA'
-          [Profile]
-          profile_id = keift-os
-          base_profile = fedora
-
-          [User Interface]
-          hidden_spokes = RootPasswordSpoke
-          ANACONDA
-
-          mksquashfs /tmp/product /work/product.img -comp xz
-
-          mkksiso --ks /work/keift-os.ks /work/fedora.iso /work/prototype.iso
-
-          xorriso -indev /work/prototype.iso -outdev /work/keift-os-$1.iso \
-            -map /work/product.img /images/product.img \
-            -boot_image any replay
-
-          rm -rf /work/prototype.iso /work/product.img
-          EOF
-
-          chmod +x ./dist/build.sh
-
       - name: Build it
-        run: |
-          sudo podman run \
-            --rm \
-            --privileged \
-            -v ${{ github.workspace }}/dist:/work \
-            -w /work \
-            fedora:${{ env.FEDORA_VERSION }} \
-            /work/build.sh ${{ matrix.arch }}
+        uses: ublue-os/titanoboa@main
+        with:
+          image-ref: ghcr.io/${{ github.repository }}:latest
+
+      - name: Move to dist directory
+        run: mv ${{ steps.build.outputs.iso-dest }} ./dist/keift-os-${{ matrix.arch }}.iso
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
+
+      - name: Upload to Cloudflare R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          aws s3 rm --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com s3://${{ secrets.R2_BUCKET_NAME }} --recursive 
+          aws s3 cp --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com ./dist/keift-os-${{ matrix.arch }}.iso s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
 
       - name: Update release
         uses: softprops/action-gh-release@v3
