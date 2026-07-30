@@ -97,6 +97,8 @@ jobs:
           EOF
 
           sudo podman run --rm \
+            --privileged \
+            -v /dev:/dev \
             -v ./dist:/dist \
             fedora:latest \
             /bin/bash -c "dnf install -y lorax && mkksiso --ks /dist/keift-os.ks /dist/bootiso/install.iso /dist/keift-os-${{ matrix.arch }}.iso"
