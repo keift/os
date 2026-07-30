@@ -80,7 +80,6 @@ jobs:
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
-            --type anaconda-iso \
             --rootfs xfs \
             ghcr.io/${{ github.repository }}:latest
 
@@ -89,6 +88,8 @@ jobs:
           tee ./dist/keift-os.ks &>/dev/null << EOF
           graphical
 
+          rootpw --lock
+
           network --activate --bootproto dhcp --device link
 
           ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
@@ -96,7 +97,8 @@ jobs:
           reboot
           EOF
 
-          sudo podman run --rm \
+          sudo podman run \
+            --rm \
             --privileged \
             -v /dev:/dev \
             -v ./dist:/dist \
@@ -114,11 +116,3 @@ jobs:
         run: |
           aws s3 rm --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com s3://${{ secrets.R2_BUCKET_NAME }} --recursive 
           aws s3 cp --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com ./dist/keift-os-${{ matrix.arch }}.iso s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
-
-      - name: Update release
-        uses: softprops/action-gh-release@v3
-        with:
-          name: ${{ github.ref_name }}
-          files: |
-            ./dist/keift-os-${{ matrix.arch }}.iso
-            ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
