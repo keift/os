@@ -48,6 +48,3 @@ favorite-apps=["org.gnome.Software.desktop", "org.gnome.Nautilus.desktop", "org.
 EOF
 
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
-
-RUN systemctl enable keift-os-maintenance.service \
-  && systemctl mask systemd-remount-fs.service

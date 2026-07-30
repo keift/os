@@ -2,6 +2,8 @@
 
 while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
 
+notify-send -a "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
+
 flatpak remote-delete --force fedora || true
 flatpak remote-delete --force fedora-testing || true
 
@@ -17,3 +19,5 @@ flatpak install -y flathub org.gnome.Maps || true
 flatpak install -y flathub net.nokyan.Resources || true
 flatpak install -y flathub org.gnome.TextEditor || true
 flatpak install -y flathub org.gnome.Weather || true
+
+notify-send -a "Keift OS" "Kurulum tamamlandı" "Keift OS'unuz hazır."

@@ -62,6 +62,9 @@ jobs:
       - name: Create dist directory
         run: mkdir -p ./dist
 
+      - name: Pull image
+        run: sudo podman pull ghcr.io/${{ github.repository }}:latest
+
       - name: Build it
         uses: ublue-os/titanoboa@main
         with:
