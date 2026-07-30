@@ -72,7 +72,6 @@ jobs:
         run: mkdir -p ./dist
 
       - name: Build it
-        id: build
         uses: ublue-os/titanoboa@main
         with:
           image-ref: ghcr.io/${{ github.repository }}:latest
