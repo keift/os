@@ -14,6 +14,8 @@ env:
 
 jobs:
   image:
+    if: false
+
     runs-on: ubuntu-latest
 
     steps:
@@ -43,7 +45,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -63,6 +65,7 @@ jobs:
         run: mkdir -p ./dist
 
       - name: Build it
+        id: build
         uses: ublue-os/titanoboa@main
         with:
           image-ref: ghcr.io/${{ github.repository }}:latest
