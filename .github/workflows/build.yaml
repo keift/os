@@ -74,8 +74,6 @@ jobs:
 
           ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
 
-          rootpw --lock
-
           reboot
           EOF
 
@@ -86,7 +84,7 @@ jobs:
 
           dnf install -y lorax xorriso squashfs-tools
 
-          mkdir -p /tmp/product/etc
+          mkdir -p /tmp/product/etc/anaconda/profile.d
 
           tee /tmp/product/etc/os-release &>/dev/null << 'OSREL'
           NAME="Keift OS"
@@ -102,6 +100,15 @@ jobs:
           ANSI_COLOR="0;34"
           LOGO="keift-os-logo"
           OSREL
+
+          tee /tmp/product/etc/anaconda/profile.d/keift-os.conf &>/dev/null << 'ANACONDA'
+          [Profile]
+          profile_id = keift-os
+          base_profile = fedora
+
+          [User Interface]
+          hidden_spokes = RootPasswordSpoke
+          ANACONDA
 
           mksquashfs /tmp/product /work/product.img -comp xz
 
