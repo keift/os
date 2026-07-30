@@ -81,14 +81,14 @@ jobs:
 
       - name: Create build script
         run: |
-          tee ./dist/build.sh &>/dev/null << EOF
+          tee ./dist/build.sh &>/dev/null << 'EOF'
           #!/usr/bin/env bash
 
           dnf install -y lorax xorriso squashfs-tools
 
           mkdir -p /tmp/product/etc
 
-          tee /tmp/product/etc/os-release &>/dev/null << EOF
+          tee /tmp/product/etc/os-release &>/dev/null << 'OSREL'
           NAME="Keift OS"
           PRETTY_NAME="Keift OS 1 Moola"
 
@@ -101,7 +101,7 @@ jobs:
 
           ANSI_COLOR="0;34"
           LOGO="keift-os-logo"
-          EOF
+          OSREL
 
           mksquashfs /tmp/product /work/product.img -comp xz
 
@@ -113,6 +113,7 @@ jobs:
 
           rm -rf /work/prototype.iso /work/product.img
           EOF
+
           chmod +x ./dist/build.sh
 
       - name: Build it
