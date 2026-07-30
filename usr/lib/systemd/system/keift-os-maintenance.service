@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/keiftd.sh
+ExecStart=/usr/bin/keift-os-maintenance.sh
 RemainAfterExit=yes
 
 [Install]

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-flatpak remote-delete fedora || true
-flatpak remote-delete fedora-testing || true
+while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
+
+flatpak remote-delete --force fedora || true
+flatpak remote-delete --force fedora-testing || true
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
 

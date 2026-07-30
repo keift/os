@@ -32,9 +32,12 @@ RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
 COPY ./usr /usr
 
-RUN chmod +x /usr/bin/keiftd.sh
+RUN chmod +x /usr/bin/keift-os-maintenance.sh
 
 RUN cat <<EOF > /usr/share/glib-2.0/schemas/99-keift-os.gschema.override
+[org.gnome.desktop.interface]
+accent-color="blue"
+
 [org.gnome.desktop.background]
 picture-uri="/usr/share/backgrounds/anders-jilden-cYrMQA7a3Wc-unsplash.jpg"
 picture-uri-dark="/usr/share/backgrounds/anders-jilden-cYrMQA7a3Wc-unsplash.jpg"
@@ -47,4 +50,4 @@ RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 
 RUN systemctl enable gdm.service \
   && systemctl set-default graphical.target \
-  && systemctl enable keiftd.service
+  && systemctl enable keift-os-maintenance.service
