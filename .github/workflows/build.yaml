@@ -61,6 +61,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+
       - name: Create dist directory
         run: mkdir -p ./dist
 
