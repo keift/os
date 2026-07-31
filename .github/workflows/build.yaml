@@ -74,7 +74,7 @@ jobs:
 
       - name: Create config
         run: |
-          tee ./dist/config.toml &>/dev/null << EOF
+          tee ./dist/config.toml &>/dev/null << 'EOF'
           [customizations.installer.kickstart]
           contents = """
           graphical
