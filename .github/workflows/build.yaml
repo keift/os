@@ -70,42 +70,14 @@ jobs:
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
 
-      - name: Create config
-        run: |
-          tee ./dist/config.toml &>/dev/null << EOF
-          [customizations.installer.kickstart]
-          contents = """
-          graphical
-          firstboot --disable
-          """
+      - name: Build it
+        id: build
+        uses: ublue-os/titanoboa@main
+        with:
+          image-ref: ghcr.io/${{ github.repository }}:latest
 
-          [customizations.installer.modules]
-          enable = [
-            "org.fedoraproject.Anaconda.Modules.Localization",
-            "org.fedoraproject.Anaconda.Modules.Timezone"
-          ]
-          disable = [
-            "org.fedoraproject.Anaconda.Modules.Users"
-          ]
-
-          [customizations.iso]
-          volume_id = "KEIFT-OS"
-          EOF
-
-      - name: Build ISO
-        run: |
-          sudo podman run \
-            --rm \
-            --privileged \
-            -v ./dist/config.toml:/config.toml:ro \
-            -v ./dist:/output \
-            -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/centos-bootc/bootc-image-builder:latest \
-            --type anaconda-iso \
-            --rootfs ext4 \
-            ghcr.io/${{ github.repository }}:latest
-
-          sudo mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
+      - name: Rename it
+        run: mv ${{ steps.build.outputs.iso-dest }} ./dist/keift-os-${{ matrix.arch }}.iso
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
