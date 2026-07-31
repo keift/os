@@ -7,6 +7,7 @@ RUN dnf install -y \
   gdm \
   glibc-all-langpacks \
   gnome-initial-setup \
+  accountsservice \
   # Drivers
   mesa-vulkan-drivers \
   mesa-dri-drivers \
@@ -50,3 +51,5 @@ favorite-apps=["org.gnome.Software.desktop", "org.gnome.Nautilus.desktop", "org.
 EOF
 
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
+
+RUN systemctl enable gnome-initial-setup-first-login.target
