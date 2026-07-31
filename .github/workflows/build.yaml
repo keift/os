@@ -81,7 +81,7 @@ jobs:
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
             --type iso \
-            --rootfs squashfs \
+            --rootfs xfs \
             ghcr.io/${{ github.repository }}:latest
 
           mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
