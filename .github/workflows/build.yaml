@@ -72,41 +72,30 @@ jobs:
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
 
+      - name: Create config
+        run: |
+          tee ./dist/config.toml &>/dev/null << EOF
+          [customizations.installer.kickstart]
+          contents = "graphical"
+
+          [customizations.iso]
+          volume_id = "KEIFT-OS"
+          EOF
+
       - name: Build ISO
         run: |
           sudo podman run \
             --rm \
             --privileged \
+            -v ./dist/config.toml:/config.toml:ro \
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
-            --type iso \
-            --rootfs xfs \
+            --type anaconda-iso \
+            --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
           mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
-
-      # - name: Inject kickstart file
-      #   run: |
-      #     tee ./dist/keift-os.ks &>/dev/null << EOF
-      #     graphical
-
-      # rootpw --lock
-
-      # network --activate --bootproto dhcp --device link
-
-      #  ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
-
-      #  reboot
-      #  EOF
-
-      # sudo podman run \
-      #    --rm \
-      #    --privileged \
-      #    -v /dev:/dev \
-      #    -v ./dist:/dist \
-      #    fedora:latest \
-      #    /bin/bash -c "dnf install -y lorax && mkksiso --ks /dist/keift-os.ks /dist/bootiso/install.iso /dist/keift-os-${{ matrix.arch }}.iso"
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
