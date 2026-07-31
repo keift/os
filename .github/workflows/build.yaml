@@ -95,7 +95,7 @@ jobs:
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
-          mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
+          sudo mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
@@ -105,6 +105,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
-        run: |
-          aws s3 rm --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com s3://${{ secrets.R2_BUCKET_NAME }} --recursive 
-          aws s3 cp --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com ./dist/keift-os-${{ matrix.arch }}.iso s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
+        run: aws s3 cp --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com ./dist/keift-os-${{ matrix.arch }}.iso s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
