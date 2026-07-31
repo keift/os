@@ -78,13 +78,16 @@ jobs:
           [customizations.installer.kickstart]
           contents = """
           graphical
-          rootpw --lock
+          firstboot --disable
           """
 
           [customizations.installer.modules]
           enable = [
             "org.fedoraproject.Anaconda.Modules.Localization",
             "org.fedoraproject.Anaconda.Modules.Timezone"
+          ]
+          disable = [
+            "org.fedoraproject.Anaconda.Modules.Users"
           ]
 
           [customizations.iso]
