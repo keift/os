@@ -76,7 +76,15 @@ jobs:
         run: |
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
-          contents = "graphical"
+          contents = """
+          graphical
+          rootpw --lock
+          """
+
+          [customizations.installer.modules]
+          enable = [
+            "org.fedoraproject.Anaconda.Modules.Localization"
+          ]
 
           [customizations.iso]
           volume_id = "KEIFT-OS"
