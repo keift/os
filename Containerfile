@@ -33,7 +33,7 @@ RUN dnf clean all
 # RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
 COPY ./usr /usr
-COPY ./etc /etc
+# COPY ./etc /etc
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 
