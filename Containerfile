@@ -1,6 +1,19 @@
 FROM quay.io/fedora/fedora-bootc:44
 
-RUN dnf install -y \
+ARG TARGETARCH
+
+RUN set -eux; \
+  if [ "$TARGETARCH" = "amd64" ]; then \
+    boot_packages="shim-x64 grub2-efi-x64 grub2-efi-x64-cdboot grub2-pc grub2-pc-modules"; \
+  elif [ "$TARGETARCH" = "arm64" ]; then \
+    boot_packages="shim-aa64 grub2-efi-aa64"; \
+  else \
+    echo "Unsupported arch: ${TARGETARCH}" \
+    exit 1; \
+  fi; \
+  dnf install -y \
+  # Bootloader
+  ${boot_packages} \
   # Desktop
   gnome-shell \
   gnome-session \
@@ -27,6 +40,8 @@ RUN dnf install -y \
   gnome-software \
   nautilus \
   ptyxis
+
+RUN mkdir -p /boot/efi && cp -ra /usr/lib/efi/*/*/EFI /boot/efi
 
 RUN dnf clean all
 
