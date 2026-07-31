@@ -6,5 +6,7 @@ VERSION="1 Moola"
 ANSI_COLOR="0;34"
 LOGO="keift-os-logo"
 
-ID="fedora"
-VERSION_ID="44"
+ID="keift-os"
+VERSION_ID="1"
+
+ID_LIKE="fedora"
