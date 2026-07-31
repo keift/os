@@ -83,6 +83,8 @@ jobs:
             --type iso \
             ghcr.io/${{ github.repository }}:latest
 
+          mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
+
       # - name: Inject kickstart file
       #   run: |
       #     tee ./dist/keift-os.ks &>/dev/null << EOF
