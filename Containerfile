@@ -1,18 +1,6 @@
 FROM quay.io/fedora/fedora-bootc:44
 
-ARG TARGETARCH
-
-RUN set -eux; \
-  if [ "${TARGETARCH}" = "amd64" ]; then \
-    boot_packages="shim-x64 grub2-efi-x64 grub2-efi-x64-cdboot"; \
-  elif [ "${TARGETARCH}" = "arm64" ]; then \
-    boot_packages="shim-aa64 grub2-efi-aa64"; \
-  else \
-    echo "Unsupported arch: ${TARGETARCH}" && exit 1; \
-  fi; \
-  dnf install -y \
-  # Bootloader (UEFI)
-  ${boot_packages} \
+RUN dnf install -y \
   # Desktop
   gnome-shell \
   gnome-session \
