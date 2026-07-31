@@ -74,7 +74,7 @@ jobs:
 
       - name: Create config
         run: |
-          tee ./dist/config.toml &>/dev/null << 'EOF'
+          tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
           graphical
@@ -83,7 +83,8 @@ jobs:
 
           [customizations.installer.modules]
           enable = [
-            "org.fedoraproject.Anaconda.Modules.Localization"
+            "org.fedoraproject.Anaconda.Modules.Localization",
+            "org.fedoraproject.Anaconda.Modules.Timezone"
           ]
 
           [customizations.iso]
