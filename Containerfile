@@ -20,15 +20,13 @@ RUN dnf install -y \
   \
   # Softwares and portals
   flatpak \
-  gnome-software \
   xdg-desktop-portal-gnome \
   \
   # Applications
   gnome-control-center \
+  gnome-software \
   nautilus \
   ptyxis
-
-RUN mkdir -p /boot/efi && cp -ra /usr/lib/efi/*/*/EFI /boot/efi
 
 RUN dnf clean all
 
