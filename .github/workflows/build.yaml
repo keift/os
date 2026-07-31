@@ -19,7 +19,7 @@ env:
 
 jobs:
   image:
-    if: true
+    if: false
 
     runs-on: ubuntu-latest
 
@@ -50,7 +50,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -80,31 +80,30 @@ jobs:
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
-            --type anaconda-iso \
-            --rootfs xfs \
+            --type iso \
             ghcr.io/${{ github.repository }}:latest
 
-      - name: Inject kickstart file
-        run: |
-          tee ./dist/keift-os.ks &>/dev/null << EOF
-          graphical
+      # - name: Inject kickstart file
+      #   run: |
+      #     tee ./dist/keift-os.ks &>/dev/null << EOF
+      #     graphical
 
-          rootpw --lock
+      # rootpw --lock
 
-          network --activate --bootproto dhcp --device link
+      # network --activate --bootproto dhcp --device link
 
-          ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
+      #  ostreecontainer --no-signature-verification --transport registry --url ghcr.io/${{ github.repository }}:latest
 
-          reboot
-          EOF
+      #  reboot
+      #  EOF
 
-          sudo podman run \
-            --rm \
-            --privileged \
-            -v /dev:/dev \
-            -v ./dist:/dist \
-            fedora:latest \
-            /bin/bash -c "dnf install -y lorax && mkksiso --ks /dist/keift-os.ks /dist/bootiso/install.iso /dist/keift-os-${{ matrix.arch }}.iso"
+      # sudo podman run \
+      #    --rm \
+      #    --privileged \
+      #    -v /dev:/dev \
+      #    -v ./dist:/dist \
+      #    fedora:latest \
+      #    /bin/bash -c "dnf install -y lorax && mkksiso --ks /dist/keift-os.ks /dist/bootiso/install.iso /dist/keift-os-${{ matrix.arch }}.iso"
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
