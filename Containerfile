@@ -14,12 +14,6 @@ RUN dnf install -y \
   mesa-vulkan-drivers \
   mesa-dri-drivers \
   \
-  # Sounds and network
-  pipewire \
-  pipewire-pulseaudio \
-  wireplumber \
-  NetworkManager-wifi \
-  \
   # Softwares and portals
   flatpak \
   xdg-desktop-portal-gnome \
