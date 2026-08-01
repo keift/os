@@ -96,7 +96,7 @@ jobs:
           sudo podman run \
             --rm \
             --privileged \
-            -v ./dist/config.toml:/config.toml:ro \
+            -v ./dist/config.toml:/config.toml \
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
@@ -113,5 +113,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: auto
         run: aws s3 cp --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com ./dist/keift-os-${{ matrix.arch }}.iso s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
