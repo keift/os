@@ -37,23 +37,6 @@ RUN dnf clean all
 
 COPY ./usr /usr
 
-RUN flatpak remote-delete --system --force fedora
-RUN flatpak remote-delete --system --force fedora-testing
-
-RUN flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-RUN flatpak install -y --system flathub org.gnome.Calculator \
-  org.gnome.Calendar \
-  org.gnome.clocks \
-  org.gnome.Contacts \
-  org.gnome.Epiphany \
-  org.gnome.Loupe \
-  org.gnome.Maps \
-  net.nokyan.Resources \
-  org.gnome.Showtime \
-  org.gnome.TextEditor \
-  org.gnome.Weather
-
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 

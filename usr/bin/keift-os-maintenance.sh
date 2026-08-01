@@ -25,7 +25,7 @@ send_notification "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması 
 flatpak remote-delete --force fedora || true
 flatpak remote-delete --force fedora-testing || true
 
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 flatpak install -y flathub org.gnome.Calculator \
   org.gnome.Calendar \
@@ -37,6 +37,6 @@ flatpak install -y flathub org.gnome.Calculator \
   net.nokyan.Resources \
   org.gnome.Showtime \
   org.gnome.TextEditor \
-  org.gnome.Weather || true
+  org.gnome.Weather
 
 send_notification "Keift OS" "Kurulum tamamlandı" "Keift OS'unuz hazır."
