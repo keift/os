@@ -52,3 +52,4 @@ EOF
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 
 RUN systemctl enable gdm.service
+RUN systemctl enable keift-os-maintenance.service
