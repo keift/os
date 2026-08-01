@@ -1,5 +1,8 @@
 FROM quay.io/fedora/fedora-bootc:44
 
+RUN dnf remove -y bootupd grub2-* shim-* \
+  && dnf install -y systemd-boot-unsigned
+
 RUN dnf install -y \
   # Desktop
   gnome-shell \
