@@ -7,7 +7,6 @@ RUN dnf install -y \
   gdm \
   glibc-all-langpacks \
   gnome-initial-setup \
-  accountsservice \
   # Drivers
   mesa-vulkan-drivers \
   mesa-dri-drivers \

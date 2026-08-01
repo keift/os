@@ -76,7 +76,6 @@ jobs:
           [customizations.installer.kickstart]
           contents = """
           graphical
-          firstboot --disable
           rootpw --lock
           """
 

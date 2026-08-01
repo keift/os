@@ -17,6 +17,7 @@ flatpak install -y flathub org.gnome.Epiphany || true
 flatpak install -y flathub org.gnome.Loupe || true
 flatpak install -y flathub org.gnome.Maps || true
 flatpak install -y flathub net.nokyan.Resources || true
+flatpak install -y flathub org.gnome.Showtime || true
 flatpak install -y flathub org.gnome.TextEditor || true
 flatpak install -y flathub org.gnome.Weather || true
 
