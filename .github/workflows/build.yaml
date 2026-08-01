@@ -74,10 +74,7 @@ jobs:
         run: |
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
-          contents = """
-          graphical
-          rootpw --lock
-          """
+          contents = "graphical"
 
           [customizations.installer.modules]
           enable = [
@@ -92,7 +89,7 @@ jobs:
           volume_id = "KEIFT-OS"
           EOF
 
-      - name: Build ISO
+      - name: Build it
         run: |
           sudo podman run \
             --rm \

@@ -5,6 +5,7 @@ RUN dnf install -y \
   gnome-shell \
   gnome-session \
   gdm \
+  gnome-initial-setup \
   glibc-all-langpacks \
   # Drivers
   mesa-vulkan-drivers \
