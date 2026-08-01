@@ -19,6 +19,8 @@ env:
 
 jobs:
   image:
+    if: false
+
     runs-on: ubuntu-latest
 
     steps:
@@ -48,7 +50,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -73,6 +75,9 @@ jobs:
       - name: Create config
         run: |
           tee ./dist/config.toml &>/dev/null << EOF
+          [customizations.installer.kickstart]
+          contents = "graphical"
+
           [customizations.installer.modules]
           enable = [
             "org.fedoraproject.Anaconda.Modules.Localization",
