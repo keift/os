@@ -71,14 +71,13 @@ jobs:
 
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
-
+      # rootpw --lock
       - name: Create config
         run: |
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
           graphical
-          rootpw --lock
           """
 
           [customizations.installer.modules]
