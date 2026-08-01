@@ -22,12 +22,12 @@ while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
 
 send_notification "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
 
-flatpak remote-delete --system --force fedora || true
-flatpak remote-delete --system --force fedora-testing || true
+flatpak remote-delete --force fedora || true
+flatpak remote-delete --force fedora-testing || true
 
-flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
 
-flatpak install -y --system flathub org.gnome.Calculator \
+flatpak install -y flathub org.gnome.Calculator \
   org.gnome.Calendar \
   org.gnome.clocks \
   org.gnome.Contacts \

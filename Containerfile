@@ -7,6 +7,9 @@ RUN dnf install -y \
   gdm \
   gnome-initial-setup \
   glibc-all-langpacks \
+  # QEMU/KVM
+  spice-vdagent \
+  spice-webdavd \
   # Drivers
   mesa-vulkan-drivers \
   mesa-dri-drivers \
@@ -34,12 +37,12 @@ RUN dnf clean all
 
 COPY ./usr /usr
 
-RUN flatpak remote-delete --force fedora
-RUN flatpak remote-delete --force fedora-testing
+RUN flatpak remote-delete --system --force fedora
+RUN flatpak remote-delete --system --force fedora-testing
 
-RUN flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+RUN flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-RUN flatpak install -y flathub org.gnome.Calculator \
+RUN flatpak install -y --system flathub org.gnome.Calculator \
   org.gnome.Calendar \
   org.gnome.clocks \
   org.gnome.Contacts \
