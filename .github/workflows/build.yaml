@@ -73,9 +73,6 @@ jobs:
       - name: Create config
         run: |
           tee ./dist/config.toml &>/dev/null << EOF
-          [customizations.installer.kickstart]
-          contents = "graphical"
-
           [customizations.installer.modules]
           enable = [
             "org.fedoraproject.Anaconda.Modules.Localization",
@@ -84,9 +81,6 @@ jobs:
           disable = [
             "org.fedoraproject.Anaconda.Modules.Users"
           ]
-
-          [customizations.iso]
-          volume_id = "KEIFT-OS"
           EOF
 
       - name: Build it
