@@ -6,7 +6,6 @@ RUN dnf install -y \
   gnome-session \
   gdm \
   gnome-initial-setup \
-  dbus-user-session \
   glibc-all-langpacks \
   # QEMU/KVM
   spice-vdagent \
@@ -42,4 +41,6 @@ RUN chmod +x /usr/bin/keift-os-maintenance.sh
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 
 RUN systemctl enable keift-os-maintenance.service
+RUN systemctl mask systemd-remount-fs.service
+
 RUN echo "root:root" | chpasswd
