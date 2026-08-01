@@ -19,7 +19,6 @@ RUN dnf install -y \
   pipewire-pulseaudio \
   wireplumber \
   NetworkManager-wifi \
-  bluez \
   \
   # Softwares and portals
   flatpak \
