@@ -6,6 +6,7 @@ RUN dnf install -y \
   gnome-session \
   gdm \
   gnome-initial-setup \
+  dbus-user-session \
   glibc-all-langpacks \
   # QEMU/KVM
   spice-vdagent \
