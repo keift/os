@@ -6,9 +6,6 @@ RUN dnf install -y \
   gnome-session \
   gdm \
   glibc-all-langpacks \
-  gnome-initial-setup \
-  gnome-settings-daemon \
-  polkit \
   # Drivers
   mesa-vulkan-drivers \
   mesa-dri-drivers \
