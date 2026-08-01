@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+exit
+
 while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
 
 notify-send -a "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
