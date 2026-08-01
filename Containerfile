@@ -41,4 +41,4 @@ RUN chmod +x /usr/bin/keift-os-maintenance.sh
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 
 RUN systemctl enable keift-os-maintenance.service
-RUN echo "root:DEGISTIR-BUNU" | chpasswd
+RUN echo "root:root" | chpasswd
