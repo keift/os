@@ -2,23 +2,13 @@ FROM quay.io/fedora/fedora-bootc:44
 
 RUN dnf install -y \
   # Desktop
-  gnome-shell \
-  gnome-session \
-  gdm \
   gnome-initial-setup \
   glibc-all-langpacks \
   # QEMU/KVM
   spice-vdagent \
   spice-webdavd \
-  # Drivers
-  mesa-vulkan-drivers \
-  mesa-dri-drivers \
-  \
-  # Softwares and portals
-  flatpak \
-  xdg-desktop-portal-gnome \
-  \
   # Applications
+  flatpak \
   gnome-control-center \
   gnome-software \
   nautilus \
