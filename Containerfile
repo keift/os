@@ -11,7 +11,7 @@ RUN dnf install -y \
   flatpak \
   gnome-software \
   nautilus \
-  ptyxis fedora-release-silverblue
+  ptyxis
 
 RUN dnf remove -y \
   fedora-logos
