@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-silverblue:44
+FROM quay.io/fedora/fedora-bootc:44
 
 RUN dnf install -y \
   # Desktop
