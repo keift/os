@@ -77,6 +77,10 @@ jobs:
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
+          graphical
+
+          rootpw --lock
+
           %pre
           mkdir -p /etc/anaconda/conf.d
 
@@ -85,10 +89,6 @@ jobs:
           hidden-webui-pages = anaconda-screen-accounts
           _EOF
           %end
-
-          graphical
-
-          rootpw --lock
           """
 
           [customizations.installer.modules]

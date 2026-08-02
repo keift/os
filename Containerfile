@@ -4,7 +4,7 @@ RUN dnf install -y \
   # Desktop
   gnome-initial-setup \
   glibc-all-langpacks \
-  # QEMU/KVM
+  # VM
   spice-vdagent \
   spice-webdavd \
   # Applications
