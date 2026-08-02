@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-bootc:44
+FROM quay.io/fedora/fedora-silverblue:44
 
 RUN dnf install -y \
   # Desktop
@@ -11,10 +11,7 @@ RUN dnf install -y \
   flatpak \
   gnome-software \
   nautilus \
-  ptyxis \
-  fedora-release-silverblue \
-  fedora-release-ostree-desktop \
-  fedora-third-party
+  ptyxis
 
 RUN dnf clean all
 

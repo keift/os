@@ -18,6 +18,20 @@ send_notification() {
   done
 }
 
+reset_dconf() {
+  for bus_path in /run/user/*/bus; do
+    if [ -e "${bus_path}" ]; then
+      uid=$(echo "${bus_path}" | cut -f4 -d "/")
+      username=$(id -nu "${uid}")
+
+      sudo -u "${username}" \
+        DBUS_SESSION_BUS_ADDRESS="unix:path=${bus_path}" \
+        DISPLAY=:0 \
+        /usr/bin/dconf reset -f /
+    fi
+  done
+}
+
 while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
 
 send_notification "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
@@ -40,6 +54,6 @@ flatpak install -y \
   org.gnome.TextEditor \
   org.gnome.Weather
 
-dconf reset -f /
+reset_dconf
 
 send_notification "Keift OS" "Kurulum tamamlandı" "Keift OS'unuz hazır."
