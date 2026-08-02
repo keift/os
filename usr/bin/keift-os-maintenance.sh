@@ -27,7 +27,7 @@ flatpak remote-delete --force fedora-testing || true
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-flatpak install -y flathub \
+flatpak install -y \
   net.nokyan.Resources \
   org.gnome.Calculator \
   org.gnome.Calendar \
