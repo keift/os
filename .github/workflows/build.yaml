@@ -77,10 +77,6 @@ jobs:
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
-          graphical
-
-          rootpw --lock
-
           %pre
           mkdir -p /etc/anaconda/conf.d
 
@@ -89,6 +85,10 @@ jobs:
           hidden_spokes = UserSpoke
           _EOF
           %end
+
+          graphical
+
+          rootpw --lock
           """
 
           [customizations.installer.modules]
@@ -110,7 +110,7 @@ jobs:
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
-            --type anaconda-iso \
+            --type bootc-installer \
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
