@@ -84,10 +84,10 @@ jobs:
           %pre
           mkdir -p /etc/anaconda/conf.d
 
-          tee /etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
+          tee /etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << _EOF
           [User Interface]
           hidden_spokes = UserSpoke
-          EOF
+          _EOF
           %end
           """
 
