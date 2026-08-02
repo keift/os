@@ -110,7 +110,7 @@ jobs:
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
-            --type bootc-installer \
+            --type anaconda-iso \
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
