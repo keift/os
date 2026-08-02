@@ -1,40 +1,22 @@
 #!/usr/bin/env bash
 
-send_notification() {
-  local name="${1}"
-  local title="${2}"
-  local content="${3}"
-
+execute() {
   for bus_path in /run/user/*/bus; do
     if [ -e "${bus_path}" ]; then
-      uid=$(echo "${bus_path}" | cut -f4 -d "/")
-      username=$(id -nu "${uid}")
+      local uid=$(echo "${bus_path}" | cut -f4 -d "/")
+      local username=$(id -nu "${uid}")
 
       sudo -u "${username}" \
         DBUS_SESSION_BUS_ADDRESS="unix:path=${bus_path}" \
         DISPLAY=:0 \
-        /usr/bin/notify-send -a "${name}" "${title}" "${content}"
-    fi
-  done
-}
-
-reset_dconf() {
-  for bus_path in /run/user/*/bus; do
-    if [ -e "${bus_path}" ]; then
-      uid=$(echo "${bus_path}" | cut -f4 -d "/")
-      username=$(id -nu "${uid}")
-
-      sudo -u "${username}" \
-        DBUS_SESSION_BUS_ADDRESS="unix:path=${bus_path}" \
-        DISPLAY=:0 \
-        /usr/bin/dconf reset -f /
+        "${@}"
     fi
   done
 }
 
 while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
 
-send_notification "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
+execute notify-send -a "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
 
 flatpak remote-delete --force fedora || true
 flatpak remote-delete --force fedora-testing || true
@@ -54,6 +36,6 @@ flatpak install -y \
   org.gnome.TextEditor \
   org.gnome.Weather
 
-reset_dconf
+execute dconf reset -f /
 
-send_notification "Keift OS" "Kurulum tamamlandı" "Keift OS'unuz hazır."
+execute notify-send -a "Keift OS" "Kurulum tamamlandı" "Keift OS'unuz hazır."

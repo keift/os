@@ -86,7 +86,9 @@ jobs:
 
           tee /etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << _EOF
           [User Interface]
-          hidden-webui-pages = anaconda-screen-accounts
+          hidden_spokes =
+            PasswordSpoke
+            UserSpoke
           _EOF
           %end
           """
