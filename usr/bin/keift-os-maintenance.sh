@@ -27,16 +27,19 @@ flatpak remote-delete --force fedora-testing || true
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-flatpak install -y flathub org.gnome.Calculator \
+flatpak install -y flathub \
+  net.nokyan.Resources \
+  org.gnome.Calculator \
   org.gnome.Calendar \
   org.gnome.clocks \
   org.gnome.Contacts \
   org.gnome.Epiphany \
   org.gnome.Loupe \
   org.gnome.Maps \
-  net.nokyan.Resources \
   org.gnome.Showtime \
   org.gnome.TextEditor \
   org.gnome.Weather
+
+dconf reset -f /
 
 send_notification "Keift OS" "Kurulum tamamlandı" "Keift OS'unuz hazır."
