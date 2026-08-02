@@ -78,7 +78,17 @@ jobs:
           [customizations.installer.kickstart]
           contents = """
           graphical
+
           rootpw --lock
+
+          %pre
+          mkdir -p /etc/anaconda/conf.d
+
+          tee /etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
+          [User Interface]
+          hidden_spokes = UserSpoke
+          EOF
+          %end
           """
 
           [customizations.installer.modules]
