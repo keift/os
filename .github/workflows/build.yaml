@@ -71,22 +71,20 @@ jobs:
 
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
-      # rootpw --lock
+
       - name: Create config
         run: |
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
           graphical
+          rootpw --lock
           """
 
           [customizations.installer.modules]
           enable = [
             "org.fedoraproject.Anaconda.Modules.Localization",
             "org.fedoraproject.Anaconda.Modules.Timezone"
-          ]
-          disable = [
-            "org.fedoraproject.Anaconda.Modules.Users"
           ]
 
           [customizations.iso]
@@ -103,7 +101,7 @@ jobs:
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
             --type anaconda-iso \
-            --rootfs xfs \
+            --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
           sudo mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
