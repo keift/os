@@ -12,7 +12,6 @@ RUN dnf install -y \
   gnome-software \
   nautilus \
   ptyxis \
-  fedora-release-identity-silverblue \
   fedora-release-silverblue \
   fedora-release-ostree-desktop \
   fedora-third-party
