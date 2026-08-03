@@ -19,7 +19,7 @@ env:
 
 jobs:
   image:
-    if: false
+    if: true
 
     runs-on: ubuntu-latest
 
@@ -50,7 +50,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    # needs: image
+    needs: image
 
     strategy:
       matrix:
@@ -75,7 +75,10 @@ jobs:
 
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
-          contents = "graphical"
+          contents = """
+          graphical
+          rootpw --lock
+          """
 
           [customizations.installer.modules]
           enable = [
@@ -100,25 +103,27 @@ jobs:
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
+          sudo chown -R $USER:$USER ./dist
+
       - name: Inject into ISO
         run: |
           mkdir -p ./dist/inject/etc/anaconda/conf.d
 
           tee ./dist/inject/etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
           [User Interface]
-          hidden_spokes = UserSpoke
+          hidden_spokes = UserSpoke, PasswordSpoke
           EOF
 
           sudo apt install -y xorriso cpio
 
           cd ./dist/inject
-          find ./ | cpio -c -o > ../inject.img
+          find ./ -mindepth 1 | cpio -c -o | gzip -9 > ../inject.img.gz
           cd ../../
 
           xorriso \
             -indev ./dist/bootiso/install.iso \
             -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
-            -map ./dist/inject.img /images/product.img \
+            -map ./dist/inject.img.gz /images/product.img \
             -boot_image any replay
 
       - name: Generate checksum file
