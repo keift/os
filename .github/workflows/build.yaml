@@ -98,8 +98,6 @@ jobs:
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
-          rm -rf ./dist/config.toml
-
           sudo chown -R $USER:$USER ./dist
 
       - name: Configure it
@@ -113,23 +111,23 @@ jobs:
 
           mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
 
-      # - name: Inject into ISO
-      #   run: |
-      #     sudo apt install -y xorriso cpio
+      - name: Inject into ISO
+        run: |
+          sudo apt install -y xorriso cpio
 
-      #     cd ./dist/inject
-      #     find ./ -mindepth 1 | cpio -c -o | gzip -9 > ../product.img.gz
-      #     cd ../../
+          cd ./dist/inject
+          find ./ -mindepth 1 | cpio -c -o | gzip -9 > ../product.img.gz
+          cd ../../
 
-      #     rm -rf ./dist/inject
+          rm -rf ./dist/inject
 
-      #     xorriso \
-      #       -indev ./dist/bootiso/install.iso \
-      #       -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
-      #       -map ./dist/product.img.gz /images/product.img \
-      #       -boot_image any replay
+          xorriso \
+            -indev ./dist/bootiso/install.iso \
+            -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
+            -map ./dist/product.img.gz /images/product.img \
+            -boot_image any replay
 
-      #     rm -rf ./dist/bootiso ./dist/product.img.gz
+          rm -rf ./dist/config.toml ./dist/bootiso ./dist/product.img.gz
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
