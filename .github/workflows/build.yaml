@@ -98,7 +98,7 @@ jobs:
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
-          sudo chown -R $USER:$USER ./dist
+          rm -rf ./dist/config.toml
 
       - name: Configure it
         run: |
@@ -119,13 +119,13 @@ jobs:
 
           rm -rf ./dist/inject
 
-          xorriso \
+          sudo xorriso \
             -indev ./dist/bootiso/install.iso \
             -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
             -map ./dist/product.img.gz /images/product.img \
             -boot_image any replay
 
-          rm -rf ./dist/config.toml ./dist/bootiso ./dist/product.img.gz
+          rm -rf ./dist/bootiso ./dist/product.img.gz
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
