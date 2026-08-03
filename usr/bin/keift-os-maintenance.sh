@@ -14,6 +14,10 @@ execute() {
   done
 }
 
+sleep 10
+
+while pgrep -f gnome-initial-setup &> /dev/null; do sleep 1; done
+
 while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
 
 execute notify-send -a "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
