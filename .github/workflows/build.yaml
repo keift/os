@@ -75,7 +75,10 @@ jobs:
 
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
-          contents = "graphical"
+          contents = """
+          graphical
+          rootpw --lock
+          """
 
           [customizations.installer.modules]
           enable = [
