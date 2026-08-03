@@ -19,7 +19,7 @@ env:
 
 jobs:
   image:
-    if: true
+    if: false
 
     runs-on: ubuntu-latest
 
@@ -50,7 +50,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -126,6 +126,8 @@ jobs:
             -map ./dist/inject.img.gz /images/product.img \
             -boot_image any replay
 
+          rm -rf ./dist/bootiso ./dist/inject ./dist/inject.img.gz
+
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
 
@@ -133,4 +135,13 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-        run: aws s3 cp --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com ./dist/keift-os-${{ matrix.arch }}.iso s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
+        run: |
+          aws s3 cp \
+            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
+            ./dist/keift-os-${{ matrix.arch }}.iso \
+            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
+
+          aws s3 cp \
+            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
+            ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM \
+            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso-CHECKSUM
