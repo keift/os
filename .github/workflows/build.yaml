@@ -109,8 +109,6 @@ jobs:
           hidden_spokes = UserSpoke PasswordSpoke
           EOF
 
-          mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
-
       - name: Inject into ISO
         run: |
           sudo apt install -y xorriso cpio
