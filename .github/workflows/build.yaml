@@ -19,7 +19,7 @@ env:
 
 jobs:
   image:
-    if: true
+    if: false
 
     runs-on: ubuntu-latest
 
@@ -50,7 +50,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -66,13 +66,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Create dist directory
+        run: mkdir -p ./dist
+
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
 
-      - name: Build it
+      - name: Create config
         run: |
-          mkdir -p ./dist
-
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
@@ -90,6 +91,8 @@ jobs:
           volume_id = "KEIFT-OS"
           EOF
 
+      - name: Build it
+        run: |
           sudo podman run \
             --rm \
             --privileged \
@@ -101,36 +104,7 @@ jobs:
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
-          rm -rf ./dist/config.toml
-
-          sudo chown -R $USER:$USER ./dist
-
-      - name: Configure it
-        run: |
-          mkdir -p ./dist/inject/etc/anaconda/conf.d
-
-          tee ./dist/inject/etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
-          [User Interface]
-          hidden_spokes = UserSpoke PasswordSpoke
-          EOF
-
-      - name: Inject into ISO
-        run: |
-          sudo apt install -y xorriso cpio
-
-          cd ./dist/inject
-          find ./ -mindepth 1 | cpio -c -o | gzip -9 > ../product.img.gz
-          cd ../../
-
-          rm -rf ./dist/inject
-
-          xorriso \
-            -indev ./dist/bootiso/install.iso \
-            -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
-            -map ./dist/product.img.gz /images/product.img \
-            -boot_image any replay
-
-          rm -rf ./dist/bootiso ./dist/product.img.gz
+          sudo mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
