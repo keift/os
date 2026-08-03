@@ -66,32 +66,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Create dist directory
-        run: mkdir -p ./dist
-
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
 
       - name: Create config
         run: |
+          mkdir -p ./dist
+
           tee ./dist/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
-          contents = """
-          graphical
-
-          rootpw --lock
-
-          %pre
-          mkdir -p /etc/anaconda/conf.d
-
-          tee /etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << _EOF
-          [User Interface]
-          hidden_spokes =
-            PasswordSpoke
-            UserSpoke
-          _EOF
-          %end
-          """
+          contents = "graphical"
 
           [customizations.installer.modules]
           enable = [
@@ -116,7 +100,26 @@ jobs:
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
-          sudo mv ./dist/bootiso/install.iso ./dist/keift-os-${{ matrix.arch }}.iso
+      - name: Inject into ISO
+        run: |
+          mkdir -p ./dist/inject/etc/anaconda/conf.d
+
+          tee ./dist/inject/etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
+          [User Interface]
+          hidden_spokes = UserSpoke
+          EOF
+
+          sudo apt install -y xorriso cpio
+
+          cd ./dist/inject
+          find ./ | cpio -c -o > ../inject.img
+          cd ../../
+
+          xorriso \
+            -indev ./dist/bootiso/install.iso \
+            -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
+            -map ./dist/inject.img /images/product.img \
+            -boot_image any replay
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
