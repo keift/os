@@ -111,7 +111,7 @@ jobs:
 
           tee ./dist/inject/etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
           [User Interface]
-          hidden_spokes = UserSpoke, PasswordSpoke
+          hidden_spokes = UserSpoke,PasswordSpoke
           EOF
 
           sudo apt install -y xorriso cpio
