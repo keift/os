@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-exit 0
-
 execute() {
   for bus_path in /run/user/*/bus; do
     if [ -e "${bus_path}" ]; then
       local uid=$(echo "${bus_path}" | cut -f4 -d "/")
-      local username=$(id -nu "${uid}")
+      local username=$(id -n -u "${uid}")
 
       sudo -u "${username}" \
         DBUS_SESSION_BUS_ADDRESS="unix:path=${bus_path}" \

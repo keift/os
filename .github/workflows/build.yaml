@@ -93,7 +93,7 @@ jobs:
           sudo podman run \
             --rm \
             --privileged \
-            -v ./dist/config.toml:/config.toml \
+            -v ./dist/config.toml:/config.toml:ro \
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder:latest \
