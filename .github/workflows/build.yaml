@@ -69,7 +69,7 @@ jobs:
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}:latest
 
-      - name: Create config
+      - name: Build it
         run: |
           mkdir -p ./dist
 
@@ -90,8 +90,6 @@ jobs:
           volume_id = "KEIFT-OS"
           EOF
 
-      - name: Build it
-        run: |
           sudo podman run \
             --rm \
             --privileged \
@@ -103,6 +101,8 @@ jobs:
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}:latest
 
+          rm -rf ./dist/config.toml
+
           sudo chown -R $USER:$USER ./dist
 
       - name: Inject into ISO
@@ -111,25 +111,27 @@ jobs:
 
           tee ./dist/inject/etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
           [User Interface]
-          hidden_spokes = UserSpoke,PasswordSpoke
+          hidden_spokes = UserSpoke PasswordSpoke
           EOF
 
           sudo apt install -y xorriso cpio
 
           cd ./dist/inject
-          find ./ -mindepth 1 | cpio -c -o | gzip -9 > ../inject.img.gz
+          find ./ -mindepth 1 | cpio -c -o | gzip -9 > ../product.img.gz
           cd ../../
+
+          rm -rf ./dist/inject
 
           xorriso \
             -indev ./dist/bootiso/install.iso \
             -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
-            -map ./dist/inject.img.gz /images/product.img \
+            -map ./dist/product.img.gz /images/product.img \
             -boot_image any replay
 
-          rm -rf ./dist/bootiso ./dist/inject ./dist/inject.img.gz
+          rm -rf ./dist/bootiso ./dist/product.img.gz
 
       - name: Generate checksum file
-        run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
+        run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
 
       - name: Upload to Cloudflare R2
         env:
