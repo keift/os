@@ -125,7 +125,7 @@ jobs:
             -map ./dist/product.img.gz /images/product.img \
             -boot_image any replay
 
-          rm -rf ./dist/bootiso ./dist/product.img.gz
+          sudo rm -rf ./dist/bootiso ./dist/product.img.gz
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
