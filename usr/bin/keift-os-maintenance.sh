@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+exit 0
+
 execute() {
   for bus_path in /run/user/*/bus; do
     if [ -e "${bus_path}" ]; then
