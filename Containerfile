@@ -24,3 +24,5 @@ RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 
 RUN systemctl enable keift-os-maintenance.service
 RUN systemctl mask systemd-remount-fs.service
+
+RUN rootpw --lock
