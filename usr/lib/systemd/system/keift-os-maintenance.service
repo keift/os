@@ -10,4 +10,4 @@ ExecStart=/usr/bin/keift-os-maintenance.sh
 RemainAfterExit=yes
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target
