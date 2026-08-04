@@ -1,6 +1,6 @@
 [Unit]
 Description=Keift OS Maintenance
-After=network.target
+After=graphical.target
 
 [Service]
 Type=simple

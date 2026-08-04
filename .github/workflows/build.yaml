@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Pull image
-        run: sudo podman pull ghcr.io/${{ github.repository }}:latest
+        run: sudo podman pull ghcr.io/${{ github.repository }}:${{ env.VERSION }}
 
       - name: Build it
         run: |
@@ -89,9 +89,6 @@ jobs:
             "org.fedoraproject.Anaconda.Modules.Timezone"
           ]
 
-          [customizations.kernel]
-          append = "inst.geoloc-use-with-ks"
-
           [customizations.iso]
           volume_id = "KEIFT-OS"
           EOF
@@ -105,7 +102,7 @@ jobs:
             quay.io/centos-bootc/bootc-image-builder:latest \
             --type anaconda-iso \
             --rootfs ext4 \
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ env.VERSION }}
 
           rm -rf ./dist/config.toml
 
