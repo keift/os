@@ -105,18 +105,12 @@ jobs:
 
           sudo chown -R $USER:$USER ./dist
 
-      - name: Configure it
+      - name: Prepare the injection
         run: |
-          mkdir -p ./dist/inject/etc/anaconda/conf.d
+          mkdir -p ./dist/inject
 
-          tee ./dist/inject/etc/anaconda/conf.d/99-keift-os.conf &>/dev/null << EOF
-          [User Interface]
-          hidden_spokes = UserSpoke PasswordSpoke
-          EOF
-
-          tee ./dist/inject/etc/hostname &>/dev/null << EOF
-          keift-os
-          EOF
+          cp -r ./etc ./dist/inject/etc
+          cp -r ./usr ./dist/inject/usr
 
       - name: Inject into ISO
         run: |
