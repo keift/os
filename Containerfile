@@ -21,6 +21,7 @@ RUN dnf clean all
 # RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
 COPY ./usr /usr
+COPY ./etc /etc
 
 COPY ./assets/logo-black.svg /usr/share/icons/hicolor/scalable/apps/keift-os-logo.svg
 COPY ./assets/logo-black.png /usr/share/icons/hicolor/scalable/apps/keift-os-logo.png

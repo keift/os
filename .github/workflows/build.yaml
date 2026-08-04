@@ -73,9 +73,6 @@ jobs:
           mkdir -p ./dist
 
           tee ./dist/config.toml &>/dev/null << EOF
-          [customizations]
-          hostname = "keift-os"
-
           [customizations.installer.kickstart]
           contents = """
           graphical
