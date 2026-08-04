@@ -3,7 +3,9 @@ Description=Keift OS Maintenance
 After=network.target
 
 [Service]
-Type=oneshot
+Type=simple
+TimeoutStartSec=infinity
+ExecStartPre=/usr/bin/bash -c "while ! ls /home/*/.config/gnome-initial-setup-done &> /dev/null; do sleep 1; done"
 ExecStart=/usr/bin/keift-os-maintenance.sh
 RemainAfterExit=yes
 

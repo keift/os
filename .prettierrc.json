@@ -7,5 +7,5 @@
 
   "trailingComma": "none",
 
-  "plugins": ["prettier-plugin-sh", "@prettier/plugin-xml"]
+  "plugins": ["prettier-plugin-sh", "prettier-plugin-toml", "@prettier/plugin-xml"]
 }

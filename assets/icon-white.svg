@@ -1,0 +1,31 @@
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg144418" version="1.1" viewBox="215.13 18.93 593.68 730.18">
+  <metadata id="metadata144424">
+    <rdf:rdf>
+      <cc:work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:work>
+    </rdf:rdf>
+  </metadata>
+  <defs id="defs144422" />
+  <linearGradient spreadMethod="pad" y2="30%" x2="-10%" y1="120%" x1="30%" id="3d_gradient2-logo-71756a90-0b74-4514-8feb-026a16f9e686">
+    <stop id="stop144399" stop-opacity="1" stop-color="#ffffff" offset="0%" />
+    <stop id="stop144401" stop-opacity="1" stop-color="#000000" offset="100%" />
+  </linearGradient>
+  <linearGradient gradientTransform="rotate(-30)" spreadMethod="pad" y2="30%" x2="-10%" y1="120%" x1="30%" id="3d_gradient3-logo-71756a90-0b74-4514-8feb-026a16f9e686">
+    <stop id="stop144404" stop-opacity="1" stop-color="#ffffff" offset="0%" />
+    <stop id="stop144406" stop-opacity="1" stop-color="#cccccc" offset="50%" />
+    <stop id="stop144408" stop-opacity="1" stop-color="#000000" offset="100%" />
+  </linearGradient>
+  <g id="logo-group">
+    <image xlink:href="" id="container" style="display: none;" x="272" y="144" width="480" height="480" transform="translate(0 0)" />
+    <g id="logo-center" transform="translate(165.28799999999995 0)">
+      <image xlink:href="" id="icon_container" style="display: none;" x="0" y="27.5" />
+      <g id="slogan" style="font-style:normal;font-weight:700;font-size:32px;line-height:1;font-family:'Brandmark1 Bold Color';font-variant-ligatures:none;text-align:center;text-anchor:middle" transform="translate(0 0)" />
+      <g id="title" style="font-style:normal;font-weight:700;font-size:72px;line-height:1;font-family:'Brandmark1 Bold Color';font-variant-ligatures:normal;text-align:center;text-anchor:middle" transform="translate(0 0)">
+        <g id="path144427" aria-label="K" transform="translate(0 612.6400000000001) translate(50 -593.6800000000001) scale(13) translate(-492.54256 53.64)"> <polygon class="c1" points="108.10376,71.91748 88.48218,95.62207 88.48218,71.91748 77.17749,71.91748 77.17749,128.08252 88.48218,128.08252 88.48218,112.30518 122.80005,71.91748 " transform="translate(415.36507 -125.55748)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#e4e4e7" stroke="#e4e4e7" /> <polygon class="c3" points="112.71143,114.24286 98.67279,114.24286 108.73071,128.08252 122.82251,128.08252 " transform="translate(415.36507 -125.55748)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#e4e4e7" stroke="#e4e4e7" /> </g>
+       </g>
+      <image xlink:href="https://app.brandmark.io/nounpreview/2606588.png" id="icon" style="display: none;" x="0" y="27.5" />
+    </g>
+  </g>
+</svg>

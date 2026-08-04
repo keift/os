@@ -20,7 +20,7 @@ jobs:
         run: bun add -g prettier
 
       - name: Install Prettier plugins
-        run: bun add prettier-plugin-sh @prettier/plugin-xml
+        run: bun add prettier-plugin-sh prettier-plugin-toml @prettier/plugin-xml
 
       - name: Run Prettier
         run: prettier --write ./

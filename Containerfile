@@ -4,6 +4,11 @@ RUN dnf install -y \
   # Desktop
   gnome-initial-setup \
   glibc-all-langpacks \
+  # Loading
+  plymouth \
+  plymouth-system-theme \
+  plymouth-plugin-label \
+  plymouth-plugin-two-step \
   # VM
   spice-vdagent \
   spice-webdavd \
@@ -18,6 +23,17 @@ RUN dnf clean all
 # RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
 COPY ./usr /usr
+
+COPY ./assets/logo-blue.svg /usr/share/icons/hicolor/scalable/apps/keift-os-logo.svg
+COPY ./assets/logo-blue.png /usr/share/icons/hicolor/scalable/apps/keift-os-logo.png
+
+COPY ./assets/logo-white.png /usr/share/pixmaps/fedora-gdm-logo.png
+COPY ./assets/icon-white.png /usr/share/pixmaps/system-logo-white.png
+
+COPY ./assets/logo-white.png /usr/share/plymouth/themes/spinner/watermark.png
+
+COPY ./assets/logo-white.png /usr/share/anaconda/pixmaps/anaconda_header.png
+COPY ./assets/logo-white.png /usr/share/anaconda/pixmaps/sidebar-logo.png
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas

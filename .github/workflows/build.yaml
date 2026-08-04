@@ -15,7 +15,6 @@ permissions:
 
 env:
   VERSION: 1
-  FEDORA_VERSION: 44
 
 jobs:
   image:
@@ -74,6 +73,9 @@ jobs:
           mkdir -p ./dist
 
           tee ./dist/config.toml &>/dev/null << EOF
+          [customizations]
+          hostname = "keift-os"
+
           [customizations.installer.kickstart]
           contents = """
           graphical
@@ -86,6 +88,9 @@ jobs:
             "org.fedoraproject.Anaconda.Modules.Localization",
             "org.fedoraproject.Anaconda.Modules.Timezone"
           ]
+
+          [customizations.kernel]
+          append = "inst.geoloc=1"
 
           [customizations.iso]
           volume_id = "KEIFT-OS"
@@ -127,14 +132,14 @@ jobs:
 
           xorriso \
             -indev ./dist/bootiso/install.iso \
-            -outdev ./dist/keift-os-${{ matrix.arch }}.iso \
+            -outdev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
             -map ./dist/product.img /images/product.img \
             -boot_image any replay
 
           rm -rf ./dist/bootiso ./dist/product.img
 
       - name: Generate checksum file
-        run: sha256sum ./dist/keift-os-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM
+        run: sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
 
       - name: Upload to Cloudflare R2
         env:
@@ -143,10 +148,10 @@ jobs:
         run: |
           aws s3 cp \
             --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
-            ./dist/keift-os-${{ matrix.arch }}.iso \
-            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso
+            ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
+            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso
 
           aws s3 cp \
             --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
-            ./dist/keift-os-${{ matrix.arch }}.iso-CHECKSUM \
-            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ matrix.arch }}.iso-CHECKSUM
+            ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM \
+            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
