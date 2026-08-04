@@ -153,3 +153,4 @@ jobs:
             --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
             ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM \
             s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
+
