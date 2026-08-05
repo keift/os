@@ -25,3 +25,5 @@ mkdir -p ./src/usr/share/anaconda/pixmaps
 
 cp ./assets/logo-black-small-x2.png ./src/usr/share/anaconda/pixmaps/anaconda_header.png
 cp ./assets/logo-black-small-x2.png ./src/usr/share/anaconda/pixmaps/sidebar-logo.png
+cp ./assets/transparent.png ./src/usr/share/anaconda/pixmaps/sidebar-bg.png
+cp ./assets/transparent.png ./src/usr/share/anaconda/pixmaps/topbar-bg.png
