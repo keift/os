@@ -11,8 +11,6 @@ RUN dnf install -y \
   # Boot
   plymouth \
   plymouth-system-theme \
-  # Drivers
-  linux-firmware \
   # VM
   spice-vdagent \
   spice-webdavd \
@@ -21,6 +19,8 @@ RUN dnf install -y \
   gnome-software \
   nautilus \
   ptyxis
+
+RUN dnf group install -y hardware-support
 
 RUN dnf clean all
 
