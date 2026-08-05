@@ -14,6 +14,12 @@ execute() {
   done
 }
 
+while ! [ -f /home/*/.config/gnome-initial-setup-done ]; do sleep 1; done
+
+while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
+
+sleep 10
+
 state_file="/etc/keift-os-maintenance-sequence"
 
 target_sequence=0
@@ -27,8 +33,6 @@ fi
 if [ "${current_sequence}" -ge "${target_sequence}" ]; then
   exit 0
 fi
-
-while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
 
 execute notify-send -a "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
 

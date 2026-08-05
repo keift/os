@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "retouch": "./scripts/copies.sh && bun run prettier",
+    "retouch": "./src/scripts/copies.sh && bun run prettier",
     "prettier": "prettier --write ./"
   },
   "dependencies": {

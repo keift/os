@@ -20,8 +20,8 @@ RUN dnf clean all
 
 # RUN rm -rf /usr/etc/yum.repos.d/*.repo
 
-COPY ./etc /etc
-COPY ./usr /usr
+COPY ./src/etc /etc
+COPY ./src/usr /usr
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas

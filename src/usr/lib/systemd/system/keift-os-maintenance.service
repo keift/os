@@ -1,0 +1,11 @@
+[Unit]
+Description=Keift OS Maintenance
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/keift-os-maintenance.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
