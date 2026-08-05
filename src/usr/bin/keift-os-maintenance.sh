@@ -52,6 +52,7 @@ for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++))
       org.gnome.Epiphany \
       org.gnome.Loupe \
       org.gnome.Maps \
+      org.gnome.Papers \
       org.gnome.Showtime \
       org.gnome.TextEditor \
       org.gnome.Weather

@@ -104,14 +104,14 @@ jobs:
 
           sudo chown -R $USER:$USER ./dist
 
-      - name: Prepare the injection
+      - name: Prepare for injection
         run: |
           mkdir -p ./dist/inject
 
           cp -r ./src/etc ./dist/inject/etc
           cp -r ./src/usr ./dist/inject/usr
 
-      - name: Inject into ISO
+      - name: Inject it
         run: |
           sudo apt install -y xorriso cpio
 
