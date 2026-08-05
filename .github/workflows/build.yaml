@@ -79,6 +79,11 @@ jobs:
           rootpw --lock
           """
 
+          [customizations.installer.modules]
+          enable = [
+            "org.fedoraproject.Anaconda.Modules.Localization"
+          ]
+
           [customizations.iso]
           volume_id = "KEIFT-OS"
           EOF
