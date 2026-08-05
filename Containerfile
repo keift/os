@@ -29,6 +29,8 @@ RUN dnf clean all
 COPY ./src/etc /etc
 COPY ./src/usr /usr
 
+RUN rm -rf /opt && ln -sf /var/opt /opt
+
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 
