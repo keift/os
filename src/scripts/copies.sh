@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 mkdir -p ./src/usr/share/icons/hicolor/scalable/apps
 
 cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/scalable/apps/keift-os-logo.svg
