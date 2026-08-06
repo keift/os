@@ -2,26 +2,20 @@
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
   <wallpaper deleted="false">
-    <name>Anders Jilden</name>
-    <filename>/usr/share/backgrounds/anders-jilden-cYrMQA7a3Wc-unsplash.jpg</filename>
-    <options>zoom</options>
-  </wallpaper>
-
-  <wallpaper deleted="false">
     <name>Arthur Shuraev</name>
     <filename>/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg</filename>
     <options>zoom</options>
   </wallpaper>
 
   <wallpaper deleted="false">
-    <name>Christian Joudrey</name>
-    <filename>/usr/share/backgrounds/christian-joudrey-mWRR1xj95hg-unsplash.jpg</filename>
+    <name>Bailey Zindel</name>
+    <filename>/usr/share/backgrounds/bailey-zindel-NRQV-hBF10M-unsplash.jpg</filename>
     <options>zoom</options>
   </wallpaper>
 
   <wallpaper deleted="false">
-    <name>Derrick Cooper</name>
-    <filename>/usr/share/backgrounds/derrick-cooper-L505cPnmIds-unsplash.jpg</filename>
+    <name>Christian Joudrey</name>
+    <filename>/usr/share/backgrounds/christian-joudrey-mWRR1xj95hg-unsplash.jpg</filename>
     <options>zoom</options>
   </wallpaper>
 
@@ -34,6 +28,12 @@
   <wallpaper deleted="false">
     <name>Jack Barton</name>
     <filename>/usr/share/backgrounds/jack-barton-DxI3QiHIuAQ-unsplash.jpg</filename>
+    <options>zoom</options>
+  </wallpaper>
+
+  <wallpaper deleted="false">
+    <name>Jake Weirick</name>
+    <filename>/usr/share/backgrounds/jake-weirick-EsvpmQ4zp5Y-unsplash.jpg</filename>
     <options>zoom</options>
   </wallpaper>
 
