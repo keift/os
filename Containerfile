@@ -20,7 +20,11 @@ RUN dnf install -y \
   nautilus \
   ptyxis
 
-RUN dnf group install -y hardware-support
+RUN dnf group install -y \
+  # Desktop
+  fonts \
+  # Drivers
+  hardware-support
 
 RUN dnf clean all
 
@@ -30,6 +34,7 @@ COPY ./src/etc /etc
 COPY ./src/usr /usr
 
 RUN rm -rf /opt && ln -sf /var/opt /opt
+RUN rm -rf /usr/local && ln -sf /var/usrlocal /usr/local
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas

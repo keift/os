@@ -109,19 +109,23 @@ jobs:
         run: |
           sudo apt install -y xorriso cpio
 
+          sudo chown -R root:root ./dist/inject
+
           cd ./dist/inject
-          find ./ -mindepth 1 | cpio -c -o > ../product.img
+          sudo sh -c "find ./ -mindepth 1 | cpio -H newc -o > ../product.img"
           cd ../../
 
-          rm -rf ./dist/inject
+          sudo rm -rf ./dist/inject
 
-          xorriso \
+          sudo xorriso \
             -indev ./dist/bootiso/install.iso \
             -outdev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
             -map ./dist/product.img /images/product.img \
             -boot_image any replay
 
-          rm -rf ./dist/bootiso ./dist/product.img
+          sudo rm -rf ./dist/bootiso ./dist/product.img
+
+          sudo chown -R $USER:$USER ./dist
 
       - name: Generate checksum file
         run: sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
