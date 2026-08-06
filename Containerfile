@@ -22,9 +22,12 @@ RUN dnf install -y \
   # Others
   git
 
-RUN dnf group install -y --skip-broken fonts
-
-RUN dnf group install -y --with-optional --skip-broken hardware-support
+RUN dnf group install -y \
+  # Desktop
+  fonts \
+  # Drivers
+  hardware-support \
+  multimedia
 
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
 RUN --mount=type=cache,dst=/var/cache \
