@@ -2,8 +2,8 @@
 accent-color="blue"
 
 [org.gnome.desktop.background]
-picture-uri="/usr/share/backgrounds/anders-jilden-cYrMQA7a3Wc-unsplash.jpg"
-picture-uri-dark="/usr/share/backgrounds/anders-jilden-cYrMQA7a3Wc-unsplash.jpg"
+picture-uri="/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
+picture-uri-dark="/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
 
 [org.gnome.desktop.wm.preferences]
 button-layout="close,minimize,maximize:"
