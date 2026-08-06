@@ -18,7 +18,9 @@ RUN dnf install -y \
   flatpak \
   gnome-software \
   nautilus \
-  ptyxis
+  ptyxis \
+  # Others
+  git
 
 RUN dnf group install -y \
   # Desktop
