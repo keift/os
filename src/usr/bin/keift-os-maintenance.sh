@@ -16,7 +16,7 @@ execute() {
 
 while ! [ -f /home/*/.config/gnome-initial-setup-done ]; do sleep 1; done
 
-while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done
+timeout 10 bash -c "while ! ping -c 1 1.1.1.1 &> /dev/null; do sleep 1; done"
 
 sleep 10
 
