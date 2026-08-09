@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Pull image
-        run: sudo podman pull ghcr.io/${{ github.repository }}:${{ env.VERSION }}
+        run: sudo podman pull ghcr.io/${{ github.repository }}:latest
 
       - name: Build it
         run: |
@@ -92,7 +92,7 @@ jobs:
             quay.io/centos-bootc/bootc-image-builder:latest \
             --type anaconda-iso \
             --rootfs ext4 \
-            ghcr.io/${{ github.repository }}:${{ env.VERSION }}
+            ghcr.io/${{ github.repository }}:latest
 
           rm -rf ./dist/config.toml
 
