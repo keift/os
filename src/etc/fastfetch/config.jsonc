@@ -1,0 +1,80 @@
+{
+  "$schema": "https://raw.github.com/fastfetch-cli/fastfetch/refs/heads/dev/doc/json_schema.json",
+  "logo": {
+    "type": "file",
+    "source": "/usr/share/keift-os/fastfetch/logo-ascii.txt",
+    "color": {
+      "1": "default",
+      "2": "blue"
+    },
+    "padding": {
+      "top": 2,
+      "left": 2,
+      "right": 4,
+      "bottom": 2
+    }
+  },
+  "display": {
+    "separator": "",
+    "key": {
+      "width": 16
+    }
+  },
+  "modules": [
+    "break",
+    "break",
+    {
+      "type": "os",
+      "key": "OS",
+      "keyColor": "blue",
+      "format": "{pretty-name}"
+    },
+    {
+      "type": "kernel",
+      "key": "Kernel",
+      "keyColor": "blue"
+    },
+    {
+      "type": "packages",
+      "key": "Packages",
+      "keyColor": "blue"
+    },
+    {
+      "type": "uptime",
+      "key": "Uptime",
+      "keyColor": "blue"
+    },
+    {
+      "type": "display",
+      "key": "Display",
+      "keyColor": "blue"
+    },
+    {
+      "type": "cpu",
+      "key": "CPU",
+      "keyColor": "blue",
+      "format": "{name}"
+    },
+    {
+      "type": "gpu",
+      "key": "GPU",
+      "keyColor": "blue",
+      "format": "{name}"
+    },
+    {
+      "type": "memory",
+      "key": "Memory",
+      "keyColor": "blue",
+      "format": "{used} / {total} ({percentage})"
+    },
+    {
+      "type": "disk",
+      "key": "Disk",
+      "keyColor": "blue",
+      "folders": ["/etc"],
+      "format": "{size-used} / {size-total} ({size-percentage})"
+    },
+    "break",
+    "break"
+  ]
+}
