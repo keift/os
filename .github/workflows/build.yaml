@@ -1,8 +1,13 @@
 name: Build
 
+# on:
+#   release:
+#     types: [created]
+
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -37,9 +42,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:stable
+          tags: ghcr.io/${{ github.repository }}:latest
           push: true
           file: ./Containerfile
           context: ./
