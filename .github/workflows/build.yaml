@@ -42,7 +42,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          tags: ghcr.io/${{ github.repository }}:latest
           push: true
           file: ./Containerfile
           context: ./
@@ -66,7 +65,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Pull image
-        run: sudo podman pull ghcr.io/${{ github.repository }}:latest
+        run: sudo podman pull ghcr.io/${{ github.repository }}
 
       - name: Build it
         run: |
@@ -89,10 +88,10 @@ jobs:
             -v ./dist/config.toml:/config.toml \
             -v ./dist:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/centos-bootc/bootc-image-builder:latest \
+            quay.io/centos-bootc/bootc-image-builder \
             --type anaconda-iso \
             --rootfs ext4 \
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}
 
           rm -rf ./dist/config.toml
 
