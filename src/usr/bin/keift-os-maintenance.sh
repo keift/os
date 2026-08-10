@@ -16,6 +16,8 @@ execute() {
 
 while [ ! -f /home/*/.config/gnome-initial-setup-done ]; do sleep 1; done
 
+while ! curl -sI --max-time 10 https://flathub.org &> /dev/null; do sleep 1; done
+
 sleep 10
 
 state_file="/etc/keift-os-maintenance-sequence"

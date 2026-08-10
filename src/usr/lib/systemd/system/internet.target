@@ -1,4 +1,0 @@
-[Unit]
-Description=Target for internet
-Requires=internet.target.service
-After=internet.target.service

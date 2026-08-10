@@ -1,7 +1,7 @@
 [Unit]
 Description=Keift OS maintenance
-After=internet.target
-Wants=internet.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple
