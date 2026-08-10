@@ -1,5 +1,5 @@
 [Unit]
-Description=Keift OS maintenance.
+Description=Keift OS maintenance
 After=internet.target
 Wants=internet.target
 

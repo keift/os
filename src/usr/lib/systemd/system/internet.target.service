@@ -1,4 +1,5 @@
 [Unit]
+Description=Target for internet
 After=network-online.target
 Wants=network-online.target
 
