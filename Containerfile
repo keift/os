@@ -12,7 +12,7 @@ RUN dnf install -y \
   gnome-shell-extension-appindicator \
   gnome-shell-extension-blur-my-shell \
   gnome-shell-extension-dash-to-dock \
-  gnome-shell-extension-logo-menu \
+  # gnome-shell-extension-logo-menu \
   # Boot
   plymouth \
   plymouth-system-theme \
