@@ -9,8 +9,10 @@ RUN dnf install -y \
   gnome-initial-setup \
   glibc-all-langpacks \
   # Extensions
-  gnome-shell-extension-dash-to-dock \
   gnome-shell-extension-appindicator \
+  gnome-shell-extension-blur-my-shell \
+  gnome-shell-extension-dash-to-dock \
+  gnome-shell-extension-logo-menu \
   # Boot
   plymouth \
   plymouth-system-theme \
