@@ -34,6 +34,10 @@ RUN dnf group install -y \
   hardware-support \
   multimedia
 
+RUN dnf remove -y \
+  # Applications
+  gnome-extensions-app
+
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
 RUN --mount=type=cache,dst=/var/cache \
   --mount=type=cache,dst=/var/log \
