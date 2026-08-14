@@ -9,7 +9,7 @@ picture-uri-dark="/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg
 button-layout="close,minimize,maximize:"
 
 [org.gnome.shell]
-enabled-extensions=["appindicatorsupport@rgcjonas.gmail.com", "blur-my-shell@aunetx", "dash-to-dock@micxgx.gmail.com", "logomenu@aryan_k"]
+enabled-extensions=["appindicatorsupport@rgcjonas.gmail.com", "blur-my-shell@aunetx", "dash-to-dock@micxgx.gmail.com", "ding@rastersoft.com", "logomenu@aryan_k", "os@keift.co"]
 favorite-apps=["org.gnome.Software.desktop", "org.gnome.Nautilus.desktop", "org.gnome.TextEditor.desktop", "org.gnome.Ptyxis.desktop", "org.gnome.Epiphany.desktop"]
 
 [org.gnome.shell.extensions.dash-to-dock]
