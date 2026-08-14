@@ -67,14 +67,42 @@ RUN --mount=type=cache,dst=/var/cache \
   && /usr/bin/systemctl preset brew-update.timer \
   && /usr/bin/systemctl preset brew-upgrade.timer
 
+# Extensions
+
+RUN uuid="clipboard-indicator@tudmotu.com" \
+  && version="71" \
+  && url="https://extensions.gnome.org/extension-data/clipboard-indicatortudmotu.com.v${version}.shell-extension.zip" \
+  && mkdir -p /usr/share/gnome-shell/extensions \
+  && wget -O /tmp/"${uuid}".zip "${url}" \
+  && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
+  && rm -f /tmp/"${uuid}".zip \
+  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas \
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${uuid}"/schemas
+
+RUN uuid="ding@rastersoft.com" \
+  && version="93" \
+  && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
+  && mkdir -p /usr/share/gnome-shell/extensions \
+  && wget -O /tmp/"${uuid}".zip "${url}" \
+  && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
+  && rm -f /tmp/"${uuid}".zip \
+  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas \
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${uuid}"/schemas
+
+RUN uuid="logomenu@aryan_k" \
+  && version="43" \
+  && url="https://extensions.gnome.org/extension-data/logomenuaryan_k.v${version}.shell-extension.zip" \
+  && mkdir -p /usr/share/gnome-shell/extensions \
+  && wget -O /tmp/"${uuid}".zip "${url}" \
+  && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
+  && rm -f /tmp/"${uuid}".zip \
+  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas \
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${uuid}"/schemas
+
 # Misc
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 
 RUN ln -sf /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
-
-RUN glib-compile-schemas /usr/share/gnome-shell/extensions/clipboard-indicator@tudmotu.com/schemas
-RUN glib-compile-schemas /usr/share/gnome-shell/extensions/ding@rastersoft.com/schemas
-RUN glib-compile-schemas /usr/share/gnome-shell/extensions/logomenu@aryan_k/schemas
 
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
