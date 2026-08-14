@@ -1,22 +1,35 @@
 [org.gnome.desktop.interface]
-accent-color="blue"
+accent-color = "blue"
 
 [org.gnome.desktop.background]
-picture-uri="/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
-picture-uri-dark="/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
+picture-uri = "/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
+picture-uri-dark = "/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
 
 [org.gnome.desktop.wm.preferences]
-button-layout="close,minimize,maximize:"
+button-layout = "close,minimize,maximize:"
 
 [org.gnome.shell]
-enabled-extensions=["appindicatorsupport@rgcjonas.gmail.com", "blur-my-shell@aunetx", "dash-to-dock@micxgx.gmail.com", "ding@rastersoft.com", "logomenu@aryan_k"]
-favorite-apps=["org.gnome.Software.desktop", "org.gnome.Nautilus.desktop", "org.gnome.TextEditor.desktop", "org.gnome.Ptyxis.desktop", "org.gnome.Epiphany.desktop"]
+enabled-extensions = [
+  "appindicatorsupport@rgcjonas.gmail.com",
+  "blur-my-shell@aunetx",
+  "clipboard-indicator@tudmotu.com",
+  "dash-to-dock@micxgx.gmail.com",
+  "ding@rastersoft.com",
+  "logomenu@aryan_k"
+]
+favorite-apps = [
+  "org.gnome.Software.desktop",
+  "org.gnome.Nautilus.desktop",
+  "org.gnome.TextEditor.desktop",
+  "org.gnome.Ptyxis.desktop",
+  "org.gnome.Epiphany.desktop"
+]
 
 [org.gnome.shell.extensions.dash-to-dock]
-dock-fixed=true
-click-action="minimize"
+dock-fixed = true
+click-action = "minimize"
 
-[org.gnome.shell.extensions.Logo-menu]
-menu-button-icon-size=20
-use-custom-icon=true
-custom-icon-path="/usr/share/keift-os/logo_menu/icon.png"
+[org.gnome.shell.extensions.logo-menu]
+menu-button-icon-size = 20
+use-custom-icon = true
+custom-icon-path = "/usr/share/keift-os/logo_menu/icon.png"
