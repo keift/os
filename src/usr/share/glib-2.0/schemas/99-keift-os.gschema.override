@@ -1,4 +1,5 @@
 [org.gnome.desktop.interface]
+icon-theme="keift-os"
 accent-color="blue"
 
 [org.gnome.desktop.background]

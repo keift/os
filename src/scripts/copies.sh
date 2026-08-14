@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-mkdir -p ./src/usr/share/icons/hicolor/scalable/apps
+mkdir -p ./src/usr/share/icons/keift-os/scalable/apps
 
-cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/scalable/apps/start-here.svg
-cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/scalable/apps/keift-os-logo.svg
-cp ./assets/logo-black-small-x2.png ./src/usr/share/icons/hicolor/scalable/apps/keift-os-logo.png
+cp ./assets/logo-black.svg ./src/usr/share/icons/keift-os/scalable/apps/start-here.svg
+cp ./assets/logo-black.svg ./src/usr/share/icons/keift-os/scalable/apps/keift-os-logo.svg
+cp ./assets/logo-black-small-x2.png ./src/usr/share/icons/keift-os/scalable/apps/keift-os-logo.png
 
 mkdir -p ./src/usr/share/pixmaps
 

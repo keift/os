@@ -1,0 +1,16 @@
+[Icon Theme]
+Name=Keift OS
+Inherits=Adwaita,hicolor
+Directories=scalable/actions,scalable/apps
+
+[scalable/actions]
+Type=Scalable
+Size=16
+MinSize=8
+MaxSize=512
+
+[scalable/apps]
+Type=Scalable
+Size=64
+MinSize=16
+MaxSize=512
