@@ -33,6 +33,7 @@ RUN dnf install -y \
   ptyxis \
   # Misc
   git
+  wget
 
 RUN dnf group install -y \
   # Desktop
@@ -69,32 +70,32 @@ RUN --mount=type=cache,dst=/var/cache \
 
 # Extensions
 
-RUN uuid="clipboard-indicator@tudmotu.com" \
+RUN id="clipboard-indicator@tudmotu.com" \
   && version="71" \
   && url="https://extensions.gnome.org/extension-data/clipboard-indicatortudmotu.com.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
-  && wget -O /tmp/"${uuid}".zip "${url}" \
-  && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
-  && rm -f /tmp/"${uuid}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && wget -O /tmp/"${id}".zip "${url}" \
+  && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
+  && rm -f /tmp/"${id}".zip \
+  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
-RUN uuid="ding@rastersoft.com" \
+RUN id="ding@rastersoft.com" \
   && version="93" \
   && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
-  && wget -O /tmp/"${uuid}".zip "${url}" \
-  && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
-  && rm -f /tmp/"${uuid}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && wget -O /tmp/"${id}".zip "${url}" \
+  && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
+  && rm -f /tmp/"${id}".zip \
+  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
-RUN uuid="logomenu@aryan_k" \
+RUN id="logomenu@aryan_k" \
   && version="43" \
   && url="https://extensions.gnome.org/extension-data/logomenuaryan_k.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
-  && wget -O /tmp/"${uuid}".zip "${url}" \
-  && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
-  && rm -f /tmp/"${uuid}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && wget -O /tmp/"${id}".zip "${url}" \
+  && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
+  && rm -f /tmp/"${id}".zip \
+  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 # Misc
 
