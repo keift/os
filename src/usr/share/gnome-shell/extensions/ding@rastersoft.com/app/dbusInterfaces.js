@@ -221,5 +221,5 @@ var DBusInterfaces = {
       </arg>
     </signal>
   </interface>
-</node>`,
+</node>`
 };

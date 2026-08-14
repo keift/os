@@ -14,284 +14,276 @@ import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import * as Constants from './constants.js';
 import * as Selection from './selection.js';
 
-import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const MenuItem = GObject.registerClass(
-class LogoMenuMenuItem extends PopupMenu.PopupMenuItem {
+  class LogoMenuMenuItem extends PopupMenu.PopupMenuItem {
     _init(name, activateFunction) {
-        super._init(name);
-        this.connect('activate', () => activateFunction());
+      super._init(name);
+      this.connect('activate', () => activateFunction());
     }
-});
+  }
+);
 
 const MenuButton = GObject.registerClass(
-class LogoMenuMenuButton extends PanelMenu.Button {
+  class LogoMenuMenuButton extends PanelMenu.Button {
     _init(extension) {
-        super._init(0.5, 'LogoMenu');
-        this._extension = extension;
-        this._settings = extension.getSettings();
+      super._init(0.5, 'LogoMenu');
+      this._extension = extension;
+      this._settings = extension.getSettings();
 
-        // Icon
-        this.icon = new St.Icon({
-           style_class: 'menu-button',
-        });
-        
-        this._settings.connectObject('changed::hide-icon-shadow', () => this.hideIconShadow(), this);
-        this._settings.connectObject('changed::menu-button-icon-image', () => this.setIconImage(), this);
-        this._settings.connectObject('changed::symbolic-icon', () => this.setIconImage(), this);
-        this._settings.connectObject('changed::use-custom-icon', () => this.setIconImage(), this);
-        this._settings.connectObject('changed::custom-icon-path', () => this.setIconImage(), this);
-        this._settings.connectObject('changed::menu-button-icon-size', () => this.setIconSize(), this);
-	
-	this.hideIconShadow();
-        this.setIconImage();
-        this.setIconSize();
-        this.add_child(this.icon);
+      // Icon
+      this.icon = new St.Icon({
+        style_class: 'menu-button'
+      });
 
-        // Menu
-        this._settings.connectObject('changed::hide-softwarecentre', () => this._displayMenuItems(), this);
-        this._settings.connectObject('changed::show-power-options', () => this._displayMenuItems(), this);
-        this._settings.connectObject('changed::hide-forcequit', () => this._displayMenuItems(), this);
-        this._settings.connectObject('changed::show-lockscreen', () => this._displayMenuItems(), this);
-        this._settings.connectObject('changed::show-activities-button', () => this._displayMenuItems(), this);
-        this._displayMenuItems();
+      this._settings.connectObject('changed::hide-icon-shadow', () => this.hideIconShadow(), this);
+      this._settings.connectObject('changed::menu-button-icon-image', () => this.setIconImage(), this);
+      this._settings.connectObject('changed::symbolic-icon', () => this.setIconImage(), this);
+      this._settings.connectObject('changed::use-custom-icon', () => this.setIconImage(), this);
+      this._settings.connectObject('changed::custom-icon-path', () => this.setIconImage(), this);
+      this._settings.connectObject('changed::menu-button-icon-size', () => this.setIconSize(), this);
 
-        // Disable the parent's ClickGesture (GNOME 50+) so pointer events reach vfunc_event
-        this._clickGesture?.set_enabled(false);
+      this.hideIconShadow();
+      this.setIconImage();
+      this.setIconSize();
+      this.add_child(this.icon);
 
-        this.connect('destroy', () => { this._settings = null; });
+      // Menu
+      this._settings.connectObject('changed::hide-softwarecentre', () => this._displayMenuItems(), this);
+      this._settings.connectObject('changed::show-power-options', () => this._displayMenuItems(), this);
+      this._settings.connectObject('changed::hide-forcequit', () => this._displayMenuItems(), this);
+      this._settings.connectObject('changed::show-lockscreen', () => this._displayMenuItems(), this);
+      this._settings.connectObject('changed::show-activities-button', () => this._displayMenuItems(), this);
+      this._displayMenuItems();
+
+      // Disable the parent's ClickGesture (GNOME 50+) so pointer events reach vfunc_event
+      this._clickGesture?.set_enabled(false);
+
+      this.connect('destroy', () => {
+        this._settings = null;
+      });
     }
 
     _addItem(item) {
-        this.menu.addMenuItem(item);
+      this.menu.addMenuItem(item);
     }
 
     _displayMenuItems() {
-        const showPowerOptions = this._settings.get_boolean('show-power-options');
-        const showForceQuit = !this._settings.get_boolean('hide-forcequit');
-        const showLockScreen = this._settings.get_boolean('show-lockscreen');
-        const showSoftwareCenter = !this._settings.get_boolean('hide-softwarecentre');
-        const showActivitiesButton = this._settings.get_boolean('show-activities-button');
+      const showPowerOptions = this._settings.get_boolean('show-power-options');
+      const showForceQuit = !this._settings.get_boolean('hide-forcequit');
+      const showLockScreen = this._settings.get_boolean('show-lockscreen');
+      const showSoftwareCenter = !this._settings.get_boolean('hide-softwarecentre');
+      const showActivitiesButton = this._settings.get_boolean('show-activities-button');
 
-        this.menu.removeAll();
+      this.menu.removeAll();
 
-        this._addItem(new MenuItem(_('About My System'), () => this._aboutThisDistro()));
-        // this._addItem(new MenuItem(_('System Settings...'), () => this._systemPreferences()));
+      this._addItem(new MenuItem(_('About My System'), () => this._aboutThisDistro()));
+      // this._addItem(new MenuItem(_('System Settings...'), () => this._systemPreferences()));
+      this._addItem(new PopupMenu.PopupSeparatorMenuItem());
+
+      if (!showActivitiesButton) this._addItem(new MenuItem(_('Activities'), () => this._overviewToggle()));
+
+      this._addItem(new MenuItem(_('App Grid'), () => this._showAppGrid()));
+      this._addItem(new PopupMenu.PopupSeparatorMenuItem());
+
+      if (showSoftwareCenter) this._addItem(new MenuItem(_('Software Center'), () => this._openSoftwareCenter()));
+
+      this._addItem(new MenuItem(_('System Monitor'), () => this._openSystemMonitor()));
+      this._addItem(new MenuItem(_('Terminal'), () => this._openTerminal()));
+      this._addItem(new MenuItem(_('Extensions'), () => this._openExtensionsApp()));
+
+      if (showForceQuit) {
+        this._addItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._addItem(new MenuItem(_('Force Quit App'), () => this._forceQuit()));
+      }
+
+      if (showPowerOptions) {
+        this._addItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._addItem(new MenuItem(_('Sleep'), () => this._sleep()));
+        this._addItem(new MenuItem(_('Restart...'), () => this._restart()));
+        this._addItem(new MenuItem(_('Shut Down...'), () => this._shutdown()));
         this._addItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        if (!showActivitiesButton)
-            this._addItem(new MenuItem(_('Activities'), () => this._overviewToggle()));
+        if (showLockScreen) this._addItem(new MenuItem(_('Lock Screen'), () => this._lockScreen()));
 
-        this._addItem(new MenuItem(_('App Grid'), () => this._showAppGrid()));
+        this._addItem(new MenuItem(_('Log Out...'), () => this._logOut()));
+      } else if (!showPowerOptions && showLockScreen) {
         this._addItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        if (showSoftwareCenter)
-            this._addItem(new MenuItem(_('Software Center'), () => this._openSoftwareCenter()));
-
-        this._addItem(new MenuItem(_('System Monitor'), () => this._openSystemMonitor()));
-        this._addItem(new MenuItem(_('Terminal'), () => this._openTerminal()));
-        this._addItem(new MenuItem(_('Extensions'), () => this._openExtensionsApp()));
-
-        if (showForceQuit) {
-            this._addItem(new PopupMenu.PopupSeparatorMenuItem());
-            this._addItem(new MenuItem(_('Force Quit App'), () => this._forceQuit()));
-        }
-
-        if (showPowerOptions) {
-            this._addItem(new PopupMenu.PopupSeparatorMenuItem());
-            this._addItem(new MenuItem(_('Sleep'), () => this._sleep()));
-            this._addItem(new MenuItem(_('Restart...'), () => this._restart()));
-            this._addItem(new MenuItem(_('Shut Down...'), () => this._shutdown()));
-            this._addItem(new PopupMenu.PopupSeparatorMenuItem());
-
-            if (showLockScreen)
-                this._addItem(new MenuItem(_('Lock Screen'), () => this._lockScreen()));
-
-            this._addItem(new MenuItem(_('Log Out...'), () => this._logOut()));
-        } else if (!showPowerOptions && showLockScreen) {
-            this._addItem(new PopupMenu.PopupSeparatorMenuItem());
-            this._addItem(new MenuItem(_('Lock Screen'), () => this._lockScreen()));
-        }
+        this._addItem(new MenuItem(_('Lock Screen'), () => this._lockScreen()));
+      }
     }
 
     vfunc_event(event) {
-        if (event.type() === Clutter.EventType.BUTTON_PRESS) {
-            // left click === 1, middle click === 2, right click === 3
-            const clickType = this._settings.get_int('menu-button-icon-click-type');
-            if (event.get_button() === clickType) {
-                this.menu.close();
-                Main.overview.toggle();
-            } else {
-                this.menu?.toggle();
-            }
-            return Clutter.EVENT_STOP;
-        } else if (event.type() === Clutter.EventType.TOUCH_BEGIN) {
-            this.menu?.toggle();
-            return Clutter.EVENT_STOP;
+      if (event.type() === Clutter.EventType.BUTTON_PRESS) {
+        // left click === 1, middle click === 2, right click === 3
+        const clickType = this._settings.get_int('menu-button-icon-click-type');
+        if (event.get_button() === clickType) {
+          this.menu.close();
+          Main.overview.toggle();
+        } else {
+          this.menu?.toggle();
         }
-        return super.vfunc_event(event);
+        return Clutter.EVENT_STOP;
+      } else if (event.type() === Clutter.EventType.TOUCH_BEGIN) {
+        this.menu?.toggle();
+        return Clutter.EVENT_STOP;
+      }
+      return super.vfunc_event(event);
     }
 
     _aboutThisDistro() {
-        Util.spawn(['gnome-control-center', 'system', 'about']);
+      Util.spawn(['gnome-control-center', 'system', 'about']);
     }
 
     _systemPreferences() {
-        Util.spawn(['gnome-control-center']);
+      Util.spawn(['gnome-control-center']);
     }
 
     _overviewToggle() {
-        Main.overview.toggle();
+      Main.overview.toggle();
     }
 
     _sleep() {
-        Util.spawn(['systemctl', 'suspend']);
+      Util.spawn(['systemctl', 'suspend']);
     }
 
     _restart() {
-        Util.spawn(['gnome-session-quit', '--reboot']);
+      Util.spawn(['gnome-session-quit', '--reboot']);
     }
 
     _shutdown() {
-        Util.spawn(['gnome-session-quit', '--power-off']);
+      Util.spawn(['gnome-session-quit', '--power-off']);
     }
 
     _lockScreen() {
-        Util.spawn(['loginctl', 'lock-session']);
+      Util.spawn(['loginctl', 'lock-session']);
     }
 
     _logOut() {
-        Util.spawn(['gnome-session-quit', '--logout']);
+      Util.spawn(['gnome-session-quit', '--logout']);
     }
 
     _showAppGrid() {
-        // Code snippet from - https://github.com/G-dH/custom-hot-corners-extended/blob/gdh/actions.js
-        // Pressing the apps btn before overview activation avoids icons animation in GS 3.36/3.38
-        Main.overview.dash.showAppsButton.checked = true;
-        // in 3.36 pressing the button is usualy enough to activate overview, but not always
-        Main.overview.show();
-        // pressing apps btn before overview has no effect in GS 40, so once again
-        Main.overview.dash.showAppsButton.checked = true;
+      // Code snippet from - https://github.com/G-dH/custom-hot-corners-extended/blob/gdh/actions.js
+      // Pressing the apps btn before overview activation avoids icons animation in GS 3.36/3.38
+      Main.overview.dash.showAppsButton.checked = true;
+      // in 3.36 pressing the button is usualy enough to activate overview, but not always
+      Main.overview.show();
+      // pressing apps btn before overview has no effect in GS 40, so once again
+      Main.overview.dash.showAppsButton.checked = true;
     }
 
     _forceQuit() {
-        new Selection.SelectionWindow();
+      new Selection.SelectionWindow();
     }
 
     _openTerminal() {
-        Util.trySpawnCommandLine(this._settings.get_string('menu-button-terminal'));
+      Util.trySpawnCommandLine(this._settings.get_string('menu-button-terminal'));
     }
 
     _openSoftwareCenter() {
-        Util.trySpawnCommandLine(this._settings.get_string('menu-button-software-center'));
+      Util.trySpawnCommandLine(this._settings.get_string('menu-button-software-center'));
     }
 
     _openSystemMonitor() {
-        Util.trySpawnCommandLine(this._settings.get_string('menu-button-system-monitor'));
+      Util.trySpawnCommandLine(this._settings.get_string('menu-button-system-monitor'));
     }
 
     _openExtensionsApp() {
-        const appSys = Shell.AppSystem.get_default();
-        const extensionManagerChoice = this._settings.get_string('menu-button-extensions-app');
-        const extensionApp = appSys.lookup_app(extensionManagerChoice);
-        if (extensionApp) {
-            try {
-                extensionApp.launch(
-                    0,
-                    -1,
-                    Shell.AppLaunchGpu.APP_PREF
-                );
-            } catch (e) {
-                log(e);
-            }
+      const appSys = Shell.AppSystem.get_default();
+      const extensionManagerChoice = this._settings.get_string('menu-button-extensions-app');
+      const extensionApp = appSys.lookup_app(extensionManagerChoice);
+      if (extensionApp) {
+        try {
+          extensionApp.launch(0, -1, Shell.AppLaunchGpu.APP_PREF);
+        } catch (e) {
+          log(e);
         }
+      }
     }
 
     setIconImage() {
-        const iconIndex = this._settings.get_int('menu-button-icon-image');
-        const isSymbolic = this._settings.get_boolean('symbolic-icon');
-        const useCustomIcon = this._settings.get_boolean('use-custom-icon');
-        const customIconPath = this._settings.get_string('custom-icon-path');
-        let isStartHereSymbolic = false;
-        let iconPath;
-        let notFound = false;
+      const iconIndex = this._settings.get_int('menu-button-icon-image');
+      const isSymbolic = this._settings.get_boolean('symbolic-icon');
+      const useCustomIcon = this._settings.get_boolean('use-custom-icon');
+      const customIconPath = this._settings.get_string('custom-icon-path');
+      let isStartHereSymbolic = false;
+      let iconPath;
+      let notFound = false;
 
-        if (useCustomIcon && customIconPath !== '') {
-            iconPath = customIconPath;
-        } else if (isSymbolic) {
-            if (Constants.SymbolicDistroIcons[iconIndex] !== undefined) {
-                isStartHereSymbolic = Constants.SymbolicDistroIcons[iconIndex].PATH === 'start-here-symbolic';
-                iconPath = this._extension.path + Constants.SymbolicDistroIcons[iconIndex].PATH;
-            } else {
-                notFound = true;
-            }
+      if (useCustomIcon && customIconPath !== '') {
+        iconPath = customIconPath;
+      } else if (isSymbolic) {
+        if (Constants.SymbolicDistroIcons[iconIndex] !== undefined) {
+          isStartHereSymbolic = Constants.SymbolicDistroIcons[iconIndex].PATH === 'start-here-symbolic';
+          iconPath = this._extension.path + Constants.SymbolicDistroIcons[iconIndex].PATH;
         } else {
-            if (Constants.ColouredDistroIcons[iconIndex] !== undefined) {
-                iconPath = this._extension.path + Constants.ColouredDistroIcons[iconIndex].PATH;
-            } else {
-                notFound = true;
-            }
+          notFound = true;
         }
-
-        if (notFound) {
-            iconPath = 'start-here-symbolic';
-            this._settings.set_boolean('symbolic-icon', true);
-            this._settings.set_int('menu-button-icon-image', 0);
+      } else {
+        if (Constants.ColouredDistroIcons[iconIndex] !== undefined) {
+          iconPath = this._extension.path + Constants.ColouredDistroIcons[iconIndex].PATH;
+        } else {
+          notFound = true;
         }
+      }
 
-        const fileExists = GLib.file_test(iconPath, GLib.FileTest.IS_REGULAR);
+      if (notFound) {
+        iconPath = 'start-here-symbolic';
+        this._settings.set_boolean('symbolic-icon', true);
+        this._settings.set_int('menu-button-icon-image', 0);
+      }
 
-        const icon = isStartHereSymbolic || !fileExists ? 'start-here-symbolic' : iconPath;
+      const fileExists = GLib.file_test(iconPath, GLib.FileTest.IS_REGULAR);
 
-        this.icon.gicon = Gio.icon_new_for_string(icon);
+      const icon = isStartHereSymbolic || !fileExists ? 'start-here-symbolic' : iconPath;
+
+      this.icon.gicon = Gio.icon_new_for_string(icon);
     }
     setIconSize() {
-        const iconSize = this._settings.get_int('menu-button-icon-size');
-        this.icon.icon_size = iconSize;
+      const iconSize = this._settings.get_int('menu-button-icon-size');
+      this.icon.icon_size = iconSize;
     }
-    
+
     hideIconShadow() {
-    	const iconShadow = this._settings.get_boolean('hide-icon-shadow');
-    	
-        if(!iconShadow){
-            this.icon.add_style_class_name('system-status-icon'); 
-        } else {
-            this.icon.remove_style_class_name('system-status-icon');
-        }
+      const iconShadow = this._settings.get_boolean('hide-icon-shadow');
+
+      if (!iconShadow) {
+        this.icon.add_style_class_name('system-status-icon');
+      } else {
+        this.icon.remove_style_class_name('system-status-icon');
+      }
     }
-});
+  }
+);
 
 export default class LogoMenu extends Extension {
-    enable() {
-        this.settings = this.getSettings();
+  enable() {
+    this.settings = this.getSettings();
 
-        this.settings.connectObject('changed::show-activities-button',
-            () => this._setActivitiesVisibility(), this);
+    this.settings.connectObject('changed::show-activities-button', () => this._setActivitiesVisibility(), this);
 
-        this._setActivitiesVisibility();
+    this._setActivitiesVisibility();
 
-        const indicator = new MenuButton(this);
-        Main.panel.addToStatusArea('LogoMenu', indicator, 0, 'left');
-    }
+    const indicator = new MenuButton(this);
+    Main.panel.addToStatusArea('LogoMenu', indicator, 0, 'left');
+  }
 
-    disable() {
-        if (!Main.sessionMode.isLocked)
-            Main.panel.statusArea.activities?.container.show();
+  disable() {
+    if (!Main.sessionMode.isLocked) Main.panel.statusArea.activities?.container.show();
 
-        Main.panel.statusArea['LogoMenu'].destroy();
-        this.settings = null;
-    }
+    Main.panel.statusArea['LogoMenu'].destroy();
+    this.settings = null;
+  }
 
-    _setActivitiesVisibility() {
-        const showActivitiesButton = this.settings.get_boolean('show-activities-button');
-        const activitiesButton = Main.panel.statusArea['activities'];
+  _setActivitiesVisibility() {
+    const showActivitiesButton = this.settings.get_boolean('show-activities-button');
+    const activitiesButton = Main.panel.statusArea['activities'];
 
-        if (!activitiesButton)
-            return;
+    if (!activitiesButton) return;
 
-        if (showActivitiesButton)
-            activitiesButton.container.show();
-        else
-            activitiesButton.container.hide();
-    }
+    if (showActivitiesButton) activitiesButton.container.show();
+    else activitiesButton.container.hide();
+  }
 }

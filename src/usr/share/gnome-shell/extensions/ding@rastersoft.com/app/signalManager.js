@@ -18,40 +18,35 @@
 'use strict';
 
 var SignalManager = class {
-    constructor() {
-        this._signal_list = [];
-    }
+  constructor() {
+    this._signal_list = [];
+  }
 
-    connectSignal(obj, signal_name, cb, { destroyCb, after } = { destroyCb: null, after: false }) {
-        if (after)
-            var signal_id = obj.connect_after(signal_name, cb);
-        else
-            var signal_id = obj.connect(signal_name, cb);
-        let handler = {
-            signal_id,
-            obj,
-            destroyCb
-        }
-        this._signal_list.push(handler);
-        return handler;
-    }
+  connectSignal(obj, signal_name, cb, { destroyCb, after } = { destroyCb: null, after: false }) {
+    if (after) var signal_id = obj.connect_after(signal_name, cb);
+    else var signal_id = obj.connect(signal_name, cb);
+    let handler = {
+      signal_id,
+      obj,
+      destroyCb
+    };
+    this._signal_list.push(handler);
+    return handler;
+  }
 
-    disconnectAllSignals() {
-        this._signal_list.forEach((item) => {
-            item.obj.disconnect(item.signal_id);
-            if (item.destroyCb)
-                item.destroyCb();
-        });
-        this._signal_list = [];
-    }
+  disconnectAllSignals() {
+    this._signal_list.forEach((item) => {
+      item.obj.disconnect(item.signal_id);
+      if (item.destroyCb) item.destroyCb();
+    });
+    this._signal_list = [];
+  }
 
-    disconnectSignal(handler) {
-        const idx = this._signal_list.indexOf(handler);
-        if (idx == -1)
-            return;
-        delete this._signal_list[idx];
-        handler.obj.disconnect(handler.signal_id);
-        if (handler.destroyCb)
-            handler.destroyCb();
-    }
-}
+  disconnectSignal(handler) {
+    const idx = this._signal_list.indexOf(handler);
+    if (idx == -1) return;
+    delete this._signal_list[idx];
+    handler.obj.disconnect(handler.signal_id);
+    if (handler.destroyCb) handler.destroyCb();
+  }
+};

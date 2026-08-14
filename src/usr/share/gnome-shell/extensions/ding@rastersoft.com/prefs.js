@@ -1,4 +1,3 @@
-
 /* Desktop Icons GNOME Shell extension
  *
  * Copyright (C) 2019 Sergio Costas (rastersoft@gmail.com)
@@ -17,23 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 'use strict';
-import Gio from 'gi://Gio'
+import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 export default class DingPreferences extends ExtensionPreferences {
-    fillPreferencesWindow(window) {
-        let mainAppControl = Gio.DBusActionGroup.get(
-            Gio.DBus.session,
-            'com.rastersoft.ding',
-            '/com/rastersoft/ding'
-        );
-        mainAppControl.activate_action('changeDesktopIconSettings', null);
+  fillPreferencesWindow(window) {
+    let mainAppControl = Gio.DBusActionGroup.get(Gio.DBus.session, 'com.rastersoft.ding', '/com/rastersoft/ding');
+    mainAppControl.activate_action('changeDesktopIconSettings', null);
 
-        const page = new Adw.PreferencesPage();
+    const page = new Adw.PreferencesPage();
 
-        window.add(page);
-        window.connect_after('show', () => { window.close(); });
-    }
+    window.add(page);
+    window.connect_after('show', () => {
+      window.close();
+    });
+  }
 }

@@ -36,51 +36,51 @@ const _ = Gettext.gettext;
  * @param modifiersToCheck
  */
 function getModifiersInDnD(context, modifiersToCheck) {
-    let device = context.get_device();
-    let display = device.get_display();
-    let keymap = Gdk.Keymap.get_for_display(display);
-    let modifiers = keymap.get_modifier_state();
-    return (modifiers & modifiersToCheck) != 0;
+  let device = context.get_device();
+  let display = device.get_display();
+  let keymap = Gdk.Keymap.get_for_display(display);
+  let modifiers = keymap.get_modifier_state();
+  return (modifiers & modifiersToCheck) != 0;
 }
 
 /**
  *
  */
 function getDesktopDir() {
-    let desktopPath = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DESKTOP);
-    return Gio.File.new_for_commandline_arg(desktopPath);
+  let desktopPath = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DESKTOP);
+  return Gio.File.new_for_commandline_arg(desktopPath);
 }
 
 /**
  *
  */
 function getScriptsDir() {
-    let scriptsDir = GLib.build_filenamev([GLib.get_home_dir(), Enums.NAUTILUS_SCRIPTS_DIR]);
-    return Gio.File.new_for_commandline_arg(scriptsDir);
+  let scriptsDir = GLib.build_filenamev([GLib.get_home_dir(), Enums.NAUTILUS_SCRIPTS_DIR]);
+  return Gio.File.new_for_commandline_arg(scriptsDir);
 }
 
 /**
  *
  */
 function getTemplatesDir() {
-    let templatesDir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_TEMPLATES);
-    if ((templatesDir == GLib.get_home_dir()) || (templatesDir == null)) {
-        return null;
-    }
-    return Gio.File.new_for_commandline_arg(templatesDir);
+  let templatesDir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_TEMPLATES);
+  if (templatesDir == GLib.get_home_dir() || templatesDir == null) {
+    return null;
+  }
+  return Gio.File.new_for_commandline_arg(templatesDir);
 }
 
 /**
  * Returns the state of the modifier keys in the controller
  */
 function getControllerStatus(controller) {
-    let state = controller.get_current_event_state();
-    return {
-        shift: !!(state & Gdk.ModifierType.SHIFT_MASK),
-        control: !!(state & Gdk.ModifierType.CONTROL_MASK),
-        alt: !!(state & Gdk.ModifierType.ALT_MASK),
-        super: !!(state & Gdk.ModifierType.SUPER_MASK)
-    };
+  let state = controller.get_current_event_state();
+  return {
+    shift: !!(state & Gdk.ModifierType.SHIFT_MASK),
+    control: !!(state & Gdk.ModifierType.CONTROL_MASK),
+    alt: !!(state & Gdk.ModifierType.ALT_MASK),
+    super: !!(state & Gdk.ModifierType.SUPER_MASK)
+  };
 }
 
 /**
@@ -90,7 +90,7 @@ function getControllerStatus(controller) {
  * @param max
  */
 function clamp(value, min, max) {
-    return Math.max(Math.min(value, max), min);
+  return Math.max(Math.min(value, max), min);
 }
 
 /**
@@ -99,12 +99,12 @@ function clamp(value, min, max) {
  * @param environ
  */
 function spawnCommandLine(commandLine, environ = null) {
-    try {
-        let [success, argv] = GLib.shell_parse_argv(commandLine);
-        trySpawn(null, argv, environ);
-    } catch (err) {
-        print(`${commandLine} failed with ${err}`);
-    }
+  try {
+    let [success, argv] = GLib.shell_parse_argv(commandLine);
+    trySpawn(null, argv, environ);
+  } catch (err) {
+    print(`${commandLine} failed with ${err}`);
+  }
 }
 
 /**
@@ -113,34 +113,29 @@ function spawnCommandLine(commandLine, environ = null) {
  * @param command
  */
 function launchTerminal(workdir, command) {
-    const settings = new Gio.Settings({ schema_id: Enums.TERMINAL_SCHEMA });
-    const settingsExec = settings.get_string(Enums.EXEC_KEY);
-    const terminals = ['xdg-terminal-exec', settingsExec, 'kgx', 'gnome-terminal'];
-    for (const name of terminals) {
-        const exec = GLib.find_program_in_path(name);
-        if (exec !== null) {
-            const argv = [exec];
-            if (workdir && (name === 'xdg-terminal-exec')) {
-                argv.push(`--dir=${workdir}`);
-            }
-            if (command) {
-                argv.push('-e');
-                argv.push(command);
-            }
-            try {
-                trySpawn(workdir, argv, null);
-                return;
-            }
-            catch (err) {
-                print(`Starting ${exec} failed with ${err}`);
-            }
-        }
+  const settings = new Gio.Settings({ schema_id: Enums.TERMINAL_SCHEMA });
+  const settingsExec = settings.get_string(Enums.EXEC_KEY);
+  const terminals = ['xdg-terminal-exec', settingsExec, 'kgx', 'gnome-terminal'];
+  for (const name of terminals) {
+    const exec = GLib.find_program_in_path(name);
+    if (exec !== null) {
+      const argv = [exec];
+      if (workdir && name === 'xdg-terminal-exec') {
+        argv.push(`--dir=${workdir}`);
+      }
+      if (command) {
+        argv.push('-e');
+        argv.push(command);
+      }
+      try {
+        trySpawn(workdir, argv, null);
+        return;
+      } catch (err) {
+        print(`Starting ${exec} failed with ${err}`);
+      }
     }
-    new ShowErrorPopup.ShowErrorPopup(
-        'No Terminal',
-        'Cannot open a terminal, because none is installed or configured properly.',
-        true
-    );
+  }
+  new ShowErrorPopup.ShowErrorPopup('No Terminal', 'Cannot open a terminal, because none is installed or configured properly.', true);
 }
 
 /**
@@ -150,62 +145,60 @@ function launchTerminal(workdir, command) {
  * @param environ
  */
 function trySpawn(workdir, argv, environ = null) {
-    /* The following code has been extracted from GNOME Shell's
-     * source code in Misc.Util.trySpawn function and modified to
-     * set the working directory.
-     *
-     * https://gitlab.gnome.org/GNOME/gnome-shell/blob/gnome-3-30/js/misc/util.js
-     */
+  /* The following code has been extracted from GNOME Shell's
+   * source code in Misc.Util.trySpawn function and modified to
+   * set the working directory.
+   *
+   * https://gitlab.gnome.org/GNOME/gnome-shell/blob/gnome-3-30/js/misc/util.js
+   */
 
-    var success, pid;
-    try {
-        [success, pid] = GLib.spawn_async(workdir, argv, environ,
-            GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-            null);
-    } catch (err) {
-        /* Rewrite the error in case of ENOENT */
-        if (err.matches(GLib.SpawnError, GLib.SpawnError.NOENT)) {
-            throw new GLib.SpawnError({
-                code: GLib.SpawnError.NOENT,
-                message: _('Command not found'),
-            });
-        } else if (err instanceof GLib.Error) {
-            // The exception from gjs contains an error string like:
-            //   Error invoking GLib.spawn_command_line_async: Failed to
-            //   execute child process "foo" (No such file or directory)
-            // We are only interested in the part in the parentheses. (And
-            // we can't pattern match the text, since it gets localized.)
-            let message = err.message.replace(/.*\((.+)\)/, '$1');
-            throw new err.constructor({
-                code: err.code,
-                message,
-            });
-        } else {
-            throw err;
-        }
+  var success, pid;
+  try {
+    [success, pid] = GLib.spawn_async(workdir, argv, environ, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD, null);
+  } catch (err) {
+    /* Rewrite the error in case of ENOENT */
+    if (err.matches(GLib.SpawnError, GLib.SpawnError.NOENT)) {
+      throw new GLib.SpawnError({
+        code: GLib.SpawnError.NOENT,
+        message: _('Command not found')
+      });
+    } else if (err instanceof GLib.Error) {
+      // The exception from gjs contains an error string like:
+      //   Error invoking GLib.spawn_command_line_async: Failed to
+      //   execute child process "foo" (No such file or directory)
+      // We are only interested in the part in the parentheses. (And
+      // we can't pattern match the text, since it gets localized.)
+      let message = err.message.replace(/.*\((.+)\)/, '$1');
+      throw new err.constructor({
+        code: err.code,
+        message
+      });
+    } else {
+      throw err;
     }
-    // Dummy child watch; we don't want to double-fork internally
-    // because then we lose the parent-child relationship, which
-    // can break polkit.  See https://bugzilla.redhat.com//show_bug.cgi?id=819275
-    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, () => { });
+  }
+  // Dummy child watch; we don't want to double-fork internally
+  // because then we lose the parent-child relationship, which
+  // can break polkit.  See https://bugzilla.redhat.com//show_bug.cgi?id=819275
+  GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, () => {});
 }
 
 /**
  *
  */
 function getFilteredEnviron() {
-    let environ = [];
-    for (let env of GLib.get_environ()) {
-        /* It's a must to remove the WAYLAND_SOCKET environment variable
+  let environ = [];
+  for (let env of GLib.get_environ()) {
+    /* It's a must to remove the WAYLAND_SOCKET environment variable
             because, under Wayland, DING uses an specific socket to allow the
             extension to detect its windows. But the scripts must run under
             the normal socket */
-        if (env.startsWith('WAYLAND_SOCKET=')) {
-            continue;
-        }
-        environ.push(env);
+    if (env.startsWith('WAYLAND_SOCKET=')) {
+      continue;
     }
-    return environ;
+    environ.push(env);
+  }
+  return environ;
 }
 
 /**
@@ -216,21 +209,21 @@ function getFilteredEnviron() {
  * @param y2
  */
 function distanceBetweenPoints(x, y, x2, y2) {
-    return Math.pow(x - x2, 2) + Math.pow(y - y2, 2);
+  return Math.pow(x - x2, 2) + Math.pow(y - y2, 2);
 }
 
 /**
  *
  */
 function getExtraFolders() {
-    let extraFolders = [];
-    if (Prefs.desktopSettings.get_boolean('show-home')) {
-        extraFolders.push([Gio.File.new_for_commandline_arg(GLib.get_home_dir()), Enums.FileType.USER_DIRECTORY_HOME]);
-    }
-    if (Prefs.desktopSettings.get_boolean('show-trash')) {
-        extraFolders.push([Gio.File.new_for_uri('trash:///'), Enums.FileType.USER_DIRECTORY_TRASH]);
-    }
-    return extraFolders;
+  let extraFolders = [];
+  if (Prefs.desktopSettings.get_boolean('show-home')) {
+    extraFolders.push([Gio.File.new_for_commandline_arg(GLib.get_home_dir()), Enums.FileType.USER_DIRECTORY_HOME]);
+  }
+  if (Prefs.desktopSettings.get_boolean('show-trash')) {
+    extraFolders.push([Gio.File.new_for_uri('trash:///'), Enums.FileType.USER_DIRECTORY_TRASH]);
+  }
+  return extraFolders;
 }
 
 /**
@@ -238,31 +231,31 @@ function getExtraFolders() {
  * @param volumeMonitor
  */
 function getMounts(volumeMonitor) {
-    let showVolumes = Prefs.desktopSettings.get_boolean('show-volumes');
-    let showNetwork = Prefs.desktopSettings.get_boolean('show-network-volumes');
+  let showVolumes = Prefs.desktopSettings.get_boolean('show-volumes');
+  let showNetwork = Prefs.desktopSettings.get_boolean('show-network-volumes');
 
+  try {
+    var mounts = volumeMonitor.get_mounts();
+  } catch (e) {
+    print(`Failed to get the list of mounts with ${e}`);
+    return [];
+  }
+
+  let result = [];
+  let uris = [];
+  for (let mount of mounts) {
     try {
-        var mounts = volumeMonitor.get_mounts();
+      let isDrive = mount.get_drive() != null || mount.get_volume() != null;
+      let uri = mount.get_default_location().get_uri();
+      if (((isDrive && showVolumes) || (!isDrive && showNetwork)) && !uris.includes(uri)) {
+        result.push([mount.get_default_location(), Enums.FileType.EXTERNAL_DRIVE, mount]);
+        uris.push(uri);
+      }
     } catch (e) {
-        print(`Failed to get the list of mounts with ${e}`);
-        return [];
+      print(`Failed with ${e} while getting volume`);
     }
-
-    let result = [];
-    let uris = [];
-    for (let mount of mounts) {
-        try {
-            let isDrive = (mount.get_drive() != null) || (mount.get_volume() != null);
-            let uri = mount.get_default_location().get_uri();
-            if (((isDrive && showVolumes) || (!isDrive && showNetwork)) && !uris.includes(uri)) {
-                result.push([mount.get_default_location(), Enums.FileType.EXTERNAL_DRIVE, mount]);
-                uris.push(uri);
-            }
-        } catch (e) {
-            print(`Failed with ${e} while getting volume`);
-        }
-    }
-    return result;
+  }
+  return result;
 }
 
 /**
@@ -270,27 +263,27 @@ function getMounts(volumeMonitor) {
  * @param filename
  * @param opts
  */
-function getFileExtensionOffset(filename, opts = { 'isDirectory': false }) {
-    let offset = filename.length;
-    let extension = '';
-    if (!opts.isDirectory) {
-        const doubleExtensions = ['.gz', '.bz2', '.sit', '.Z', '.bz', '.xz', '.zst'];
-        for (const item of doubleExtensions) {
-            if (filename.endsWith(item)) {
-                offset -= item.length;
-                extension = filename.substring(offset);
-                filename = filename.substring(0, offset);
-                break;
-            }
-        }
-        let lastDot = filename.lastIndexOf('.');
-        if (lastDot > 0) {
-            offset = lastDot;
-            extension = filename.substring(offset) + extension;
-            filename = filename.substring(0, offset);
-        }
+function getFileExtensionOffset(filename, opts = { isDirectory: false }) {
+  let offset = filename.length;
+  let extension = '';
+  if (!opts.isDirectory) {
+    const doubleExtensions = ['.gz', '.bz2', '.sit', '.Z', '.bz', '.xz', '.zst'];
+    for (const item of doubleExtensions) {
+      if (filename.endsWith(item)) {
+        offset -= item.length;
+        extension = filename.substring(offset);
+        filename = filename.substring(0, offset);
+        break;
+      }
     }
-    return { offset, 'basename': filename, extension };
+    let lastDot = filename.lastIndexOf('.');
+    if (lastDot > 0) {
+      offset = lastDot;
+      extension = filename.substring(offset) + extension;
+      filename = filename.substring(0, offset);
+    }
+  }
+  return { offset, basename: filename, extension };
 }
 
 /**
@@ -299,26 +292,26 @@ function getFileExtensionOffset(filename, opts = { 'isDirectory': false }) {
  * @param type
  */
 function getFilesFromNautilusDnD(selection, type) {
-    let data = String.fromCharCode.apply(null, selection.get_data());
-    let retval = [];
-    let elements = data.split('\r\n');
-    for (let item of elements) {
-        if (item.length == 0) {
-            continue;
-        }
-        if (type == 1) {
-            // x-special/gnome-icon-list
-            let entry = item.split('\r');
-            retval.push(entry[0]);
-        } else {
-            // text/uri-list
-            if (item[0] == '#') {
-                continue;
-            }
-            retval.push(item);
-        }
+  let data = String.fromCharCode.apply(null, selection.get_data());
+  let retval = [];
+  let elements = data.split('\r\n');
+  for (let item of elements) {
+    if (item.length == 0) {
+      continue;
     }
-    return retval;
+    if (type == 1) {
+      // x-special/gnome-icon-list
+      let entry = item.split('\r');
+      retval.push(entry[0]);
+    } else {
+      // text/uri-list
+      if (item[0] == '#') {
+        continue;
+      }
+      retval.push(item);
+    }
+  }
+  return retval;
 }
 
 /**
@@ -328,19 +321,19 @@ function getFilesFromNautilusDnD(selection, type) {
  * @param dropCoordinates
  */
 function writeTextFileToDesktop(text, filename, dropCoordinates) {
-    let path = GLib.build_filenamev([GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DESKTOP), filename]);
-    let file = Gio.File.new_for_path(path);
-    const PERMISSIONS_MODE = 0o744;
-    if (GLib.mkdir_with_parents(file.get_parent().get_path(), PERMISSIONS_MODE) === 0) {
-        let [success, tag] = file.replace_contents(text, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
-    }
-    if (dropCoordinates != null) {
-        let info = new Gio.FileInfo();
-        info.set_attribute_string('metadata::nautilus-drop-position', `${dropCoordinates[0]},${dropCoordinates[1]}`);
-        try {
-            file.set_attributes_from_info(info, Gio.FileQueryInfoFlags.NONE, null);
-        } catch (e) { }
-    }
+  let path = GLib.build_filenamev([GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DESKTOP), filename]);
+  let file = Gio.File.new_for_path(path);
+  const PERMISSIONS_MODE = 0o744;
+  if (GLib.mkdir_with_parents(file.get_parent().get_path(), PERMISSIONS_MODE) === 0) {
+    let [success, tag] = file.replace_contents(text, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+  }
+  if (dropCoordinates != null) {
+    let info = new Gio.FileInfo();
+    info.set_attribute_string('metadata::nautilus-drop-position', `${dropCoordinates[0]},${dropCoordinates[1]}`);
+    try {
+      file.set_attributes_from_info(info, Gio.FileQueryInfoFlags.NONE, null);
+    } catch (e) {}
+  }
 }
 
 /**
@@ -349,18 +342,18 @@ function writeTextFileToDesktop(text, filename, dropCoordinates) {
  * @param modal
  */
 function windowHidePagerTaskbarModal(window, modal) {
-    let title = window.get_title();
-    if (title == null) {
-        title = '';
-    }
-    if (modal) {
-        title += '  ';
-    } else {
-        title += ' ';
-    }
-    window.set_title(title);
-    window.set_modal(modal);
-    window.grab_focus();
+  let title = window.get_title();
+  if (title == null) {
+    title = '';
+  }
+  if (modal) {
+    title += '  ';
+  } else {
+    title += ' ';
+  }
+  window.set_title(title);
+  window.set_modal(modal);
+  window.grab_focus();
 }
 
 /**
@@ -368,10 +361,10 @@ function windowHidePagerTaskbarModal(window, modal) {
  * @param ms
  */
 function waitDelayMs(ms) {
-    return new Promise((resolve, reject) => {
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT, ms, () => {
-            resolve();
-            return false;
-        });
+  return new Promise((resolve, reject) => {
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, ms, () => {
+      resolve();
+      return false;
     });
+  });
 }

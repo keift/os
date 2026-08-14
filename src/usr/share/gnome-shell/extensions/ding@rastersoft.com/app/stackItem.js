@@ -1,4 +1,3 @@
-
 /* DING: Desktop Icons New Generation for GNOME Shell
  *
  * Copyright (C) 2021 Sundeep Mediratta (smedius@gmail.com)
@@ -31,111 +30,108 @@ const Gettext = imports.gettext.domain('ding');
 
 const _ = Gettext.gettext;
 
-
 var stackItem = class extends desktopIconItem.desktopIconItem {
-    constructor(desktopManager, file, attributeContentType, fileExtra) {
-        super(desktopManager, fileExtra);
-        this._isSpecial = false;
-        this._file = file;
-        this.isStackTop = true;
-        this.stackUnique = false;
-        this._size = null;
-        this._modifiedTime = null;
-        this._attributeContentType = attributeContentType;
-        this._createIconActor(Gtk.AccessibleRole.TOGGLE_BUTTON);
-        this._createStackTopIcon();
-        this._setLabelName(this._file);
-        this.setAccessibleName(this._getVisibleName());
-    }
+  constructor(desktopManager, file, attributeContentType, fileExtra) {
+    super(desktopManager, fileExtra);
+    this._isSpecial = false;
+    this._file = file;
+    this.isStackTop = true;
+    this.stackUnique = false;
+    this._size = null;
+    this._modifiedTime = null;
+    this._attributeContentType = attributeContentType;
+    this._createIconActor(Gtk.AccessibleRole.TOGGLE_BUTTON);
+    this._createStackTopIcon();
+    this._setLabelName(this._file);
+    this.setAccessibleName(this._getVisibleName());
+  }
 
-    _getEmblem() {
-        if (!this.stackUnique)
-            return Gio.ThemedIcon.new('list-add');
-        return null;
-    }
+  _getEmblem() {
+    if (!this.stackUnique) return Gio.ThemedIcon.new('list-add');
+    return null;
+  }
 
-    _createStackTopIcon() {
-        let folder = 'folder';
-        if (Prefs.getUnstackList().includes(this._attributeContentType)) {
-            folder = 'folder-open';
-        }
-        this._icon.set_paintable(this._createEmblemedIcon(null, folder));
+  _createStackTopIcon() {
+    let folder = 'folder';
+    if (Prefs.getUnstackList().includes(this._attributeContentType)) {
+      folder = 'folder-open';
     }
+    this._icon.set_paintable(this._createEmblemedIcon(null, folder));
+  }
 
-    doOpen() {
-        this._desktopManager.onToggleStackUnstackThisTypeClicked(this.attributeContentType);
-    }
-    _doButtonOnePressed(event, shiftPressed, controlPressed) {
-        this._desktopManager.onToggleStackUnstackThisTypeClicked(this.attributeContentType);
-    }
+  doOpen() {
+    this._desktopManager.onToggleStackUnstackThisTypeClicked(this.attributeContentType);
+  }
+  _doButtonOnePressed(event, shiftPressed, controlPressed) {
+    this._desktopManager.onToggleStackUnstackThisTypeClicked(this.attributeContentType);
+  }
 
-    setSelected() {
-    }
+  setSelected() {}
 
-    updateIcon() {
-        this._createStackTopIcon();
-    }
+  updateIcon() {
+    this._createStackTopIcon();
+  }
 
-    _getVisibleName() {
-        return this._currentFileName;
-    }
+  _getVisibleName() {
+    return this._currentFileName;
+  }
 
-    setAccessibleName(filename) {
-        const isExpanded = Prefs.getUnstackList().includes(this.attributeContentType);
-        this._accessibleBox.update_property([Gtk.AccessibleProperty.LABEL, Gtk.AccessibleProperty.DESCRIPTION], [filename, ""]);
-        this._accessibleBox.update_state([Gtk.AccessibleState.CHECKED], [isExpanded ? Gtk.AccessibleTristate.TRUE : Gtk.AccessibleTristate.FALSE]);
-    }
+  setAccessibleName(filename) {
+    const isExpanded = Prefs.getUnstackList().includes(this.attributeContentType);
+    this._accessibleBox.update_property([Gtk.AccessibleProperty.LABEL, Gtk.AccessibleProperty.DESCRIPTION], [filename, '']);
+    this._accessibleBox.update_state([Gtk.AccessibleState.CHECKED], [isExpanded ? Gtk.AccessibleTristate.TRUE : Gtk.AccessibleTristate.FALSE]);
+  }
 
-    /** *********************
-     * Getters and setters *
-     ***********************/
+  /** *********************
+   * Getters and setters *
+   ***********************/
 
-    get attributeContentType() {
-        return this._attributeContentType;
-    }
+  get attributeContentType() {
+    return this._attributeContentType;
+  }
 
-    get displayName() {
-        return this._file;
-    }
+  get displayName() {
+    return this._file;
+  }
 
-    get file() {
-        return this._file;
-    }
+  get file() {
+    return this._file;
+  }
 
-    get fileName() {
-        return this._file;
-    }
+  get fileName() {
+    return this._file;
+  }
 
-    get fileSize() {
-        return this._size;
-    }
+  get fileSize() {
+    return this._size;
+  }
 
-    get isAllSelectable() {
-        return false;
-    }
+  get isAllSelectable() {
+    return false;
+  }
 
-    get modifiedTime() {
-        return this._modifiedTime;
-    }
+  get modifiedTime() {
+    return this._modifiedTime;
+  }
 
-    get path() {
-        return `/tmp/${this._file}`;
-    }
+  get path() {
+    return `/tmp/${this._file}`;
+  }
 
-    get uri() {
-        return `file:///tmp/${this._file}`;
-    }
+  get uri() {
+    return `file:///tmp/${this._file}`;
+  }
 
-    get isStackMarker() {
-        return true;
-    }
+  get isStackMarker() {
+    return true;
+  }
 
-    set size(size) {
-        this._size = size;
-    }
+  set size(size) {
+    this._size = size;
+  }
 
-    set time(time) {
-        this._modifiedTime = time;
-    }
+  set time(time) {
+    this._modifiedTime = time;
+  }
 };
 Signals.addSignalMethods(stackItem.prototype);

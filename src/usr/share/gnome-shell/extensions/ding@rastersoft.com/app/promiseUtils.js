@@ -25,56 +25,56 @@
  * @param asyncFunc
  * @param finishFunc
  */
-function _promisify(options, proto, asyncFunc,
-    finishFunc = `${asyncFunc.replace(/_(begin|async)$/, '')}_finish`) {
-    if (proto[asyncFunc] === undefined) {
-        throw new Error(`${proto} has no method named ${asyncFunc}`);
-    }
+function _promisify(options, proto, asyncFunc, finishFunc = `${asyncFunc.replace(/_(begin|async)$/, '')}_finish`) {
+  if (proto[asyncFunc] === undefined) {
+    throw new Error(`${proto} has no method named ${asyncFunc}`);
+  }
 
-    if (proto[finishFunc] === undefined) {
-        throw new Error(`${proto} has no method named ${finishFunc}`);
-    }
+  if (proto[finishFunc] === undefined) {
+    throw new Error(`${proto} has no method named ${finishFunc}`);
+  }
 
-    if (proto[`_original_${asyncFunc}`] !== undefined) {
-        if (options.keepOriginal && proto[`${asyncFunc}_promise`] === undefined) {
-            proto[`${asyncFunc}_promise`] = proto[asyncFunc];
+  if (proto[`_original_${asyncFunc}`] !== undefined) {
+    if (options.keepOriginal && proto[`${asyncFunc}_promise`] === undefined) {
+      proto[`${asyncFunc}_promise`] = proto[asyncFunc];
+    }
+    return;
+  }
+
+  if (!options) {
+    options = {};
+  }
+
+  proto[`_original_${asyncFunc}`] = proto[asyncFunc];
+  proto[options.keepOriginal ? `${asyncFunc}_promise` : asyncFunc] = function (...args) {
+    if (!args.every((arg) => typeof arg !== 'function')) {
+      return this[`_original_${asyncFunc}`](...args);
+    }
+    return new Promise((resolve, reject) => {
+      const callStack = new Error().stack
+        .split('\n')
+        .filter((line) => !line.match(/promisify/))
+        .join('\n');
+      this[`_original_${asyncFunc}`](...args, (source, res) => {
+        try {
+          const result = source !== null && source[finishFunc] !== undefined ? source[finishFunc](res) : proto[finishFunc](res);
+          if (Array.isArray(result) && result.length > 1 && result[0] === true) {
+            result.shift();
+          }
+          resolve(result);
+        } catch (error) {
+          if (error.stack) {
+            error.stack += `### Promise created here: ###\n${callStack}`;
+          } else {
+            error.stack = callStack;
+          }
+          reject(error);
         }
-        return;
-    }
+      });
+    });
+  };
 
-    if (!options) {
-        options = {};
-    }
-
-    proto[`_original_${asyncFunc}`] = proto[asyncFunc];
-    proto[options.keepOriginal ? `${asyncFunc}_promise` : asyncFunc] = function (...args) {
-        if (!args.every(arg => typeof arg !== 'function')) {
-            return this[`_original_${asyncFunc}`](...args);
-        }
-        return new Promise((resolve, reject) => {
-            const callStack = new Error().stack.split('\n').filter(line => !line.match(/promisify/)).join('\n');
-            this[`_original_${asyncFunc}`](...args, (source, res) => {
-                try {
-                    const result = source !== null && source[finishFunc] !== undefined
-                        ? source[finishFunc](res)
-                        : proto[finishFunc](res);
-                    if (Array.isArray(result) && result.length > 1 && result[0] === true) {
-                        result.shift();
-                    }
-                    resolve(result);
-                } catch (error) {
-                    if (error.stack) {
-                        error.stack += `### Promise created here: ###\n${callStack}`;
-                    } else {
-                        error.stack = callStack;
-                    }
-                    reject(error);
-                }
-            });
-        });
-    };
-
-    if (!options.keepOriginal && proto[`${asyncFunc}_promise`] === undefined) {
-        proto[`${asyncFunc}_promise`] = proto[asyncFunc];
-    }
+  if (!options.keepOriginal && proto[`${asyncFunc}_promise`] === undefined) {
+    proto[`${asyncFunc}_promise`] = proto[asyncFunc];
+  }
 }

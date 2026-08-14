@@ -18,10 +18,7 @@
 const { GLib, Gio, GObject } = imports.gi;
 
 const DEFAULT_ENUMERATE_BATCH_SIZE = 100;
-const DEFAULT_QUERY_ATTRIBUTES = [
-    Gio.FILE_ATTRIBUTE_STANDARD_NAME,
-    Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-].join(',');
+const DEFAULT_QUERY_ATTRIBUTES = [Gio.FILE_ATTRIBUTE_STANDARD_NAME, Gio.FILE_ATTRIBUTE_STANDARD_TYPE].join(',');
 
 /**
  *
@@ -30,32 +27,29 @@ const DEFAULT_QUERY_ATTRIBUTES = [
  * @param priority
  * @param queryAttributes
  */
-async function enumerateDir(dir, cancellable = null, priority = GLib.PRIORITY_DEFAULT,
-    queryAttributes = DEFAULT_QUERY_ATTRIBUTES) {
-    const childrenEnumerator = await dir.enumerate_children_async_promise(queryAttributes,
-        Gio.FileQueryInfoFlags.NONE, priority, cancellable);
+async function enumerateDir(dir, cancellable = null, priority = GLib.PRIORITY_DEFAULT, queryAttributes = DEFAULT_QUERY_ATTRIBUTES) {
+  const childrenEnumerator = await dir.enumerate_children_async_promise(queryAttributes, Gio.FileQueryInfoFlags.NONE, priority, cancellable);
 
-    try {
-        const children = [];
-        while (true) {
-            // The enumerator doesn't support multiple async calls, nor
-            // we can predict how many they will be, so using Promise.all
-            // isn't an option here, thus we just need to await each batch
-            // eslint-disable-next-line no-await-in-loop
-            const batch = await childrenEnumerator.next_files_async_promise(
-                DEFAULT_ENUMERATE_BATCH_SIZE, priority, cancellable);
+  try {
+    const children = [];
+    while (true) {
+      // The enumerator doesn't support multiple async calls, nor
+      // we can predict how many they will be, so using Promise.all
+      // isn't an option here, thus we just need to await each batch
+      // eslint-disable-next-line no-await-in-loop
+      const batch = await childrenEnumerator.next_files_async_promise(DEFAULT_ENUMERATE_BATCH_SIZE, priority, cancellable);
 
-            if (!batch.length) {
-                return children;
-            }
+      if (!batch.length) {
+        return children;
+      }
 
-            children.push(...batch);
-        }
-    } finally {
-        if (!childrenEnumerator.is_closed()) {
-            await childrenEnumerator.close_async_promise(priority, null);
-        }
+      children.push(...batch);
     }
+  } finally {
+    if (!childrenEnumerator.is_closed()) {
+      await childrenEnumerator.close_async_promise(priority, null);
+    }
+  }
 }
 
 /**
@@ -65,17 +59,16 @@ async function enumerateDir(dir, cancellable = null, priority = GLib.PRIORITY_DE
  * @param cancellable
  * @param priority
  */
-async function recursivelyDeleteDir(dir, deleteParent, cancellable = null,
-    priority = GLib.PRIORITY_DEFAULT) {
-    const children = await enumerateDir(dir, cancellable, priority);
-    /* eslint-disable no-await-in-loop */
-    for (let info of children) {
-        await deleteFile(dir.get_child(info.get_name()), info, cancellable, priority);
-    }
+async function recursivelyDeleteDir(dir, deleteParent, cancellable = null, priority = GLib.PRIORITY_DEFAULT) {
+  const children = await enumerateDir(dir, cancellable, priority);
+  /* eslint-disable no-await-in-loop */
+  for (let info of children) {
+    await deleteFile(dir.get_child(info.get_name()), info, cancellable, priority);
+  }
 
-    if (deleteParent) {
-        await dir.delete_async_promise(priority, cancellable);
-    }
+  if (deleteParent) {
+    await dir.delete_async_promise(priority, cancellable);
+  }
 }
 
 /**
@@ -85,24 +78,19 @@ async function recursivelyDeleteDir(dir, deleteParent, cancellable = null,
  * @param cancellable
  * @param priority
  */
-async function deleteFile(file, info = null, cancellable = null,
-    priority = GLib.PRIORITY_DEFAULT) {
-    if (!info) {
-        info = await file.query_info_async_promise(
-            Gio.FILE_ATTRIBUTE_STANDARD_TYPE, Gio.FileQueryInfoFlags.NONE,
-            priority, cancellable);
-    }
+async function deleteFile(file, info = null, cancellable = null, priority = GLib.PRIORITY_DEFAULT) {
+  if (!info) {
+    info = await file.query_info_async_promise(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, Gio.FileQueryInfoFlags.NONE, priority, cancellable);
+  }
 
-    const type = info.get_file_type();
-    if (type === Gio.FileType.REGULAR || type === Gio.FileType.SYMBOLIC_LINK) {
-        await file.delete_async_promise(priority, cancellable);
-    } else if (type === Gio.FileType.DIRECTORY) {
-        await recursivelyDeleteDir(file, true, cancellable, priority);
-    } else {
-        throw new GLib.Error(Gio.IOErrorEnum,
-            Gio.IOErrorEnum.NOT_SUPPORTED,
-            `${file.get_path()} of type ${type} cannot be removed`);
-    }
+  const type = info.get_file_type();
+  if (type === Gio.FileType.REGULAR || type === Gio.FileType.SYMBOLIC_LINK) {
+    await file.delete_async_promise(priority, cancellable);
+  } else if (type === Gio.FileType.DIRECTORY) {
+    await recursivelyDeleteDir(file, true, cancellable, priority);
+  } else {
+    throw new GLib.Error(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED, `${file.get_path()} of type ${type} cannot be removed`);
+  }
 }
 
 /**
@@ -111,38 +99,38 @@ async function deleteFile(file, info = null, cancellable = null,
  * @returns An Uint8Array with all the read data
  */
 async function readAll(stream) {
-    const chunks = [];
-    let totalLength = 0;
+  const chunks = [];
+  let totalLength = 0;
+  try {
+    while (true) {
+      let readData = await new Promise((resolve, reject) => {
+        stream.read_bytes_async(8192, GLib.PRIORITY_DEFAULT, null, (obj, result) => {
+          try {
+            resolve(obj.read_bytes_finish(result));
+          } catch (e) {
+            reject(e);
+          }
+        });
+      });
+      if (readData.get_size() === 0) {
+        break;
+      }
+      const data = readData.get_data();
+      chunks.push(data);
+      totalLength += data.length;
+    }
+  } finally {
     try {
-        while (true) {
-            let readData = await new Promise((resolve, reject) => {
-                stream.read_bytes_async(8192, GLib.PRIORITY_DEFAULT, null, (obj, result) => {
-                    try {
-                        resolve(obj.read_bytes_finish(result));
-                    } catch (e) {
-                        reject(e);
-                    }
-                });
-            });
-            if (readData.get_size() === 0) {
-                break;
-            }
-            const data = readData.get_data();
-            chunks.push(data);
-            totalLength += data.length;
-        }
-    } finally {
-        try {
-            stream.close(null);
-        } catch (e) {
-            // ignore close errors
-        }
+      stream.close(null);
+    } catch (e) {
+      // ignore close errors
     }
-    const returnData = new Uint8Array(totalLength);
-    let offset = 0;
-    for (const chunk of chunks) {
-        returnData.set(chunk, offset);
-        offset += chunk.length;
-    }
-    return returnData;
+  }
+  const returnData = new Uint8Array(totalLength);
+  let offset = 0;
+  for (const chunk of chunks) {
+    returnData.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return returnData;
 }

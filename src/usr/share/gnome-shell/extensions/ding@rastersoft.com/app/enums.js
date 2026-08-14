@@ -16,96 +16,92 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 'use strict';
-var ICON_SIZE = { 'tiny': 36, 'small': 48, 'standard': 64, 'large': 96 };
-var ICON_WIDTH = { 'tiny': 70, 'small': 90, 'standard': 120, 'large': 130 };
-var ICON_HEIGHT = { 'tiny': 80, 'small': 90, 'standard': 106, 'large': 138 };
+var ICON_SIZE = { tiny: 36, small: 48, standard: 64, large: 96 };
+var ICON_WIDTH = { tiny: 70, small: 90, standard: 120, large: 130 };
+var ICON_HEIGHT = { tiny: 80, small: 90, standard: 106, large: 138 };
 
 var START_CORNER = {
-    'top-left': [false, false],
-    'top-right': [true, false],
-    'bottom-left': [false, true],
-    'bottom-right': [true, true],
+  'top-left': [false, false],
+  'top-right': [true, false],
+  'bottom-left': [false, true],
+  'bottom-right': [true, true]
 };
 
 var FileType = {
-    NONE: null,
-    USER_DIRECTORY_HOME: 'show-home',
-    USER_DIRECTORY_TRASH: 'show-trash',
-    EXTERNAL_DRIVE: 'external-drive',
-    STACK_TOP: 'stack-top',
+  NONE: null,
+  USER_DIRECTORY_HOME: 'show-home',
+  USER_DIRECTORY_TRASH: 'show-trash',
+  EXTERNAL_DRIVE: 'external-drive',
+  STACK_TOP: 'stack-top'
 };
 
 var StoredCoordinates = {
-    PRESERVE: 0,
-    OVERWRITE: 1,
-    ASSIGN: 2,
+  PRESERVE: 0,
+  OVERWRITE: 1,
+  ASSIGN: 2
 };
 
 var Selection = {
-    ALONE: 0,
-    WITH_SHIFT: 1,
-    RIGHT_BUTTON: 2,
-    ENTER: 3,
-    LEAVE: 4,
-    RELEASE: 5,
+  ALONE: 0,
+  WITH_SHIFT: 1,
+  RIGHT_BUTTON: 2,
+  ENTER: 3,
+  LEAVE: 4,
+  RELEASE: 5
 };
 
 var DBusBus = {
-    SYSTEM: true,
-    SESSION: false,
+  SYSTEM: true,
+  SESSION: false
 };
 
 /* From NautilusFileUndoManagerState */
 var UndoStatus = {
-    NONE: 0,
-    UNDO: 1,
-    REDO: 2,
+  NONE: 0,
+  UNDO: 1,
+  REDO: 2
 };
 
 var FileExistOperation = {
-    ASK: 0,
-    OVERWRITE: 1,
-    RENAME: 2,
-    SKIP: 3,
+  ASK: 0,
+  OVERWRITE: 1,
+  RENAME: 2,
+  SKIP: 3
 };
 
 var WhatToDoWithExecutable = {
-    EXECUTE: 0,
-    EXECUTE_IN_TERMINAL: 1,
-    DISPLAY: 2,
-    CANCEL: 3,
+  EXECUTE: 0,
+  EXECUTE_IN_TERMINAL: 1,
+  DISPLAY: 2,
+  CANCEL: 3
 };
 
 var SortOrder = {
-    ORDER: 'arrangeorder',
-    NAME: 'name',
-    DESCENDINGNAME: 'descendingname',
-    MODIFIEDTIME: 'modifiedtime',
-    KIND: 'kind',
-    SIZE: 'size',
+  ORDER: 'arrangeorder',
+  NAME: 'name',
+  DESCENDINGNAME: 'descendingname',
+  MODIFIEDTIME: 'modifiedtime',
+  KIND: 'kind',
+  SIZE: 'size'
 };
 
 var CompressionType = {
-    ZIP: 0,
-    TAR_XZ: 1,
-    SEVEN_ZIP: 2,
-    ENCRYPTED_ZIP: 3,
+  ZIP: 0,
+  TAR_XZ: 1,
+  SEVEN_ZIP: 2,
+  ENCRYPTED_ZIP: 3
 };
 
 var DndTargetInfo = {
-    DING_ICON_LIST: 'x-special/ding-icon-list',
-    GNOME_ICON_LIST: 'x-special/gnome-icon-list',
-    URI_LIST: 'text/uri-list',
-    TEXT_PLAIN: 'text/plain',
-    TEXT_PLAIN_UTF8: 'text/plain;charset=utf-8',
-    GNOME_CLIPBOARD: 'x-special/gnome-copied-files',
+  DING_ICON_LIST: 'x-special/ding-icon-list',
+  GNOME_ICON_LIST: 'x-special/gnome-icon-list',
+  URI_LIST: 'text/uri-list',
+  TEXT_PLAIN: 'text/plain',
+  TEXT_PLAIN_UTF8: 'text/plain;charset=utf-8',
+  GNOME_CLIPBOARD: 'x-special/gnome-copied-files'
 };
 
-var MIME_TYPES = [DndTargetInfo.DING_ICON_LIST,
-                  DndTargetInfo.GNOME_ICON_LIST,
-                  DndTargetInfo.URI_LIST,
-                  DndTargetInfo.TEXT_PLAIN_UTF8,
-                  DndTargetInfo.TEXT_PLAIN];
+var MIME_TYPES = [DndTargetInfo.DING_ICON_LIST, DndTargetInfo.GNOME_ICON_LIST, DndTargetInfo.URI_LIST, DndTargetInfo.TEXT_PLAIN_UTF8, DndTargetInfo.TEXT_PLAIN];
 
 var DEFAULT_ATTRIBUTES = 'metadata::*,standard::*,access::*,time::modified,unix::mode';
 var TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';

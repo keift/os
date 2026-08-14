@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <schemalist>
 
   <schema path="/org/gnome/shell/extensions/Logo-menu/" id="org.gnome.shell.extensions.logo-menu">

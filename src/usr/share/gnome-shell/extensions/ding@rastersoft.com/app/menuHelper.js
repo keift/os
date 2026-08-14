@@ -34,62 +34,61 @@ const Gettext = imports.gettext.domain('ding');
 const _ = Gettext.gettext;
 
 var MenuHelper = class {
-    constructor(desktopManager, mainApp) {
-        this._mainApp = mainApp;
-        this._desktopManager = desktopManager;
-    }
+  constructor(desktopManager, mainApp) {
+    this._mainApp = mainApp;
+    this._desktopManager = desktopManager;
+  }
 
-    _newMenuElement(text, action, menu, parameter = null) {
-        let item = Gio.MenuItem.new(text, null);
-        if (parameter == null) {
-            item.set_detailed_action("app." + action);
-        } else {
-            item.set_action_and_target_value("app." + action, parameter);
-        }
-        menu.append_item(item);
+  _newMenuElement(text, action, menu, parameter = null) {
+    let item = Gio.MenuItem.new(text, null);
+    if (parameter == null) {
+      item.set_detailed_action('app.' + action);
+    } else {
+      item.set_action_and_target_value('app.' + action, parameter);
     }
+    menu.append_item(item);
+  }
 
-    _newSection(menu) {
-        let section = Gio.Menu.new();
-        menu.append_section(null, section);
-        return section;
+  _newSection(menu) {
+    let section = Gio.Menu.new();
+    menu.append_section(null, section);
+    return section;
+  }
+
+  _addNewAction(name, accels, callback, paramType = null) {
+    const newAction = Gio.SimpleAction.new(name, paramType == null ? null : new GLib.VariantType(paramType));
+    newAction.connect('activate', callback);
+    this._mainApp.add_action(newAction);
+    if (accels !== null) {
+      this._mainApp.set_accels_for_action('app.' + name, accels);
     }
+    newAction.enabled = true;
+    return newAction;
+  }
 
-    _addNewAction(name, accels, callback, paramType = null) {
-        const newAction = Gio.SimpleAction.new(name, paramType == null ? null : new GLib.VariantType(paramType));
-        newAction.connect('activate', callback);
-        this._mainApp.add_action(newAction);
-        if (accels !== null) {
-            this._mainApp.set_accels_for_action("app." + name, accels);
-        }
-        newAction.enabled = true;
-        return newAction;
+  _addNewActionBoolean(name, accels = null) {
+    const newAction = Gio.SimpleAction.new_stateful(name, null, GLib.Variant.new_boolean(Prefs.desktopSettings.get_boolean(name)));
+    newAction.connect('change-state', (action, newState) => {
+      action.set_state(newState);
+      Prefs.desktopSettings.set_boolean(name, newState.get_boolean());
+    });
+    this._mainApp.add_action(newAction);
+    if (accels !== null) {
+      this._mainApp.set_accels_for_action(name, accels);
     }
+    newAction.enabled = true;
+  }
 
-    _addNewActionBoolean(name, accels = null) {
-        const newAction = Gio.SimpleAction.new_stateful(name, null, GLib.Variant.new_boolean(Prefs.desktopSettings.get_boolean(name)));
-        newAction.connect('change-state', (action, newState) => {
-            action.set_state(newState);
-            Prefs.desktopSettings.set_boolean(name, newState.get_boolean());
-        });
-        this._mainApp.add_action(newAction);
-        if (accels !== null) {
-            this._mainApp.set_accels_for_action(name, accels);
-        }
-        newAction.enabled = true;
+  _addNewActionSelection(name, accels = null) {
+    const newAction = Gio.SimpleAction.new_stateful(name, GLib.VariantType.new('s'), GLib.Variant.new_string(Prefs.desktopSettings.get_string(name)));
+    newAction.connect('activate', (action, parameter) => {
+      Prefs.desktopSettings.set_string(name, parameter.get_string()[0]);
+      action.set_state(parameter);
+    });
+    this._mainApp.add_action(newAction);
+    if (accels !== null) {
+      this._mainApp.set_accels_for_action(name, accels);
     }
-
-    _addNewActionSelection(name, accels = null) {
-        const newAction = Gio.SimpleAction.new_stateful(name, GLib.VariantType.new('s'), GLib.Variant.new_string(Prefs.desktopSettings.get_string(name)));
-        newAction.connect('activate', (action, parameter) => {
-            Prefs.desktopSettings.set_string(name, parameter.get_string()[0]);
-            action.set_state(parameter);
-        });
-        this._mainApp.add_action(newAction);
-        if (accels !== null) {
-            this._mainApp.set_accels_for_action(name, accels);
-        }
-        newAction.enabled = true;
-    }
-
-}
+    newAction.enabled = true;
+  }
+};

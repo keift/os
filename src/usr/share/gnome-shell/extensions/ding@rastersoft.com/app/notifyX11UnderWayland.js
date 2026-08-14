@@ -23,33 +23,33 @@ const Gettext = imports.gettext.domain('ding');
 const _ = Gettext.gettext;
 
 var NotifyX11UnderWayland = class {
-    constructor(closeCB) {
-        this._window = new Gtk.MessageDialog({
-            transient_for: null,
-            message_type: Gtk.MessageType.WARNING,
-            buttons: Gtk.ButtonsType.NONE,
-        });
-        let area = this._window.get_message_area();
-        this._window.secondary_use_markup = true;
-        this._window.text = _('Desktop Icons NG is running under X11Wayland');
-        this._window.secondary_text = _("It seems that you have your system configured to force GTK to use X11. This works, but it's suboptimal. You should check your system configuration to fix this.");
-        this.deleteButton = this._window.add_button(_('Close'), Gtk.ResponseType.OK);
-        this.deleteButton.connect('clicked', () => {
-            this._destroy(closeCB);
-        });
-        this._window.connect('close-request', () => {
-            this._destroy(closeCB);
-        });
-        this.deleteButton.add_css_class('suggested-action');
-        this._stopShowing = new Gtk.CheckButton({ label: _("Don't show this message anymore.") });
-        area.append(this._stopShowing);
-        this._window.show();
-    }
+  constructor(closeCB) {
+    this._window = new Gtk.MessageDialog({
+      transient_for: null,
+      message_type: Gtk.MessageType.WARNING,
+      buttons: Gtk.ButtonsType.NONE
+    });
+    let area = this._window.get_message_area();
+    this._window.secondary_use_markup = true;
+    this._window.text = _('Desktop Icons NG is running under X11Wayland');
+    this._window.secondary_text = _("It seems that you have your system configured to force GTK to use X11. This works, but it's suboptimal. You should check your system configuration to fix this.");
+    this.deleteButton = this._window.add_button(_('Close'), Gtk.ResponseType.OK);
+    this.deleteButton.connect('clicked', () => {
+      this._destroy(closeCB);
+    });
+    this._window.connect('close-request', () => {
+      this._destroy(closeCB);
+    });
+    this.deleteButton.add_css_class('suggested-action');
+    this._stopShowing = new Gtk.CheckButton({ label: _("Don't show this message anymore.") });
+    area.append(this._stopShowing);
+    this._window.show();
+  }
 
-    _destroy(closeCB) {
-        this._window.hide();
-        this._window.destroy();
-        this._window = null;
-        closeCB(this._stopShowing.active);
-    }
+  _destroy(closeCB) {
+    this._window.hide();
+    this._window.destroy();
+    this._window = null;
+    closeCB(this._stopShowing.active);
+  }
 };

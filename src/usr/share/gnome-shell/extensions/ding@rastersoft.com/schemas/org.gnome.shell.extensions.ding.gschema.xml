@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <schemalist gettext-domain="ding">
     <enum id="org.gnome.shell.extension.ding.ZoomLevel">
-        <value value="3" nick="tiny"/>
-        <value value="0" nick="small"/>
-        <value value="1" nick="standard"/>
-        <value value="2" nick="large"/>
+        <value value="3" nick="tiny" />
+        <value value="0" nick="small" />
+        <value value="1" nick="standard" />
+        <value value="2" nick="large" />
     </enum>
     <enum id="org.gnome.shell.extension.ding.StartCorner">
-        <value value="0" nick="top-left"/>
-        <value value="1" nick="top-right"/>
-        <value value="2" nick="bottom-left"/>
-        <value value="3" nick="bottom-right"/>
+        <value value="0" nick="top-left" />
+        <value value="1" nick="top-right" />
+        <value value="2" nick="bottom-left" />
+        <value value="3" nick="bottom-right" />
     </enum>
         <enum id="org.gnome.shell.extension.ding.ArrangeOrder">
-        <value value="1" nick="NAME"/>
-        <value value="2" nick="DESCENDINGNAME"/>
-        <value value="3" nick="MODIFIEDTIME"/>
-        <value value="4" nick="KIND"/>
-        <value value="5" nick="SIZE"/>
+        <value value="1" nick="NAME" />
+        <value value="2" nick="DESCENDINGNAME" />
+        <value value="3" nick="MODIFIEDTIME" />
+        <value value="4" nick="KIND" />
+        <value value="5" nick="SIZE" />
     </enum>
     <schema path="/org/gnome/shell/extensions/ding/" id="org.gnome.shell.extensions.ding">
     <key name="icon-size" enum="org.gnome.shell.extension.ding.ZoomLevel">

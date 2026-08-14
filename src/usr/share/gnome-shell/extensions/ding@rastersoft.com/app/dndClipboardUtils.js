@@ -24,240 +24,224 @@ const FileUtils = imports.fileUtils;
 
 // Prepares a file list for cut or copy
 function manageCutCopy(action) {
-    const uriList = fillDragDataGet(Enums.DndTargetInfo.URI_LIST, action.fileList);
-    if (!uriList?.length)
-        return;
+  const uriList = fillDragDataGet(Enums.DndTargetInfo.URI_LIST, action.fileList);
+  if (!uriList?.length) return;
 
-    let clipboard = Gdk.Display.get_default().get_clipboard();
-    const textCoder = new TextEncoder();
+  let clipboard = Gdk.Display.get_default().get_clipboard();
+  const textCoder = new TextEncoder();
 
-    let content = action.copy ? 'copy\n' : 'cut\n';
-    content += uriList?.replaceAll('\r', '').trim();
-    const encodedUriList = textCoder.encode(uriList);
+  let content = action.copy ? 'copy\n' : 'cut\n';
+  content += uriList?.replaceAll('\r', '').trim();
+  const encodedUriList = textCoder.encode(uriList);
 
-    const gnomeContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.GNOME_CLIPBOARD,
-        textCoder.encode(content));
-    const textUriListContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.URI_LIST,
-        encodedUriList);
+  const gnomeContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.GNOME_CLIPBOARD, textCoder.encode(content));
+  const textUriListContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.URI_LIST, encodedUriList);
 
-    const clipboardContentProvider = Gdk.ContentProvider.new_union([
-        gnomeContentProvider,
-        textUriListContentProvider,
-    ]);
-    clipboard.set_content(clipboardContentProvider);
+  const clipboardContentProvider = Gdk.ContentProvider.new_union([gnomeContentProvider, textUriListContentProvider]);
+  clipboard.set_content(clipboardContentProvider);
 }
 
 // Reads the clipboard for any of the supported mimetypes and returns the first matching type
 async function readClipboard(mimetypes) {
-    let clipboard = Gdk.Display.get_default().get_clipboard();
-    const formats = clipboard.get_formats();
-    if (!formats) {
-        return null;
-    }
-    for (let mimetype of mimetypes) {
-        if (!formats.contain_mime_type(mimetype)) {
-            continue;
-        }
-        try {
-            let success = await clipboard.read_async_promise([mimetype], GLib.PRIORITY_DEFAULT, null);
-            let bytes = await FileUtils.readAll(success[0]);
-            return {"mimetype": mimetype, "data": bytes};
-        } catch(e) {
-            console.log(`Exception while reading clipboard media-type "${mimetype}": ${e.message}\n${e.stack}`);
-        }
-    }
+  let clipboard = Gdk.Display.get_default().get_clipboard();
+  const formats = clipboard.get_formats();
+  if (!formats) {
     return null;
+  }
+  for (let mimetype of mimetypes) {
+    if (!formats.contain_mime_type(mimetype)) {
+      continue;
+    }
+    try {
+      let success = await clipboard.read_async_promise([mimetype], GLib.PRIORITY_DEFAULT, null);
+      let bytes = await FileUtils.readAll(success[0]);
+      return { mimetype: mimetype, data: bytes };
+    } catch (e) {
+      console.log(`Exception while reading clipboard media-type "${mimetype}": ${e.message}\n${e.stack}`);
+    }
+  }
+  return null;
 }
 
 function processFileList(mimetype, data) {
-    const decoder = new TextDecoder();
-    const content = decoder.decode(data);
+  const decoder = new TextDecoder();
+  const content = decoder.decode(data);
 
-    const retval = {"action": null, "files": []}
-    switch(mimetype) {
+  const retval = { action: null, files: [] };
+  switch (mimetype) {
     case Enums.DndTargetInfo.GNOME_CLIPBOARD:
-        let [action, ...clipboarFiles] = content.split('\n');
-        retval.action = action;
-        clipboarFiles.forEach(file => {
-            let file2 = file.replace('\r', '').trim();
-            if (file2 != '') {
-                retval.files.push(file2);
-            }
-        });
-        break;
+      let [action, ...clipboarFiles] = content.split('\n');
+      retval.action = action;
+      clipboarFiles.forEach((file) => {
+        let file2 = file.replace('\r', '').trim();
+        if (file2 != '') {
+          retval.files.push(file2);
+        }
+      });
+      break;
     case Enums.DndTargetInfo.DING_ICON_LIST:
     case Enums.DndTargetInfo.URI_LIST:
-        let uriFiles = content.split('\n');
-        retval.action = 'copy';
-        uriFiles.forEach(file => {
-            let file2 = file.replace('\r', '').trim();
-            if (file2 != '') {
-                retval.files.push(file2);
-            }
-        });
-        break;
+      let uriFiles = content.split('\n');
+      retval.action = 'copy';
+      uriFiles.forEach((file) => {
+        let file2 = file.replace('\r', '').trim();
+        if (file2 != '') {
+          retval.files.push(file2);
+        }
+      });
+      break;
     case Enums.DndTargetInfo.GNOME_ICON_LIST:
-        let gnomeFiles = content.split('\n');
-        retval.action = 'copy';
-        gnomeFiles.forEach(file => {
-            let file2 = file.split('\r')[0].trim();
-            if (file2 != '') {
-                retval.files.push(file2);
-            }
-        });
-        break;
-    }
-    return retval;
+      let gnomeFiles = content.split('\n');
+      retval.action = 'copy';
+      gnomeFiles.forEach((file) => {
+        let file2 = file.split('\r')[0].trim();
+        if (file2 != '') {
+          retval.files.push(file2);
+        }
+      });
+      break;
+  }
+  return retval;
 }
 
 function fillDragDataGet(target, fileList) {
-    if (!fileList)
-        return null;
+  if (!fileList) return null;
 
-    let uriList = '';
+  let uriList = '';
 
-    switch (target) {
-        case Enums.DndTargetInfo.GNOME_ICON_LIST:
-            for (let fileItem of fileList) {
-                uriList += fileItem.uri;
-                const coordinates = fileItem.getCoordinates();
-                if (coordinates !== null) {
-                    uriList += `\r${coordinates[0]}:${coordinates[1]}:${coordinates[2] - coordinates[0] + 1}:${coordinates[3] - coordinates[1] + 1}`;
-                }
-                uriList += '\r\n';
-            }
-            return uriList;
-        case Enums.DndTargetInfo.DING_ICON_LIST:
-        case Enums.DndTargetInfo.URI_LIST:
-            uriList = fileList.map(f => f.uri).join('\r\n');
-            uriList += '\r\n';
-            return uriList;
-    }
-    return null;
+  switch (target) {
+    case Enums.DndTargetInfo.GNOME_ICON_LIST:
+      for (let fileItem of fileList) {
+        uriList += fileItem.uri;
+        const coordinates = fileItem.getCoordinates();
+        if (coordinates !== null) {
+          uriList += `\r${coordinates[0]}:${coordinates[1]}:${coordinates[2] - coordinates[0] + 1}:${coordinates[3] - coordinates[1] + 1}`;
+        }
+        uriList += '\r\n';
+      }
+      return uriList;
+    case Enums.DndTargetInfo.DING_ICON_LIST:
+    case Enums.DndTargetInfo.URI_LIST:
+      uriList = fileList.map((f) => f.uri).join('\r\n');
+      uriList += '\r\n';
+      return uriList;
+  }
+  return null;
 }
 
-function loadDragData({fileList, specialFilesSelected}) {
-    const textCoder = new TextEncoder();
+function loadDragData({ fileList, specialFilesSelected }) {
+  const textCoder = new TextEncoder();
 
-    const uriList = fillDragDataGet(Enums.DndTargetInfo.DING_ICON_LIST, fileList);
-    if (!uriList) {
-        return null;
-    }
-    const encodedUriList = textCoder.encode(uriList);
-    const dingContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.DING_ICON_LIST,
-        encodedUriList);
+  const uriList = fillDragDataGet(Enums.DndTargetInfo.DING_ICON_LIST, fileList);
+  if (!uriList) {
+    return null;
+  }
+  const encodedUriList = textCoder.encode(uriList);
+  const dingContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.DING_ICON_LIST, encodedUriList);
 
-    if (specialFilesSelected) {
-        return dingContentProvider;
-    }
+  if (specialFilesSelected) {
+    return dingContentProvider;
+  }
 
-    const gnomeUriList = fillDragDataGet(Enums.DndTargetInfo.GNOME_ICON_LIST, fileList);
-    if (!gnomeUriList) {
-        return null;
-    }
-    const gnomeContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.GNOME_ICON_LIST,
-        textCoder.encode(gnomeUriList));
+  const gnomeUriList = fillDragDataGet(Enums.DndTargetInfo.GNOME_ICON_LIST, fileList);
+  if (!gnomeUriList) {
+    return null;
+  }
+  const gnomeContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.GNOME_ICON_LIST, textCoder.encode(gnomeUriList));
 
-    const textUriListContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.URI_LIST,
-        encodedUriList);
+  const textUriListContentProvider = Gdk.ContentProvider.new_for_bytes(Enums.DndTargetInfo.URI_LIST, encodedUriList);
 
-    return Gdk.ContentProvider.new_union([
-        dingContentProvider,
-        gnomeContentProvider,
-        textUriListContentProvider,
-    ]);
+  return Gdk.ContentProvider.new_union([dingContentProvider, gnomeContentProvider, textUriListContentProvider]);
 }
 
 // manages the drop action over an icon (a folder, for example)
 async function manageIconDrop(fileItem, drop, x, y) {
-    let gdkDropAction = drop.get_actions();
-    if (!Gdk.DragAction.is_unique(gdkDropAction)) {
-        if (((gdkDropAction & Gdk.DragAction.COPY) != 0) && ((gdkDropAction & Gdk.DragAction.MOVE) != 0)) {
-            gdkDropAction = Gdk.DragAction.ASK;
-        }
+  let gdkDropAction = drop.get_actions();
+  if (!Gdk.DragAction.is_unique(gdkDropAction)) {
+    if ((gdkDropAction & Gdk.DragAction.COPY) != 0 && (gdkDropAction & Gdk.DragAction.MOVE) != 0) {
+      gdkDropAction = Gdk.DragAction.ASK;
     }
-    let gdkReturnAction = Gdk.DragAction.COPY;
+  }
+  let gdkReturnAction = Gdk.DragAction.COPY;
 
-    try {
-        const [dropData, mimetype] = await drop.read_async_promise(Enums.MIME_TYPES, GLib.PRIORITY_DEFAULT, null);
+  try {
+    const [dropData, mimetype] = await drop.read_async_promise(Enums.MIME_TYPES, GLib.PRIORITY_DEFAULT, null);
 
-        const data = await FileUtils.readAll(dropData);
-        const textDecoder = new TextDecoder();
-        const decodedData = textDecoder.decode(data);
-        let file_list = [];
-        switch (mimetype) {
-            case Enums.DndTargetInfo.DING_ICON_LIST:
-            case Enums.DndTargetInfo.URI_LIST:
-                for (let item of decodedData.split("\n")) {
-                    if (item !== '') {
-                        file_list.push(item.replace('\r', ''));
-                    }
-                }
-                break;
-            case Enums.DndTargetInfo.GNOME_ICON_LIST:
-                for (let item of decodedData.split("\n")) {
-                    let item2 = item.split("\r")[0];
-                    if (item2 !== '') {
-                        file_list.push(item2);
-                    }
-                }
-                break;
-            case Enums.DndTargetInfo.TEXT_PLAIN:
-            case Enums.DndTargetInfo.TEXT_PLAIN_UTF8:
-                break;
-            default:
-                console.log(`Unknown mime type for DnD: ${mimetype}`);
-                break;
+    const data = await FileUtils.readAll(dropData);
+    const textDecoder = new TextDecoder();
+    const decodedData = textDecoder.decode(data);
+    let file_list = [];
+    switch (mimetype) {
+      case Enums.DndTargetInfo.DING_ICON_LIST:
+      case Enums.DndTargetInfo.URI_LIST:
+        for (let item of decodedData.split('\n')) {
+          if (item !== '') {
+            file_list.push(item.replace('\r', ''));
+          }
         }
-        drop.finish(gdkReturnAction);
-        return {
-            'action': gdkDropAction,
-            'mimetype': mimetype,
-            'filelist': file_list,
-            'data': decodedData
-        };
-    } catch (e) {
-        console.error(e);
-        drop.finish(0);
+        break;
+      case Enums.DndTargetInfo.GNOME_ICON_LIST:
+        for (let item of decodedData.split('\n')) {
+          let item2 = item.split('\r')[0];
+          if (item2 !== '') {
+            file_list.push(item2);
+          }
+        }
+        break;
+      case Enums.DndTargetInfo.TEXT_PLAIN:
+      case Enums.DndTargetInfo.TEXT_PLAIN_UTF8:
+        break;
+      default:
+        console.log(`Unknown mime type for DnD: ${mimetype}`);
+        break;
     }
-    return null;
+    drop.finish(gdkReturnAction);
+    return {
+      action: gdkDropAction,
+      mimetype: mimetype,
+      filelist: file_list,
+      data: decodedData
+    };
+  } catch (e) {
+    console.error(e);
+    drop.finish(0);
+  }
+  return null;
 }
 
 function makeFileListFromSelection(dropData, acceptFormat) {
-    if (!dropData) {
-        return null;
-    }
-    if (acceptFormat === Enums.DndTargetInfo.TEXT_PLAIN) {
-        return null;
-    }
+  if (!dropData) {
+    return null;
+  }
+  if (acceptFormat === Enums.DndTargetInfo.TEXT_PLAIN) {
+    return null;
+  }
 
-    let fileList;
+  let fileList;
 
-    if (acceptFormat === Enums.DndTargetInfo.GNOME_ICON_LIST) {
-        fileList = GLib.Uri.list_extract_uris(dropData);
-    } else if (acceptFormat === Enums.DndTargetInfo.DING_ICON_LIST) {
-        fileList = dropData.get_files().map(f => f.get_uri());
-    } else {
-        fileList = dropData.split('\n').map(f => {
-            if (GLib.Uri.peek_scheme(f))
-                return f;
-            else
-                return GLib.filename_to_uri(f, null);
-        });
-    }
-
-    // filename_to_uri can return null
-    fileList = fileList.filter(f => {
-        if (!f) {
-            return false;
-        } else {
-            return true;
-        }
+  if (acceptFormat === Enums.DndTargetInfo.GNOME_ICON_LIST) {
+    fileList = GLib.Uri.list_extract_uris(dropData);
+  } else if (acceptFormat === Enums.DndTargetInfo.DING_ICON_LIST) {
+    fileList = dropData.get_files().map((f) => f.get_uri());
+  } else {
+    fileList = dropData.split('\n').map((f) => {
+      if (GLib.Uri.peek_scheme(f)) return f;
+      else return GLib.filename_to_uri(f, null);
     });
+  }
 
-    if (fileList && fileList.length) {
-        return fileList;
+  // filename_to_uri can return null
+  fileList = fileList.filter((f) => {
+    if (!f) {
+      return false;
     } else {
-        return null;
+      return true;
     }
+  });
+
+  if (fileList && fileList.length) {
+    return fileList;
+  } else {
+    return null;
+  }
 }
