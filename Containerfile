@@ -108,4 +108,5 @@ RUN chmod +x /usr/bin/keift-os-maintenance.sh
 
 RUN ln -sf /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
 
+RUN dconf update
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
