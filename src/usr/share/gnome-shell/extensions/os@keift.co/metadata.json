@@ -1,6 +1,7 @@
 {
   "name": "Keift OS",
   "uuid": "os@keift.co",
-  "version": "1",
+  "version": 1,
+  "version-name": "1.0.0",
   "shell-version": ["50"]
 }
