@@ -32,7 +32,7 @@ RUN dnf install -y \
   nautilus \
   ptyxis \
   # Misc
-  git
+  git \
   wget
 
 RUN dnf group install -y \
