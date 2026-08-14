@@ -77,7 +77,7 @@ RUN id="clipboard-indicator@tudmotu.com" \
   && wget -O /tmp/"${id}".zip "${url}" \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
 
 RUN id="ding@rastersoft.com" \
   && version="93" \
@@ -86,7 +86,7 @@ RUN id="ding@rastersoft.com" \
   && wget -O /tmp/"${id}".zip "${url}" \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
 
 RUN id="logomenu@aryan_k" \
   && version="43" \
@@ -95,7 +95,9 @@ RUN id="logomenu@aryan_k" \
   && wget -O /tmp/"${id}".zip "${url}" \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
+
+RUN chmod -R 755 /usr/share/gnome-shell/extensions
 
 # Misc
 
