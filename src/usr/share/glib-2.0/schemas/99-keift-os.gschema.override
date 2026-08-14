@@ -17,6 +17,6 @@ dock-fixed=true
 click-action="minimize"
 
 [org.gnome.shell.extensions.Logo-menu]
+menu-button-icon-size=20
 use-custom-icon=true
 custom-icon-path="/usr/share/keift-os/logo_menu/icon.png"
-menu-button-icon-size="20"

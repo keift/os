@@ -71,7 +71,7 @@ RUN --mount=type=cache,dst=/var/cache \
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 
-RUN ln -sf /usr/share/icons/Adwaita/scalable/places/folder.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
+RUN ln -sf /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
 
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 RUN glib-compile-schemas /usr/share/gnome-shell/extensions/ding@rastersoft.com/schemas
