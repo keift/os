@@ -76,8 +76,7 @@ RUN uuid="clipboard-indicator@tudmotu.com" \
   && wget -O /tmp/"${uuid}".zip "${url}" \
   && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
   && rm -f /tmp/"${uuid}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${uuid}"/schemas
+  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN uuid="ding@rastersoft.com" \
   && version="93" \
@@ -86,8 +85,7 @@ RUN uuid="ding@rastersoft.com" \
   && wget -O /tmp/"${uuid}".zip "${url}" \
   && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
   && rm -f /tmp/"${uuid}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${uuid}"/schemas
+  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN uuid="logomenu@aryan_k" \
   && version="43" \
@@ -96,8 +94,7 @@ RUN uuid="logomenu@aryan_k" \
   && wget -O /tmp/"${uuid}".zip "${url}" \
   && unzip -d /usr/share/gnome-shell/extensions/"${uuid}" /tmp/"${uuid}".zip \
   && rm -f /tmp/"${uuid}".zip \
-  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${uuid}"/schemas
+  && cp /usr/share/gnome-shell/extensions/"${uuid}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 # Misc
 
