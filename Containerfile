@@ -5,9 +5,6 @@ FROM quay.io/fedora/fedora-bootc:44
 RUN rm -rf /opt && ln -sf /var/opt /opt
 RUN rm -rf /usr/local && ln -sf /var/usrlocal /usr/local
 
-COPY ./src/etc /etc
-COPY ./src/usr /usr
-
 # Softwares
 
 RUN dnf install -y \
@@ -34,7 +31,7 @@ RUN dnf install -y \
   gnome-software \
   nautilus \
   ptyxis \
-  # Others
+  # Misc
   git
 
 RUN dnf group install -y \
@@ -50,6 +47,16 @@ RUN dnf remove -y \
 
 RUN dnf clean all
 
+# Copies
+
+COPY ./src/etc /etc
+COPY ./src/usr /usr
+
+# Systemd
+
+RUN systemctl enable keift-os-maintenance.service
+RUN systemctl mask systemd-remount-fs.service
+
 # Brew
 
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
@@ -63,11 +70,9 @@ RUN --mount=type=cache,dst=/var/cache \
 # Misc
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
+
+RUN ln -sf /usr/share/icons/Adwaita/scalable/places/folder.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
+
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 RUN glib-compile-schemas /usr/share/gnome-shell/extensions/ding@rastersoft.com/schemas
 RUN glib-compile-schemas /usr/share/gnome-shell/extensions/logomenu@aryan_k/schemas
-
-# Systemd
-
-RUN systemctl enable keift-os-maintenance.service
-RUN systemctl mask systemd-remount-fs.service
