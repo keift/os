@@ -2,3 +2,6 @@
 menu-button-icon-size = 20
 use-custom-icon = true
 custom-icon-path = "/usr/share/keift-os/logo_menu/icon.png"
+menu-button-terminal = "ptyxis"
+menu-button-system-monitor = "flatpak run net.nokyan.Resources"
+hide-forcequit = true
