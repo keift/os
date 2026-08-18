@@ -43,20 +43,19 @@ for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++))
 
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-    flatpak install -y \
-      net.nokyan.Resources \
-      org.gnome.Calculator \
-      org.gnome.Calendar \
-      org.gnome.clocks \
-      org.gnome.Contacts \
-      org.gnome.Epiphany \
-      org.gnome.Loupe \
-      org.gnome.Maps \
-      org.gnome.Papers \
-      org.gnome.Showtime \
-      org.gnome.Snapshot \
-      org.gnome.TextEditor \
-      org.gnome.Weather
+    flatpak install -y net.nokyan.Resources
+    flatpak install -y org.gnome.Calculator
+    flatpak install -y org.gnome.Calendar
+    flatpak install -y org.gnome.clocks
+    flatpak install -y org.gnome.Contacts
+    flatpak install -y org.gnome.Epiphany
+    flatpak install -y org.gnome.Loupe
+    flatpak install -y org.gnome.Maps
+    flatpak install -y org.gnome.Papers
+    flatpak install -y org.gnome.Showtime
+    flatpak install -y org.gnome.Snapshot
+    flatpak install -y org.gnome.TextEditor
+    flatpak install -y org.gnome.Weather
 
     execute gsettings reset org.gnome.shell app-picker-layout
   elif [ "${sequence}" -eq 1 ]; then
