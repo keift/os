@@ -28,6 +28,7 @@ RUN dnf install -y \
   spice-webdavd \
   # Applications
   flatpak \
+  xdg-utils \
   gnome-software \
   nautilus \
   ptyxis \
