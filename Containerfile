@@ -14,6 +14,7 @@ RUN dnf install -y \
 RUN dnf install -y \
   # Desktop
   gnome-initial-setup \
+  xdg-utils \
   glibc-all-langpacks \
   # Extensions
   gnome-shell-extension-appindicator \
@@ -28,7 +29,6 @@ RUN dnf install -y \
   spice-webdavd \
   # Applications
   flatpak \
-  xdg-utils \
   gnome-software \
   nautilus \
   ptyxis \
