@@ -59,10 +59,6 @@ for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++))
     flatpak install -y org.gnome.Weather    # Weather
 
     execute gsettings reset org.gnome.shell app-picker-layout
-  elif [ "${sequence}" -eq 1 ]; then
-    :
-  elif [ "${sequence}" -eq 2 ]; then
-    :
   fi
 
   echo "${sequence}" > "${state_file}"
