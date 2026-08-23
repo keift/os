@@ -15,14 +15,3 @@ favorite-apps = ["org.gnome.Software.desktop", "org.gnome.Nautilus.desktop", "or
 [org.gnome.shell.extensions.dash-to-dock]
 dock-fixed = true
 click-action = "minimize"
-
-[org.gnome.shell.extensions.logo-menu]
-menu-button-icon-size = 20
-use-custom-icon = true
-custom-icon-path = "/usr/share/keift-os/logo_menu/icon.png"
-menu-button-terminal = "ptyxis"
-menu-button-system-monitor = "flatpak run net.nokyan.Resources"
-hide-forcequit = true
-
-[org.gnome.shell.extensions.clipboard-indicator]
-show-settings-button = false
