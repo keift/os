@@ -23,3 +23,6 @@ custom-icon-path = "/usr/share/keift-os/logo_menu/icon.png"
 menu-button-terminal = "ptyxis"
 menu-button-system-monitor = "flatpak run net.nokyan.Resources"
 hide-forcequit = true
+
+[org.gnome.shell.extensions.clipboard-indicator]
+show-settings-button = false
