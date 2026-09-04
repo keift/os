@@ -1,9 +1,5 @@
 name: Build
 
-# on:
-#   release:
-#     types: [created]
-
 on:
   push:
     branches:
@@ -18,8 +14,6 @@ env:
 
 jobs:
   image:
-    if: true
-
     runs-on: ubuntu-latest
 
     steps:
