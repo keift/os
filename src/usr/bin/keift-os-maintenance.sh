@@ -34,7 +34,7 @@ if [ "${current_sequence}" -ge "${target_sequence}" ]; then
   exit 0
 fi
 
-execute notify-send -a "Keift OS" "Kurulum devam ediyor..." "Kurulumun tamamlanması birkaç dakika sürebilir."
+execute notify-send -a "Keift OS" "Installation is in progress..." "The installation may take a few minutes to complete."
 
 for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++)); do
   if [ "${sequence}" -eq 0 ]; then
@@ -64,4 +64,4 @@ for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++))
   echo "${sequence}" > "${state_file}"
 done
 
-execute notify-send -a "Keift OS" "Kurulum tamamlandı" "Keift OS'unuz hazır."
+execute notify-send -a "Keift OS" "Installation complete" "Your Keift OS is ready."
