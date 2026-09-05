@@ -56,9 +56,7 @@ COPY ./src/usr /usr
 
 # Systemd
 
-RUN systemctl enable keift-os-maintenance
-RUN systemctl enable keift-os-update
-RUN systemctl enable keift-os-update.timer
+RUN systemctl preset-all
 
 RUN systemctl mask systemd-remount-fs
 RUN systemctl mask bootc-fetch-apply-updates
