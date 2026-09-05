@@ -56,8 +56,13 @@ COPY ./src/usr /usr
 
 # Systemd
 
-RUN systemctl enable keift-os-maintenance.service
-RUN systemctl mask systemd-remount-fs.service
+RUN systemctl enable keift-os-maintenance
+RUN systemctl enable keift-os-update
+RUN systemctl enable keift-os-update.timer
+
+RUN systemctl mask systemd-remount-fs
+RUN systemctl mask bootc-fetch-apply-updates
+RUN systemctl mask bootc-fetch-apply-updates.timer
 
 # Brew
 

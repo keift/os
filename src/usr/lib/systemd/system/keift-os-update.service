@@ -1,0 +1,8 @@
+[Unit]
+Description=Keift OS update
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rpm-ostree upgrade
