@@ -15,4 +15,4 @@ hide-forcequit = true
 
 [org/gnome/shell/extensions/rounded-window-corners-reborn]
 skip-libadwaita-app = false
-global-rounded-corner-settings = {"padding": <{"left": uint32 1, "right": 1, "top": 1, "bottom": 1}>, "keepRoundedCorners": <{"maximized": true, "fullscreen": true}>, "borderRadius": <uint32 15>, "smoothing": <0.0>, "borderColor": <(0.5, 0.5, 0.5, 1.0)>, "enabled": <true>}skip-libadwaita-app = false
+global-rounded-corner-settings = {"padding": <{"left": uint32 1, "right": 1, "top": 1, "bottom": 1}>, "keepRoundedCorners": <{"maximized": true, "fullscreen": true}>, "borderRadius": <uint32 15>, "smoothing": <0.0>, "borderColor": <(0.5, 0.5, 0.5, 1.0)>, "enabled": <true>}
