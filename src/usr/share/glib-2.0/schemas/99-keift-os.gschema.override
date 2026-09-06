@@ -9,5 +9,5 @@ picture-uri-dark = "/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.j
 button-layout = "close,minimize,maximize:"
 
 [org.gnome.shell]
-enabled-extensions = ["appindicatorsupport@rgcjonas.gmail.com", "blur-my-shell@aunetx", "clipboard-indicator@tudmotu.com", "dash-to-dock@micxgx.gmail.com", "ding@rastersoft.com", "logomenu@aryan_k", "rounded-window-corners@fxgn"]
 favorite-apps = ["org.gnome.Software.desktop", "org.gnome.Nautilus.desktop", "org.gnome.TextEditor.desktop", "org.gnome.Ptyxis.desktop", "org.gnome.Epiphany.desktop"]
+enabled-extensions = ["appindicatorsupport@rgcjonas.gmail.com", "blur-my-shell@aunetx", "clipboard-indicator@tudmotu.com", "dash-to-dock@micxgx.gmail.com", "ding@rastersoft.com", "logomenu@aryan_k", "rounded-window-corners@fxgn"]
