@@ -85,7 +85,7 @@ RUN id="clipboard-indicator@tudmotu.com" \
   && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN id="ding@rastersoft.com" \
-  && version="93" \
+  && version="95" \
   && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
@@ -97,16 +97,6 @@ RUN id="ding@rastersoft.com" \
 RUN id="logomenu@aryan_k" \
   && version="43" \
   && url="https://extensions.gnome.org/extension-data/logomenuaryan_k.v${version}.shell-extension.zip" \
-  && mkdir -p /usr/share/gnome-shell/extensions \
-  && wget -O /tmp/"${id}".zip "${url}" \
-  && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
-  && rm -f /tmp/"${id}".zip \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas \
-  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
-
-RUN id="rounded-window-corners@fxgn" \
-  && version="25" \
-  && url="https://extensions.gnome.org/extension-data/rounded-window-cornersfxgn.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \

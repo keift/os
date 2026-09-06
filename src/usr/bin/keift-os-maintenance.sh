@@ -22,15 +22,11 @@ sleep 10
 
 cp /usr/etc/dconf/db/distro.d/99-keift-os /etc/dconf/db/distro.d/99-keift-os
 
-state_file="/etc/keift-os-maintenance-sequence"
+systemctl preset fstrim
+systemctl preset fstrim.timer
 
 target_sequence=0
-
-if [ -f "${state_file}" ]; then
-  current_sequence=$(cat "${state_file}")
-else
-  current_sequence=-1
-fi
+current_sequence=$(cat /etc/keift-os-maintenance-sequence 2> /dev/null || echo "-1")
 
 if [ "${current_sequence}" -lt "${target_sequence}" ]; then
   execute notify-send -a "Keift OS" "Installation is in progress..." "The installation may take a few minutes to complete."

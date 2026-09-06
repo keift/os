@@ -7,5 +7,14 @@
 
   "trailingComma": "none",
 
+  "overrides": [
+    {
+      "files": ["./src/etc/anaconda/conf.d/*.conf", "./src/etc/dconf/db/distro.d/*", "./src/usr/share/glib-2.0/schemas/*.override"],
+      "options": {
+        "parser": "toml"
+      }
+    }
+  ],
+
   "plugins": ["prettier-plugin-sh", "prettier-plugin-toml", "@prettier/plugin-xml"]
 }
