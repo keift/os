@@ -2,13 +2,13 @@
 show-settings-button = false
 
 [org/gnome/shell/extensions/dash-to-dock]
-dock-fixed = true
 click-action = "minimize"
+dock-fixed = true
 
 [org/gnome/shell/extensions/Logo-menu]
-menu-button-icon-size = 20
-use-custom-icon = true
 custom-icon-path = "/usr/share/keift-os/logo_menu/icon.png"
-menu-button-terminal = "ptyxis"
-menu-button-system-monitor = "flatpak run net.nokyan.Resources"
 hide-forcequit = true
+menu-button-icon-size = 20
+menu-button-system-monitor = "flatpak run net.nokyan.Resources"
+menu-button-terminal = "ptyxis"
+use-custom-icon = true
