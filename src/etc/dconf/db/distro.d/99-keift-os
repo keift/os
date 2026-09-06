@@ -1,3 +1,10 @@
+[org/gnome/shell/extensions/clipboard-indicator]
+show-settings-button = false
+
+[org/gnome/shell/extensions/dash-to-dock]
+dock-fixed = true
+click-action = "minimize"
+
 [org/gnome/shell/extensions/Logo-menu]
 menu-button-icon-size = 20
 use-custom-icon = true
@@ -6,5 +13,6 @@ menu-button-terminal = "ptyxis"
 menu-button-system-monitor = "flatpak run net.nokyan.Resources"
 hide-forcequit = true
 
-[org/gnome/shell/extensions/clipboard-indicator]
-show-settings-button = false
+[org/gnome/shell/extensions/rounded-window-corners-reborn]
+skip-libadwaita-app = false
+global-rounded-corner-settings = {"padding": <{"left": uint32 1, "right": 1, "top": 1, "bottom": 1}>, "keepRoundedCorners": <{"maximized": true, "fullscreen": true}>, "borderRadius": <uint32 15>, "smoothing": <0.0>, "borderColor": <(0.5, 0.5, 0.5, 1.0)>, "enabled": <true>}skip-libadwaita-app = false
