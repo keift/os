@@ -4,12 +4,12 @@ execute() {
   for bus_path in /run/user/*/bus; do
     if [ -e "${bus_path}" ]; then
       local uid=$(echo "${bus_path}" | cut -f 4 -d "/")
-      local username=$(id -n -u "${uid}")
 
-      sudo -u "${username}" \
-        DBUS_SESSION_BUS_ADDRESS="unix:path=${bus_path}" \
-        DISPLAY=:0 \
-        "${@}"
+      if [ "${uid}" -ge 1000 ]; then
+        local username=$(id -n -u "${uid}")
+
+        sudo -u "${username}" DBUS_SESSION_BUS_ADDRESS="unix:path=${bus_path}" "${@}"
+      fi
     fi
   done
 }
