@@ -1,0 +1,10 @@
+[Unit]
+Description=Keift OS maintenance
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

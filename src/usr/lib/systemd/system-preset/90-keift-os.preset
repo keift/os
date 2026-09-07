@@ -1,3 +1,5 @@
 enable keift-os-maintenance.service
+enable keift-os-maintenance.timer
+
 enable keift-os-update.service
 enable keift-os-update.timer
