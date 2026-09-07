@@ -3,7 +3,7 @@
 execute() {
   for bus_path in /run/user/*/bus; do
     if [ -e "${bus_path}" ]; then
-      local uid=$(echo "${bus_path}" | cut -f4 -d "/")
+      local uid=$(echo "${bus_path}" | cut -f 4 -d "/")
       local username=$(id -n -u "${uid}")
 
       sudo -u "${username}" \

@@ -125,7 +125,7 @@ jobs:
           sudo chown -R $USER:$USER ./dist
 
       - name: Generate checksum file
-        run: sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
+        run: sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f 1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
 
       - name: Upload to Cloudflare R2
         env:
