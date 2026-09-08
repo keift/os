@@ -31,6 +31,8 @@ current_sequence=$(cat /etc/keift-os-maintenance-sequence 2> /dev/null || echo "
 if [ "${current_sequence}" -lt "${target_sequence}" ]; then
   execute notify-send -a "Keift OS" "Installation is in progress..." "The installation may take a few minutes to complete."
 
+  success=true
+
   for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++)); do
     if [ "${sequence}" -eq 0 ]; then
       flatpak remote-delete --force fedora || true
@@ -52,14 +54,16 @@ if [ "${current_sequence}" -lt "${target_sequence}" ]; then
         org.gnome.Showtime \
         org.gnome.Snapshot \
         org.gnome.TextEditor \
-        org.gnome.Weather
+        org.gnome.Weather || success=false
 
       execute gsettings reset org.gnome.shell app-picker-layout
       execute gsettings reset org.gnome.shell favorite-apps
     fi
 
+    [ "${success}" = false ] && break
+
     echo "${sequence}" > "${state_file}"
   done
 
-  execute notify-send -a "Keift OS" "Installation complete" "Your Keift OS is ready."
+  [ "${success}" = true ] && execute notify-send -a "Keift OS" "Installation complete" "Your Keift OS is ready."
 fi
