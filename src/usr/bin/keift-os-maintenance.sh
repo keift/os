@@ -35,8 +35,8 @@ if [ "${current_sequence}" -lt "${target_sequence}" ]; then
 
   for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++)); do
     if [ "${sequence}" -eq 0 ]; then
-      flatpak remote-delete --force fedora &> /dev/null || true
-      flatpak remote-delete --force fedora-testing &> /dev/null || true
+      flatpak remote-delete --force fedora &> /dev/null
+      flatpak remote-delete --force fedora-testing &> /dev/null
 
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &> /dev/null || success=false
 
