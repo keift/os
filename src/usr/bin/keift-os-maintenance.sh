@@ -38,7 +38,7 @@ if [ "${current_sequence}" -lt "${target_sequence}" ]; then
       flatpak remote-delete --force fedora &> /dev/null || true
       flatpak remote-delete --force fedora-testing &> /dev/null || true
 
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &> /dev/null
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &> /dev/null || success=false
 
       flatpak install -y \
         net.nokyan.Resources \
