@@ -62,7 +62,7 @@ if [ "${current_sequence}" -lt "${target_sequence}" ]; then
 
     [ "${success}" = false ] && break
 
-    echo "${sequence}" > "${state_file}"
+    echo "${sequence}" > /etc/keift-os-maintenance-sequence 2> /dev/null
   done
 
   [ "${success}" = true ] && execute notify-send -a "Keift OS" "Installation complete" "Your Keift OS is ready."
