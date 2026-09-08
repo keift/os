@@ -20,25 +20,25 @@ while ! curl -sI --max-time 10 https://flathub.org &> /dev/null; do sleep 10; do
 
 sleep 10
 
-cp /usr/etc/dconf/db/distro.d/99-keift-os /etc/dconf/db/distro.d/99-keift-os
+cp /usr/etc/dconf/db/distro.d/99-keift-os /etc/dconf/db/distro.d/99-keift-os &> /dev/null
 
-systemctl preset fstrim
-systemctl preset fstrim.timer
+systemctl preset fstrim &> /dev/null
+systemctl preset fstrim.timer &> /dev/null
 
 target_sequence=0
 current_sequence=$(cat /etc/keift-os-maintenance-sequence 2> /dev/null || echo "-1")
 
 if [ "${current_sequence}" -lt "${target_sequence}" ]; then
-  execute notify-send -a "Keift OS" "Installation is in progress..." "The installation may take a few minutes to complete."
+  execute notify-send -a "Keift OS" "Installation is in progress..." "The installation may take a few minutes to complete." &> /dev/null
 
   success=true
 
   for ((sequence = current_sequence + 1; sequence <= target_sequence; sequence++)); do
     if [ "${sequence}" -eq 0 ]; then
-      flatpak remote-delete --force fedora || true
-      flatpak remote-delete --force fedora-testing || true
+      flatpak remote-delete --force fedora &> /dev/null || true
+      flatpak remote-delete --force fedora-testing &> /dev/null || true
 
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &> /dev/null
 
       flatpak install -y \
         net.nokyan.Resources \
@@ -54,10 +54,10 @@ if [ "${current_sequence}" -lt "${target_sequence}" ]; then
         org.gnome.Showtime \
         org.gnome.Snapshot \
         org.gnome.TextEditor \
-        org.gnome.Weather || success=false
+        org.gnome.Weather &> /dev/null || success=false
 
-      execute gsettings reset org.gnome.shell app-picker-layout
-      execute gsettings reset org.gnome.shell favorite-apps
+      execute gsettings reset org.gnome.shell app-picker-layout &> /dev/null
+      execute gsettings reset org.gnome.shell favorite-apps &> /dev/null
     fi
 
     [ "${success}" = false ] && break
@@ -65,5 +65,5 @@ if [ "${current_sequence}" -lt "${target_sequence}" ]; then
     echo "${sequence}" > /etc/keift-os-maintenance-sequence 2> /dev/null
   done
 
-  [ "${success}" = true ] && execute notify-send -a "Keift OS" "Installation complete" "Your Keift OS is ready."
+  [ "${success}" = true ] && execute notify-send -a "Keift OS" "Installation complete" "Your Keift OS is ready." &> /dev/null
 fi
