@@ -33,9 +33,9 @@ RUN dnf install -y \
   nautilus \
   ptyxis \
   # Misc
-  bash-color-prompt \
   git \
-  wget
+  wget \
+  bash-color-prompt
 
 RUN dnf group install -y \
   # Desktop
@@ -60,9 +60,6 @@ COPY ./src/usr /usr
 # Systemd
 
 RUN systemctl preset-all
-
-RUN systemctl mask bootc-fetch-apply-updates
-RUN systemctl mask bootc-fetch-apply-updates.timer
 
 # Brew
 
