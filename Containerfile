@@ -64,6 +64,9 @@ COPY ./src/usr /usr
 
 RUN systemctl preset-all
 
+RUN systemctl mask bootc-fetch-apply-updates
+RUN systemctl mask bootc-fetch-apply-updates.timer
+
 # Brew
 
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
