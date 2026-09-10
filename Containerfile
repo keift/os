@@ -17,8 +17,8 @@ RUN dnf install -y \
   gnome-session \
   gdm \
   gnome-initial-setup \
-  xdg-utils \
   glibc-all-langpacks \
+  xdg-utils \
   # Extensions
   gnome-shell-extension-appindicator \
   gnome-shell-extension-blur-my-shell \
