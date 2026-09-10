@@ -33,6 +33,7 @@ RUN dnf install -y \
   nautilus \
   ptyxis \
   # Misc
+  bash-color-prompt \
   git \
   wget
 
@@ -45,7 +46,9 @@ RUN dnf group install -y \
 
 RUN dnf remove -y \
   # Applications
-  gnome-extensions-app
+  gnome-extensions-app \
+  # Misc
+  console-login-helper-messages
 
 RUN dnf clean all
 
@@ -58,7 +61,6 @@ COPY ./src/usr /usr
 
 RUN systemctl preset-all
 
-RUN systemctl mask systemd-remount-fs
 RUN systemctl mask bootc-fetch-apply-updates
 RUN systemctl mask bootc-fetch-apply-updates.timer
 
