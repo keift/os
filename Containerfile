@@ -13,6 +13,9 @@ RUN dnf install -y \
 
 RUN dnf install -y \
   # Desktop
+  gnome-shell \
+  gnome-session \
+  gdm \
   gnome-initial-setup \
   xdg-utils \
   glibc-all-langpacks \
