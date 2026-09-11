@@ -12,6 +12,8 @@ RUN dnf install -y \
   https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 RUN dnf install -y \
+  # System
+  fedora-release-ostree-desktop \
   # Desktop
   gnome-shell \
   gnome-session \
