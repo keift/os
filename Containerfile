@@ -92,7 +92,7 @@ RUN id="clipboard-indicator@tudmotu.com" \
   && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN id="ding@rastersoft.com" \
-  && version="95" \
+  && version="97" \
   && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
