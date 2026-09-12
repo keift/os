@@ -1,7 +1,7 @@
 FROM quay.io/fedora/fedora-bootc:44
 
 LABEL org.opencontainers.image.title="Keift OS" \
-  org.opencontainers.image.version="1 Mabolla" \
+  org.opencontainers.image.version="1 Mabolla"
 
 # File system
 
