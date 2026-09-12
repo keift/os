@@ -1,11 +1,11 @@
 LABEL org.opencontainers.image.title="Keift OS" \
-  org.opencontainers.image.description="" \
   org.opencontainers.image.version="2 Mabolla" \
-  org.opencontainers.image.authors="Keift" \
+  org.opencontainers.image.description="" \
   org.opencontainers.image.vendor="Keift" \
+  org.opencontainers.image.authors="Keift" \
+  org.opencontainers.image.licenses="MIT" \
   org.opencontainers.image.url="https://github.com/keift/os" \
   org.opencontainers.image.source="https://github.com/keift/os" \
-  org.opencontainers.image.licenses="MIT" \
   org.opencontainers.image.base.name="quay.io/fedora/fedora-bootc:44"
 
 FROM quay.io/fedora/fedora-bootc:44
