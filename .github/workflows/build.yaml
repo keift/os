@@ -98,7 +98,8 @@ jobs:
         run: |
           mkdir -p ./dist/inject
 
-          cp -r ./src ./dist/inject
+          cp -r ./src/etc ./dist/inject/etc
+          cp -r ./src/usr ./dist/inject/usr
 
       - name: Inject it
         run: |
