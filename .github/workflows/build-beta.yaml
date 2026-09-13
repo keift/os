@@ -11,9 +11,6 @@ permissions:
   contents: write
   packages: write
 
-env:
-  VERSION: 1
-
 jobs:
   job:
     if: github.event.release.target_commitish == 'beta'
