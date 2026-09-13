@@ -102,7 +102,9 @@ jobs:
           cp -r ./src/etc ./dist/inject/etc
           cp -r ./src/usr ./dist/inject/usr
 
-          sed -i "s/^VERSION_ID=.*/VERSION_ID=\"${{ env.VERSION }}\"/" ./dist/inject/usr/lib/os-release
+          cp ./src/usr/lib/os-release ./dist/inject/etc/os-release
+
+          sed -i "s/^VERSION_ID=.*/VERSION_ID=\"${{ env.VERSION }}\"/" ./dist/inject/etc/os-release
 
       - name: Inject it
         run: |
