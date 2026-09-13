@@ -8,7 +8,6 @@ on:
     - cron: '0 0 * * *'
 
 permissions:
-  contents: write
   packages: write
 
 env:
@@ -16,7 +15,7 @@ env:
 
 jobs:
   image:
-    if: github.event.release.target_commitish == "main"
+    if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
 
     runs-on: ubuntu-latest
 

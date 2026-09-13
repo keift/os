@@ -4,19 +4,12 @@ on:
   release:
     types: [created]
 
-  schedule:
-    - cron: '0 0 * * *'
-
 permissions:
-  contents: write
   packages: write
 
-env:
-  VERSION: 1
-
 jobs:
-  image:
-    if: github.event.release.target_commitish == "beta"
+  job:
+    if: github.event.release.target_commitish == 'beta'
 
     runs-on: ubuntu-latest
 
@@ -45,101 +38,3 @@ jobs:
           file: ./Containerfile
           context: ./
           platforms: linux/amd64,linux/arm64
-
-  iso:
-    needs: image
-
-    strategy:
-      matrix:
-        include:
-          - arch: x86_64
-            runner: ubuntu-latest
-          - arch: aarch64
-            runner: ubuntu-24.04-arm
-
-    runs-on: ${{ matrix.runner }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Pull image
-        run: sudo podman pull ghcr.io/${{ github.repository }}:beta
-
-      - name: Build it
-        run: |
-          mkdir -p ./dist
-
-          tee ./dist/config.toml &>/dev/null << EOF
-          [customizations.installer.kickstart]
-          contents = """
-          graphical
-          rootpw --lock
-          """
-
-          [customizations.iso]
-          volume_id = "KEIFT-OS"
-          EOF
-
-          sudo podman run \
-            --rm \
-            --privileged \
-            -v ./dist/config.toml:/config.toml \
-            -v ./dist:/output \
-            -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/centos-bootc/bootc-image-builder \
-            --type anaconda-iso \
-            --rootfs ext4 \
-            ghcr.io/${{ github.repository }}:beta
-
-          rm -rf ./dist/config.toml
-
-          sudo chown -R $USER:$USER ./dist
-
-      - name: Prepare for injection
-        run: |
-          mkdir -p ./dist/inject
-
-          cp -r ./src/etc ./dist/inject/etc
-          cp -r ./src/usr ./dist/inject/usr
-
-      - name: Inject it
-        run: |
-          sudo apt install -y xorriso cpio
-
-          sudo chown -R root:root ./dist/inject
-
-          cd ./dist/inject
-          sudo bash -c "find ./ -mindepth 1 | cpio -H newc -o > ../product.img"
-          cd ../../
-
-          sudo rm -rf ./dist/inject
-
-          sudo xorriso \
-            -indev ./dist/bootiso/install.iso \
-            -outdev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
-            -map ./dist/product.img /images/product.img \
-            -boot_image any replay
-
-          sudo rm -rf ./dist/bootiso
-          sudo rm -f ./dist/product.img
-
-          sudo chown -R $USER:$USER ./dist
-
-      - name: Generate checksum file
-        run: sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f 1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
-
-      - name: Upload to Cloudflare R2
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp \
-            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
-            ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
-            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso
-
-          aws s3 cp \
-            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
-            ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM \
-            s3://${{ secrets.R2_BUCKET_NAME }}/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
