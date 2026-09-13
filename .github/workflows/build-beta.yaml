@@ -16,7 +16,7 @@ env:
 
 jobs:
   image:
-    if: github.event.release.target_commitish == "main"
+    if: github.event.release.target_commitish == "beta"
 
     runs-on: ubuntu-latest
 
@@ -40,7 +40,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          tags: ghcr.io/${{ github.repository }}
+          tags: ghcr.io/${{ github.repository }}:beta
           push: true
           file: ./Containerfile
           context: ./
@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Pull image
-        run: sudo podman pull ghcr.io/${{ github.repository }}
+        run: sudo podman pull ghcr.io/${{ github.repository }}:beta
 
       - name: Build it
         run: |
@@ -90,7 +90,7 @@ jobs:
             quay.io/centos-bootc/bootc-image-builder \
             --type anaconda-iso \
             --rootfs ext4 \
-            ghcr.io/${{ github.repository }}
+            ghcr.io/${{ github.repository }}:beta
 
           rm -rf ./dist/config.toml
 
