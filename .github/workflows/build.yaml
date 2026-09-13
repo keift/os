@@ -94,8 +94,6 @@ jobs:
 
           rm -rf ./dist/config.toml
 
-          sudo chown -R $USER:$USER ./dist
-
       - name: Prepare for injection
         run: |
           mkdir -p ./dist/inject
@@ -123,9 +121,7 @@ jobs:
             -osirrox on \
             -extract /EFI/BOOT/grub.cfg ./dist/boot/grub.cfg
 
-          sudo chown -R $USER:$USER ./dist/boot
-
-          sed -i "s/Keift OS 44/Keift OS 1 Mabolla/g" ./dist/boot/grub.cfg
+          sudo sed -i "s/Keift OS 44/Keift OS 1 Mabolla/g" ./dist/boot/grub.cfg
 
           sudo xorriso \
             -indev ./dist/bootiso/install.iso \
@@ -134,9 +130,7 @@ jobs:
 
           sudo unsquashfs -d ./dist/update ./dist/images/install.img
 
-          sudo chown -R $USER:$USER ./dist/update
-
-          sed -i "s/^Version = .*/Version = 1 Mabolla/" ./dist/update/.buildstamp
+          sudo sed -i "s/^Version = .*/Version = 1 Mabolla/" ./dist/update/.buildstamp
 
           sudo unsquashfs -s ./dist/images/install.img
 
