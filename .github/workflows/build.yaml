@@ -132,8 +132,6 @@ jobs:
 
           sudo sed -i "s/^Version = .*/Version = 1 Mabolla/" ./dist/update/.buildstamp
 
-          sudo unsquashfs -s ./dist/images/install.img
-
           sudo mksquashfs ./dist/update ./dist/images/install-new.img -comp zstd -b 1M -noappend
 
           sudo rm -rf ./dist/update
