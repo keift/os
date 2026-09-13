@@ -88,7 +88,7 @@ jobs:
             -v ./dist/build/config.toml:/config.toml:ro \
             -v ./dist/build/output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/osbuild/image-builder \
+            ghcr.io/osbuild/image-builder \
             --type anaconda-iso \
             ghcr.io/${{ github.repository }}
 
