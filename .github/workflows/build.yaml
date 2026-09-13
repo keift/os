@@ -15,8 +15,7 @@ env:
 
 jobs:
   image:
-    # if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
-    if: false
+    if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
 
     runs-on: ubuntu-latest
 
@@ -47,7 +46,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    # needs: image
+    needs: image
 
     strategy:
       matrix:
