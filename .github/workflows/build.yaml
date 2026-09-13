@@ -126,6 +126,8 @@ jobs:
 
           sudo sed -i "s/Keift OS 44/Keift OS 1 Mabolla/g" ./dist/boot/grub.cfg
 
+          cat ./dist/boot/grub.cfg
+
           sudo xorriso \
             -indev ./dist/build/bootiso/install.iso \
             -osirrox on \
@@ -134,6 +136,8 @@ jobs:
           sudo unsquashfs -d ./dist/update ./dist/images/install.img
 
           sudo sed -i "s/^Version = .*/Version = 1 Mabolla/" ./dist/update/.buildstamp
+
+          cat ./dist/update/.buildstamp
 
           sudo mksquashfs ./dist/update ./dist/images/install-new.img -comp zstd -b 1M -noappend
 
