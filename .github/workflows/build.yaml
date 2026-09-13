@@ -1,11 +1,14 @@
 name: Build
 
-on:
-  release:
-    types: [created]
+# on:
+#   release:
+#     types: [created]
+#
+#   schedule:
+#     - cron: '0 0 * * *'
 
-  schedule:
-    - cron: '0 0 * * *'
+on:
+  push:
 
 permissions:
   packages: write
@@ -79,6 +82,11 @@ jobs:
           mv ${{ steps.build.outputs.iso-dest }} ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso
 
           sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f 1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
+
+      - name: Tests
+        run: |
+          xorriso -indev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso -report_el_torito plain
+          file ./output/keift-os.iso
 
       - name: Upload to Cloudflare R2
         env:
