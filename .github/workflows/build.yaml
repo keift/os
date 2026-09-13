@@ -85,12 +85,11 @@ jobs:
           sudo podman run \
             --rm \
             --privileged \
-            -v ./dist/build/config.toml:/config.toml \
+            -v ./dist/build/config.toml:/config.toml:ro \
             -v ./dist/build/output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/osbuild/image-builder \
             --type anaconda-iso \
-            --rootfs ext4 \
             ghcr.io/${{ github.repository }}
 
       - name: Prepare for injection
