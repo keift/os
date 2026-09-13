@@ -67,9 +67,9 @@ jobs:
 
       - name: Build it
         run: |
-          mkdir -p ./dist/anaconda
+          mkdir -p ./dist/build
 
-          tee ./dist/anaconda/config.toml &>/dev/null << EOF
+          tee ./dist/build/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
           graphical
@@ -80,20 +80,18 @@ jobs:
           volume_id = "KEIFT-OS"
           EOF
 
-          mkdir -p ./dist/build
+          mkdir -p ./dist/build/output
 
           sudo podman run \
             --rm \
             --privileged \
-            -v ./dist/anaconda/config.toml:/config.toml \
-            -v ./dist/build:/output \
+            -v ./dist/build/config.toml:/config.toml \
+            -v ./dist/build/output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/centos-bootc/bootc-image-builder \
+            quay.io/osbuild/image-builder \
             --type anaconda-iso \
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}
-
-          rm -rf ./dist/anaconda
 
       - name: Prepare for injection
         run: |
@@ -119,7 +117,7 @@ jobs:
       - name: Merge the changes
         run: |
           sudo xorriso \
-            -indev ./dist/build/bootiso/install.iso \
+            -indev ./dist/build/output/bootiso/install.iso \
             -outdev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
             -map ./dist/images/product.img /images/product.img \
             -boot_image any replay
