@@ -15,7 +15,8 @@ env:
 
 jobs:
   image:
-    if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
+    # if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
+    if: false
 
     runs-on: ubuntu-latest
 
@@ -46,7 +47,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -99,29 +100,50 @@ jobs:
         run: |
           mkdir -p ./dist/inject
 
-          cp -r ./src/etc ./dist/inject/etc
-          cp -r ./src/usr ./dist/inject/usr
+          cp -r ./src ./dist/inject
 
       - name: Inject it
         run: |
-          sudo apt install -y xorriso cpio
+          sudo apt install -y cpio squashfs-tools xorriso
 
           sudo chown -R root:root ./dist/inject
 
+          mkdir -p ./dist/images
+
           cd ./dist/inject
-          sudo bash -c "find ./ -mindepth 1 | cpio -H newc -o > ../product.img"
+          sudo bash -c "find ./ -mindepth 1 | cpio -H newc -o > ../images/product.img"
           cd ../../
 
           sudo rm -rf ./dist/inject
 
+          mkdir -p ./dist/update
+
+          sudo xorriso \
+            -indev ./dist/bootiso/install.iso \
+            -osirrox on \
+            -extract /EFI/BOOT/grub.cfg ./dist/update/grub.cfg
+
+          sudo xorriso \
+            -indev ./dist/bootiso/install.iso \
+            -osirrox on \
+            -extract /.buildstamp ./dist/update/.buildstamp
+
+          sudo chown -R $USER:$USER ./dist/update
+
+          sed -i "s/Keift OS 44/Keift OS 1 Mabolla/g" ./dist/update/grub.cfg
+          sed -i "s/^Version = .*/Version = 1 Mabolla/" ./dist/update/.buildstamp
+
           sudo xorriso \
             -indev ./dist/bootiso/install.iso \
             -outdev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
-            -map ./dist/product.img /images/product.img \
+            -map ./dist/images/product.img /images/product.img \
+            -update ./dist/update/grub.cfg /EFI/BOOT/grub.cfg \
+            -update ./dist/update/.buildstamp /.buildstamp \
             -boot_image any replay
 
           sudo rm -rf ./dist/bootiso
-          sudo rm -f ./dist/product.img
+          sudo rm -rf ./dist/images
+          sudo rm -rf ./dist/update
 
           sudo chown -R $USER:$USER ./dist
 
