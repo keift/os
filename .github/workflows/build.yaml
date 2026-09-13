@@ -15,7 +15,8 @@ env:
 
 jobs:
   image:
-    if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
+    # if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
+    if: false
 
     runs-on: ubuntu-latest
 
@@ -46,7 +47,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -90,7 +91,7 @@ jobs:
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             ghcr.io/osbuild/image-builder \
             --type anaconda-iso \
-            ghcr.io/${{ github.repository }}
+            --tag ghcr.io/${{ github.repository }}
 
       - name: Prepare for injection
         run: |
