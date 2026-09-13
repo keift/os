@@ -85,7 +85,10 @@ jobs:
 
       - name: Tests
         run: |
+          sudo apt install -y xorriso
+
           xorriso -indev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso -report_el_torito plain
+
           file ./output/keift-os.iso
 
       - name: Upload to Cloudflare R2
