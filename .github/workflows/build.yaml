@@ -39,7 +39,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          tags: ghcr.io/${{ github.repository }}
+          tags: ghcr.io/${{ github.repository }},ghcr.io/${{ github.repository }}:beta
           push: true
           file: ./Containerfile
           context: ./
