@@ -15,7 +15,8 @@ env:
 
 jobs:
   image:
-    if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
+    # if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
+    if: false
 
     runs-on: ubuntu-latest
 
@@ -46,7 +47,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    needs: image
+    # needs: image
 
     strategy:
       matrix:
@@ -61,6 +62,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Pull image
+        run: sudo podman pull ghcr.io/${{ github.repository }}
 
       - name: Build ISO
         id: build
