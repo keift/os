@@ -81,6 +81,8 @@ jobs:
           volume_id = "KEIFT-OS"
           EOF
 
+          mkdir -p ./dist/build
+
           sudo podman run \
             --rm \
             --privileged \
