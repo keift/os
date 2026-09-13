@@ -68,9 +68,9 @@ jobs:
 
       - name: Build it
         run: |
-          mkdir -p ./dist
+          mkdir -p ./dist/anaconda
 
-          tee ./dist/config.toml &>/dev/null << EOF
+          tee ./dist/anaconda/config.toml &>/dev/null << EOF
           [customizations.installer.kickstart]
           contents = """
           graphical
@@ -84,23 +84,22 @@ jobs:
           sudo podman run \
             --rm \
             --privileged \
-            -v ./dist/config.toml:/config.toml \
-            -v ./dist:/output \
+            -v ./dist/anaconda/config.toml:/config.toml \
+            -v ./dist/build:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder \
             --type anaconda-iso \
             --rootfs ext4 \
             ghcr.io/${{ github.repository }}
 
-          rm -rf ./dist/config.toml
-
-          sudo chown -R $USER:$USER ./dist
+          rm -rf ./dist/anaconda
 
       - name: Prepare for injection
         run: |
           mkdir -p ./dist/inject
 
-          cp -r ./src ./dist/inject
+          cp -r ./src/etc ./dist/inject/etc
+          cp -r ./src/usr ./dist/inject/usr
 
       - name: Inject it
         run: |
@@ -119,14 +118,14 @@ jobs:
           mkdir -p ./dist/boot
 
           sudo xorriso \
-            -indev ./dist/bootiso/install.iso \
+            -indev ./dist/build/bootiso/install.iso \
             -osirrox on \
             -extract /EFI/BOOT/grub.cfg ./dist/boot/grub.cfg
 
           sudo sed -i "s/Keift OS 44/Keift OS 1 Mabolla/g" ./dist/boot/grub.cfg
 
           sudo xorriso \
-            -indev ./dist/bootiso/install.iso \
+            -indev ./dist/build/bootiso/install.iso \
             -osirrox on \
             -extract /images/install.img ./dist/images/install.img
 
@@ -134,21 +133,19 @@ jobs:
 
           sudo sed -i "s/^Version = .*/Version = 1 Mabolla/" ./dist/update/.buildstamp
 
-          sudo unsquashfs -s ./dist/images/install.img
-
           sudo mksquashfs ./dist/update ./dist/images/install-new.img -comp zstd -b 1M -noappend
 
           sudo rm -rf ./dist/update
 
           sudo xorriso \
-            -indev ./dist/bootiso/install.iso \
+            -indev ./dist/build/bootiso/install.iso \
             -outdev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
             -map ./dist/images/product.img /images/product.img \
             -update ./dist/boot/grub.cfg /EFI/BOOT/grub.cfg \
             -update ./dist/images/install-new.img /images/install.img \
             -boot_image any replay
 
-          sudo rm -rf ./dist/bootiso
+          sudo rm -rf ./dist/build
           sudo rm -rf ./dist/images
           sudo rm -rf ./dist/boot
 
