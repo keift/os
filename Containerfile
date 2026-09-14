@@ -5,16 +5,8 @@ LABEL org.opencontainers.image.title="Keift OS" \
 
 # File system
 
-RUN mkdir -p /boot/efi && cp -av /usr/lib/efi/*/*/EFI /boot/efi
-
 RUN rm -rf /opt && ln -sf /var/opt /opt
 RUN rm -rf /usr/local && ln -sf /var/usrlocal /usr/local
-
-# Boot
-
-RUN dnf install -y dracut-live \
-  && kernel_version=$(kernel-install list --json pretty | jq -r ".[] | select(.has_kernel == true) | .version") \
-  && DRACUT_NO_XATTR=1 dracut -v --force --zstd --reproducible --no-hostonly --add "dmsquash-live dmsquash-live-autooverlay" /usr/lib/modules/"${kernel_version}"/initramfs.img "${kernel_version}"
 
 # Softwares
 
