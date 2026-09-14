@@ -15,8 +15,7 @@ env:
 
 jobs:
   image:
-    # if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
-    if: false
+    if: github.event.release.target_commitish == 'main' || github.event_name == 'schedule'
 
     runs-on: ubuntu-latest
 
@@ -47,7 +46,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   iso:
-    # needs: image
+    needs: image
 
     strategy:
       matrix:
@@ -66,19 +65,69 @@ jobs:
       - name: Pull image
         run: sudo podman pull ghcr.io/${{ github.repository }}
 
-      - name: Build ISO
-        id: build
-        uses: ublue-os/titanoboa@main
-        with:
-          image-ref: ghcr.io/${{ github.repository }}
-
-      - name: Rename and checksum
+      - name: Build it
         run: |
-          mkdir -p ./dist
+          mkdir -p ./dist/build
 
-          mv ${{ steps.build.outputs.iso-dest }} ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso
+          tee ./dist/build/config.toml &>/dev/null << EOF
+          [customizations.installer.kickstart]
+          contents = """
+          graphical
+          rootpw --lock
+          """
 
-          sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f 1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
+          [customizations.iso]
+          volume_id = "KEIFT-OS"
+          EOF
+
+          mkdir -p ./dist/build/output
+
+          sudo podman run \
+            --rm \
+            --privileged \
+            -v ./dist/build/config.toml:/config.toml:ro \
+            -v ./dist/build/output:/output \
+            -v /var/lib/containers/storage:/var/lib/containers/storage \
+            quay.io/centos-bootc/bootc-image-builder \
+            --type anaconda-iso \
+            ghcr.io/${{ github.repository }}
+
+      - name: Prepare for injection
+        run: |
+          sudo apt install -y cpio xorriso
+
+          mkdir -p ./dist/inject
+
+          cp -r ./src/etc ./dist/inject/etc
+          cp -r ./src/usr ./dist/inject/usr
+
+          sudo chown -R root:root ./dist/inject
+
+      - name: Inject it
+        run: |
+          mkdir -p ./dist/images
+
+          cd ./dist/inject
+          sudo bash -c "find ./ -mindepth 1 | cpio -H newc -o > ../images/product.img"
+          cd ../../
+
+          sudo rm -rf ./dist/inject
+
+      - name: Merge the changes
+        run: |
+          sudo xorriso \
+            -indev ./dist/build/output/bootiso/install.iso \
+            -outdev ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso \
+            -map ./dist/images/product.img /images/product.img \
+            -boot_image any replay
+
+          sudo rm -rf ./dist/build
+          sudo rm -rf ./dist/images
+
+          sudo chown -R $USER:$USER ./dist
+
+      - name: Generate checksum file
+        run: sha256sum ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso | cut -f 1 -d " " > ./dist/keift-os-${{ env.VERSION }}-${{ matrix.arch }}.iso-CHECKSUM
 
       - name: Upload to Cloudflare R2
         env:
