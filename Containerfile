@@ -3,11 +3,6 @@ FROM quay.io/fedora/fedora-bootc:44
 LABEL org.opencontainers.image.title="Keift OS" \
   org.opencontainers.image.version="1 Mabolla"
 
-# File system
-
-RUN rm -rf /opt && ln -sf /var/opt /opt
-RUN rm -rf /usr/local && ln -sf /var/usrlocal /usr/local
-
 # Softwares
 
 RUN dnf install -y \
