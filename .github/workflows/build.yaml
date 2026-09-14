@@ -90,6 +90,7 @@ jobs:
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             quay.io/centos-bootc/bootc-image-builder \
             --type anaconda-iso \
+            --rootfs ext4 \
             ghcr.io/${{ github.repository }}
 
       - name: Prepare for injection
