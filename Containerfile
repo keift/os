@@ -45,7 +45,7 @@ RUN dnf install -y \
   wget \
   bash-color-prompt
 
-RUN dnf group install -y --with-optional \
+RUN dnf group install -y --with-optional --skip-broken \
   # Desktop
   fonts \
   # Drivers
