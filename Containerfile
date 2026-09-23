@@ -32,9 +32,6 @@ RUN dnf install -y \
   # Boot
   plymouth \
   plymouth-system-theme \
-  # VM
-  spice-vdagent \
-  spice-webdavd \
   # Applications
   flatpak \
   gnome-software \
@@ -45,12 +42,14 @@ RUN dnf install -y \
   wget \
   bash-color-prompt
 
-RUN dnf group install -y --with-optional --skip-broken \
+RUN dnf group install -y \
   # Desktop
   fonts \
   # Drivers
   hardware-support \
-  multimedia
+  input-methods \
+  multimedia \
+  guest-desktop-agents
 
 RUN dnf remove -y \
   # Applications
