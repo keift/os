@@ -51,7 +51,7 @@ RUN dnf group install -y \
   multimedia \
   guest-desktop-agents
 
-RUN dnf remove -y \
+RUN dnf remove -y --skip-broken \
   # Applications
   gnome-extensions-app \
   # Misc
