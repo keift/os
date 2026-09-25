@@ -125,4 +125,5 @@ RUN ln -sf /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/ico
 
 RUN dconf update
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
+RUN gtk-update-icon-cache -f /usr/share/icons/Adwaita
 RUN gtk-update-icon-cache -f /usr/share/icons/hicolor
