@@ -4,7 +4,6 @@ mkdir -p ./src/usr/share/icons/hicolor/scalable/apps
 
 cp ./assets/logo-black-small-x2.png ./src/usr/share/icons/hicolor/scalable/apps/keift-os-logo.png
 cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/scalable/apps/keift-os-logo.svg
-cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/scalable/apps/start-here.svg
 
 mkdir -p ./src/usr/share/pixmaps
 
@@ -14,6 +13,7 @@ cp ./assets/icon-white.png ./src/usr/share/pixmaps/system-logo-white.png
 cp ./assets/logo-black-small-x2.png ./src/usr/share/pixmaps/fedora-logo-small.png
 cp ./assets/logo-black-small-x2.png ./src/usr/share/pixmaps/fedora-logo.png
 cp ./assets/logo-black-small-x2.png ./src/usr/share/pixmaps/fedora_logo_med.png
+cp ./assets/logo-black-small.ico ./src/usr/share/pixmaps/fedora-logo.ico
 cp ./assets/logo-white-small-x2.png ./src/usr/share/pixmaps/fedora-gdm-logo.png
 cp ./assets/logo-white-small-x2.png ./src/usr/share/pixmaps/fedora_whitelogo_med.png
 cp ./assets/logo-white.svg ./src/usr/share/pixmaps/fedora_whitelogo.svg
