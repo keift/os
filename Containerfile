@@ -71,6 +71,8 @@ RUN systemctl preset-all
 RUN systemctl mask bootc-fetch-apply-updates
 RUN systemctl mask bootc-fetch-apply-updates.timer
 
+RUN sed -i "/^\[Service\]/a SuccessExitStatus=1" /usr/lib/systemd/system/systemd-remount-fs.service
+
 # Brew
 
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
