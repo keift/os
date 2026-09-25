@@ -42,7 +42,7 @@ RUN dnf install -y \
   wget \
   bash-color-prompt
 
-RUN dnf group install -y \
+RUN dnf group install -y --skip-broken \
   # Desktop
   fonts \
   # Drivers
@@ -51,7 +51,7 @@ RUN dnf group install -y \
   multimedia \
   guest-desktop-agents
 
-RUN dnf remove -y --skip-broken \
+RUN dnf remove -y \
   # Applications
   gnome-extensions-app \
   # Misc
