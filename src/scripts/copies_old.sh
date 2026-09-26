@@ -11,17 +11,17 @@ mkdir -p ./src/usr/share/pixmaps
 cp ./assets/icon-black.png ./src/usr/share/pixmaps/fedora-logo-sprite.png
 cp ./assets/icon-black.svg ./src/usr/share/pixmaps/fedora-logo-sprite.svg
 cp ./assets/icon-white.png ./src/usr/share/pixmaps/system-logo-white.png
-cp ./assets/logo-black-small.png ./src/usr/share/pixmaps/fedora-logo-small.png
-cp ./assets/logo-black-small.png ./src/usr/share/pixmaps/fedora_logo_med.png
-cp ./assets/logo-black.ico ./src/usr/share/pixmaps/fedora-logo.ico
-cp ./assets/logo-black.png ./src/usr/share/pixmaps/fedora-logo.png
-cp ./assets/logo-white-small.png ./src/usr/share/pixmaps/fedora-gdm-logo.png
-cp ./assets/logo-white-small.png ./src/usr/share/pixmaps/fedora_whitelogo_med.png
+cp ./assets/logo-black-small-x2.png ./src/usr/share/pixmaps/fedora-logo-small.png
+cp ./assets/logo-black-small-x2.png ./src/usr/share/pixmaps/fedora_logo_med.png
+cp ./assets/logo-black-small.ico ./src/usr/share/pixmaps/fedora-logo.ico
+cp ./assets/logo-black-small.png ./src/usr/share/pixmaps/fedora-logo.png
+cp ./assets/logo-white-small-x2.png ./src/usr/share/pixmaps/fedora-gdm-logo.png
+cp ./assets/logo-white-small-x2.png ./src/usr/share/pixmaps/fedora_whitelogo_med.png
 cp ./assets/logo-white.svg ./src/usr/share/pixmaps/fedora_whitelogo.svg
 
 mkdir -p ./src/usr/share/plymouth/themes/spinner
 
-cp ./assets/logo-white-small.png ./src/usr/share/plymouth/themes/spinner/watermark.png
+cp ./assets/logo-white-small-x2.png ./src/usr/share/plymouth/themes/spinner/watermark.png
 
 mkdir -p ./src/usr/share/anaconda/pixmaps
 
