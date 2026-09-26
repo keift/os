@@ -61,6 +61,8 @@ RUN dnf clean all
 
 # Copies
 
+RUN find /usr/share/icons/hicolor -name "fedora-logo-icon.*" -delete
+
 COPY ./src/etc /etc
 COPY ./src/usr /usr
 
