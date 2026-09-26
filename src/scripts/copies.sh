@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
 mkdir -p ./src/usr/share/icons/hicolor/scalable/apps
-mkdir -p ./src/usr/share/icons/hicolor/256x256/apps
 
 cp ./assets/logo-black-small.png ./src/usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.png
 cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg
-cp ./assets/logo-black-small.png ./src/usr/share/icons/hicolor/256x256/apps/fedora-logo-icon.png
-cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/256x256/apps/fedora-logo-icon.svg
 cp ./assets/logo-black.svg ./src/usr/share/icons/hicolor/scalable/apps/start-here.svg
 
 mkdir -p ./src/usr/share/pixmaps
