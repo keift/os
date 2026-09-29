@@ -98,7 +98,7 @@ RUN id="clipboard-indicator@tudmotu.com" \
   && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN id="ding@rastersoft.com" \
-  && version="97" \
+  && version="99" \
   && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
@@ -108,7 +108,7 @@ RUN id="ding@rastersoft.com" \
   && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN id="logomenu@aryan_k" \
-  && version="43" \
+  && version="45" \
   && url="https://extensions.gnome.org/extension-data/logomenuaryan_k.v${version}.shell-extension.zip" \
   && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
