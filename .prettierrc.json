@@ -16,5 +16,5 @@
     }
   ],
 
-  "plugins": ["prettier-plugin-ini", "prettier-plugin-sh", "prettier-plugin-toml", "@prettier/plugin-xml"]
+  "plugins": ["@prettier/plugin-xml", "prettier-plugin-ini", "prettier-plugin-sh", "prettier-plugin-toml"]
 }
