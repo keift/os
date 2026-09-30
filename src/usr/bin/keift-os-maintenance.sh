@@ -20,7 +20,7 @@ while ! curl -sI --max-time 10 https://flathub.org &> /dev/null; do sleep 10; do
 
 sleep 10
 
-cp /usr/etc/dconf/db/distro.d/99-keift-os /etc/dconf/db/distro.d/99-keift-os &> /dev/null
+cp -f /usr/etc/dconf/db/distro.d/99-keift-os /etc/dconf/db/distro.d/99-keift-os &> /dev/null
 
 systemctl preset fstrim &> /dev/null
 systemctl preset fstrim.timer &> /dev/null

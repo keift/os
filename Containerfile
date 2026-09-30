@@ -61,10 +61,13 @@ RUN dnf clean all
 
 # Copies
 
-RUN find /usr/share/icons/hicolor -name "fedora-logo-icon.*" -delete
-
 COPY ./src/etc /etc
 COPY ./src/usr /usr
+
+RUN find /usr/share/icons/hicolor -name "fedora-logo-icon.png" ! -path /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.png -exec cp -f /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.png {} \;
+RUN find /usr/share/icons/hicolor -name "fedora-logo-icon.svg" ! -path /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg -exec cp -f /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg {} \;
+
+RUN cp -f /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
 
 # Systemd
 
@@ -95,7 +98,7 @@ RUN id="clipboard-indicator@tudmotu.com" \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
   && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas \
-  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && cp -f /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN id="ding@rastersoft.com" \
   && version="99" \
@@ -105,7 +108,7 @@ RUN id="ding@rastersoft.com" \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
   && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas \
-  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && cp -f /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN id="logomenu@aryan_k" \
   && version="45" \
@@ -115,15 +118,13 @@ RUN id="logomenu@aryan_k" \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
   && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas \
-  && cp /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && cp -f /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
 
 RUN chmod -R 755 /usr/share/gnome-shell/extensions
 
 # Misc
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
-
-RUN ln -sf /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
 
 RUN dconf update
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas
