@@ -64,10 +64,10 @@ RUN dnf clean all
 COPY ./src/etc /etc
 COPY ./src/usr /usr
 
+RUN cp -f /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
+
 RUN find /usr/share/icons/hicolor -name "fedora-logo-icon.png" ! -path /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.png -exec cp -f /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.png {} \;
 RUN find /usr/share/icons/hicolor -name "fedora-logo-icon.svg" ! -path /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg -exec cp -f /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg {} \;
-
-RUN cp -f /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
 
 # Systemd
 
