@@ -42,7 +42,7 @@ RUN dnf install -y \
   wget \
   bash-color-prompt
 
-RUN dnf group install -y --skip-broken \
+RUN dnf group install -y \
   # Desktop
   fonts \
   # Drivers
@@ -93,32 +93,29 @@ RUN --mount=type=cache,dst=/var/cache \
 RUN id="clipboard-indicator@tudmotu.com" \
   && version="71" \
   && url="https://extensions.gnome.org/extension-data/clipboard-indicatortudmotu.com.v${version}.shell-extension.zip" \
-  && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
+  && mkdir -p /usr/share/gnome-shell/extensions \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas \
-  && cp -f /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
 
 RUN id="ding@rastersoft.com" \
   && version="99" \
   && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
-  && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
+  && mkdir -p /usr/share/gnome-shell/extensions \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas \
-  && cp -f /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
 
 RUN id="logomenu@aryan_k" \
   && version="45" \
   && url="https://extensions.gnome.org/extension-data/logomenuaryan_k.v${version}.shell-extension.zip" \
-  && mkdir -p /usr/share/gnome-shell/extensions \
   && wget -O /tmp/"${id}".zip "${url}" \
+  && mkdir -p /usr/share/gnome-shell/extensions \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
   && rm -f /tmp/"${id}".zip \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas \
-  && cp -f /usr/share/gnome-shell/extensions/"${id}"/schemas/*.xml /usr/share/glib-2.0/schemas
+  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
 
 RUN chmod -R 755 /usr/share/gnome-shell/extensions
 
