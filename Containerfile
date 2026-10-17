@@ -123,7 +123,7 @@ RUN chmod -R 755 /usr/share/gnome-shell/extensions
 
 RUN chmod +x /usr/bin/keift-os-maintenance.sh
 
-RUN dconf update
-RUN glib-compile-schemas /usr/share/glib-2.0/schemas
 RUN gtk-update-icon-cache -f /usr/share/icons/Adwaita
 RUN gtk-update-icon-cache -f /usr/share/icons/hicolor
+RUN glib-compile-schemas /usr/share/glib-2.0/schemas
+RUN dconf update
