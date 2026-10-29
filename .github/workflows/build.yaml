@@ -99,7 +99,7 @@ jobs:
 
           mkdir -p ./dist/inject
 
-          cp -rf ./src/etc ./dist/inject/etc
+          cp -rf ./src/fs/etc ./dist/inject/etc
           cp -rf ./src/fs/usr ./dist/inject/usr
 
           sudo chown -R root:root ./dist/inject
