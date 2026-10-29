@@ -61,8 +61,8 @@ RUN dnf clean all
 
 # Copies
 
-COPY ./src/etc /etc
-COPY ./src/usr /usr
+COPY ./src/fs/etc /etc
+COPY ./src/fs/usr /usr
 
 RUN cp -f /usr/share/icons/Adwaita/scalable/places/user-home.svg /usr/share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
 
