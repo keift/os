@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-bootc:44
+FROM quay.io/fedora/fedora-bootc:45
 
 LABEL org.opencontainers.image.title="Keift OS" \
   org.opencontainers.image.version="1 Mabolla"
@@ -28,7 +28,7 @@ RUN dnf install -y \
   gnome-shell-extension-appindicator \
   gnome-shell-extension-blur-my-shell \
   gnome-shell-extension-dash-to-dock \
-  # gnome-shell-extension-logo-menu \
+  gnome-shell-extension-logo-menu \
   # Boot
   plymouth \
   plymouth-system-theme \
@@ -100,17 +100,8 @@ RUN id="clipboard-indicator@tudmotu.com" \
   && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
 
 RUN id="ding@rastersoft.com" \
-  && version="99" \
+  && version="103" \
   && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
-  && wget -O /tmp/"${id}".zip "${url}" \
-  && mkdir -p /usr/share/gnome-shell/extensions \
-  && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
-  && rm -f /tmp/"${id}".zip \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
-
-RUN id="logomenu@aryan_k" \
-  && version="45" \
-  && url="https://extensions.gnome.org/extension-data/logomenuaryan_k.v${version}.shell-extension.zip" \
   && wget -O /tmp/"${id}".zip "${url}" \
   && mkdir -p /usr/share/gnome-shell/extensions \
   && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
