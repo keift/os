@@ -61,8 +61,6 @@ RUN dnf clean all
 
 # Backups
 
-RUN cp -f /etc/hostname /etc/hostname.bak
-
 RUN cp -f /usr/lib/os-release /usr/lib/os-release.bak
 
 RUN cp -rf /usr/share/anaconda /usr/share/anaconda.bak
