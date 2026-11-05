@@ -67,7 +67,6 @@ RUN cp -rf /usr/lib/os-release /usr/lib/os-release.bak
 
 RUN cp -rf /usr/share/anaconda /usr/share/anaconda.bak
 RUN cp -rf /usr/share/gnome-initial-setup /usr/share/gnome-initial-setup.bak
-RUN cp -rf /usr/share/gnome-initial-setup /usr/share/gnome-initial-setup.bak
 RUN cp -rf /usr/share/icons /usr/share/icons.bak
 RUN cp -rf /usr/share/pixmaps /usr/share/pixmaps.bak
 RUN cp -rf /usr/share/plymouth /usr/share/plymouth.bak
