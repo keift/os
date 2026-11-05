@@ -40,21 +40,20 @@ if [ "${current_sequence}" -lt "${target_sequence}" ]; then
 
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &> /dev/null || success=false
 
-      flatpak install -y \
-        net.nokyan.Resources \
-        org.gnome.Calculator \
-        org.gnome.Calendar \
-        org.gnome.clocks \
-        org.gnome.Contacts \
-        org.gnome.Decibels \
-        org.gnome.Epiphany \
-        org.gnome.Loupe \
-        org.gnome.Maps \
-        org.gnome.Papers \
-        org.gnome.Showtime \
-        org.gnome.Snapshot \
-        org.gnome.TextEditor \
-        org.gnome.Weather &> /dev/null || success=false
+      flatpak install -y net.nokyan.Resources &> /dev/null || success=false # Resources
+      flatpak install -y org.gnome.Calculator &> /dev/null || success=false # Calculator
+      flatpak install -y org.gnome.Calendar &> /dev/null || success=false   # Calendar
+      flatpak install -y org.gnome.clocks &> /dev/null || success=false     # Clocks
+      flatpak install -y org.gnome.Contacts &> /dev/null || success=false   # Contacts
+      flatpak install -y org.gnome.Decibels &> /dev/null || success=false   # Audio Player
+      flatpak install -y org.gnome.Epiphany &> /dev/null || success=false   # Web
+      flatpak install -y org.gnome.Loupe &> /dev/null || success=false      # Image Viewer
+      flatpak install -y org.gnome.Maps &> /dev/null || success=false       # Maps
+      flatpak install -y org.gnome.Papers &> /dev/null || success=false     # Document Viewer
+      flatpak install -y org.gnome.Showtime &> /dev/null || success=false   # Video Player
+      flatpak install -y org.gnome.Snapshot &> /dev/null || success=false   # Camera
+      flatpak install -y org.gnome.TextEditor &> /dev/null || success=false # Text Editor
+      flatpak install -y org.gnome.Weather &> /dev/null || success=false    # Weather
 
       execute gsettings reset org.gnome.shell app-picker-layout &> /dev/null
       execute gsettings reset org.gnome.shell favorite-apps &> /dev/null
