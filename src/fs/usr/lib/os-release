@@ -4,7 +4,7 @@ NAME="Keift OS"
 VERSION="1 Mabolla"
 
 ID="fedora"
-VERSION_ID="44"
+VERSION_ID="45"
 
 ANSI_COLOR="0;34"
 LOGO="fedora-logo-icon"
