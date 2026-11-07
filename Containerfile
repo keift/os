@@ -100,7 +100,7 @@ RUN --mount=type=cache,dst=/var/cache \
 # Extensions
 
 RUN id="clipboard-indicator@tudmotu.com" \
-  && version="71" \
+  && version="72" \
   && url="https://extensions.gnome.org/extension-data/clipboard-indicatortudmotu.com.v${version}.shell-extension.zip" \
   && wget -O /tmp/"${id}".zip "${url}" \
   && mkdir -p /usr/share/gnome-shell/extensions \
