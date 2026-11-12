@@ -109,7 +109,7 @@ RUN id="clipboard-indicator@tudmotu.com" \
   && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
 
 RUN id="ding@rastersoft.com" \
-  && version="103" \
+  && version="105" \
   && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
   && wget -O /tmp/"${id}".zip "${url}" \
   && mkdir -p /usr/share/gnome-shell/extensions \
