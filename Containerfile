@@ -51,8 +51,6 @@ RUN dnf group install -y --skip-broken \
   guest-desktop-agents
 
 RUN dnf remove -y \
-  # Applications
-  gnome-extensions-app \
   # Misc
   console-login-helper-messages
 
@@ -99,25 +97,14 @@ RUN --mount=type=cache,dst=/var/cache \
 
 # Extensions
 
-RUN id="clipboard-indicator@tudmotu.com" \
-  && version="72" \
-  && url="https://extensions.gnome.org/extension-data/clipboard-indicatortudmotu.com.v${version}.shell-extension.zip" \
-  && wget -O /tmp/"${id}".zip "${url}" \
-  && mkdir -p /usr/share/gnome-shell/extensions \
-  && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
-  && rm -f /tmp/"${id}".zip \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
+RUN chmod +x /usr/share/keift-os/scripts/extensions.sh
 
-RUN id="ding@rastersoft.com" \
-  && version="105" \
-  && url="https://extensions.gnome.org/extension-data/dingrastersoft.com.v${version}.shell-extension.zip" \
-  && wget -O /tmp/"${id}".zip "${url}" \
-  && mkdir -p /usr/share/gnome-shell/extensions \
-  && unzip -d /usr/share/gnome-shell/extensions/"${id}" /tmp/"${id}".zip \
-  && rm -f /tmp/"${id}".zip \
-  && glib-compile-schemas /usr/share/gnome-shell/extensions/"${id}"/schemas
-
-RUN chmod -R 755 /usr/share/gnome-shell/extensions
+RUN /usr/share/keift-os/scripts/extensions.sh appindicatorsupport@rgcjonas.gmail.com
+RUN /usr/share/keift-os/scripts/extensions.sh blur-my-shell@aunetx
+RUN /usr/share/keift-os/scripts/extensions.sh clipboard-indicator@tudmotu.com
+RUN /usr/share/keift-os/scripts/extensions.sh dash-to-dock@micxgx.gmail.com
+RUN /usr/share/keift-os/scripts/extensions.sh ding@rastersoft.com
+RUN /usr/share/keift-os/scripts/extensions.sh logomenu@aryan_k
 
 # Misc
 
