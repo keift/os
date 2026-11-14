@@ -16,7 +16,7 @@ execute() {
 
 while [ ! -f /home/*/.config/gnome-initial-setup-done ]; do sleep 10; done
 
-while ! curl -sI --max-time 10 https://flathub.org &> /dev/null; do sleep 10; done
+while ! curl -fsSL --max-time 10 https://flathub.org &> /dev/null; do sleep 10; done
 
 sleep 10
 
