@@ -1,75 +1,61 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
-  <wallpaper deleted="false">
-    <name>Arthur Shuraev</name>
-    <filename>/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Blendpills (Light)</name>
+    <filename>/usr/share/backgrounds/blendpills-light.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Bailey Zindel</name>
-    <filename>/usr/share/backgrounds/bailey-zindel-NRQV-hBF10M-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Blendpills (Dark)</name>
+    <filename>/usr/share/backgrounds/blendpills-dark.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Christian Joudrey</name>
-    <filename>/usr/share/backgrounds/christian-joudrey-mWRR1xj95hg-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Curvaturingster (Light)</name>
+    <filename>/usr/share/backgrounds/curvaturingster-light.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Jack Anstey</name>
-    <filename>/usr/share/backgrounds/jack-anstey-XVoyX7l9ocY-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Curvaturingster (Dark)</name>
+    <filename>/usr/share/backgrounds/curvaturingster-dark.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Jack Barton</name>
-    <filename>/usr/share/backgrounds/jack-barton-DxI3QiHIuAQ-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Glass Chip (Light)</name>
+    <filename>/usr/share/backgrounds/glass-chip-light.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Jake Weirick</name>
-    <filename>/usr/share/backgrounds/jake-weirick-EsvpmQ4zp5Y-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Glass Chip (Dark)</name>
+    <filename>/usr/share/backgrounds/glass-chip-dark.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Jeremy Bishop</name>
-    <filename>/usr/share/backgrounds/jeremy-bishop-d3fZSXlJ3Ok-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Tubes (Light)</name>
+    <filename>/usr/share/backgrounds/tubes-light.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Luca Bravo 1</name>
-    <filename>/usr/share/backgrounds/luca-bravo-ii5JY_46xH0-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Tubes (Dark)</name>
+    <filename>/usr/share/backgrounds/tubes-dark.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Luca Bravo 2</name>
-    <filename>/usr/share/backgrounds/luca-bravo-zAjdgNXsMeg-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Icescape</name>
+    <filename>/usr/share/backgrounds/icescape.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Luca Micheli</name>
-    <filename>/usr/share/backgrounds/luca-micheli-ruWkmt3nU58-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Cold and Warm</name>
+    <filename>/usr/share/backgrounds/cold-and-warm.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Oğuzhan Kıran</name>
-    <filename>/usr/share/backgrounds/oguzhan-kiran-vXBKNDWUI7M-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Ice Twigs</name>
+    <filename>/usr/share/backgrounds/ice-twigs.webp</filename>
   </wallpaper>
 
-  <wallpaper deleted="false">
-    <name>Surja Sen Das Raj</name>
-    <filename>/usr/share/backgrounds/surja-sen-das-raj-jI3BStypU1k-unsplash.jpg</filename>
-    <options>zoom</options>
+  <wallpaper>
+    <name>Sea Sunset</name>
+    <filename>/usr/share/backgrounds/sea-sunset.webp</filename>
   </wallpaper>
 </wallpapers>
