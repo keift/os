@@ -92,14 +92,14 @@ RUN --mount=type=cache,dst=/var/cache \
 
 # Extensions
 
-RUN chmod +x /usr/share/keift-os/scripts/install-extension.sh
+RUN chmod +x /usr/share/keift-os/scripts/install_extension.sh
 
-RUN /usr/share/keift-os/scripts/install-extension.sh appindicatorsupport@rgcjonas.gmail.com
-RUN /usr/share/keift-os/scripts/install-extension.sh blur-my-shell@aunetx
-RUN /usr/share/keift-os/scripts/install-extension.sh clipboard-indicator@tudmotu.com
-RUN /usr/share/keift-os/scripts/install-extension.sh dash-to-dock@micxgx.gmail.com
-RUN /usr/share/keift-os/scripts/install-extension.sh ding@rastersoft.com
-RUN /usr/share/keift-os/scripts/install-extension.sh logomenu@aryan_k
+RUN /usr/share/keift-os/scripts/install_extension.sh appindicatorsupport@rgcjonas.gmail.com
+RUN /usr/share/keift-os/scripts/install_extension.sh blur-my-shell@aunetx
+RUN /usr/share/keift-os/scripts/install_extension.sh clipboard-indicator@tudmotu.com
+RUN /usr/share/keift-os/scripts/install_extension.sh dash-to-dock@micxgx.gmail.com
+RUN /usr/share/keift-os/scripts/install_extension.sh ding@rastersoft.com
+RUN /usr/share/keift-os/scripts/install_extension.sh logomenu@aryan_k
 
 # Misc
 

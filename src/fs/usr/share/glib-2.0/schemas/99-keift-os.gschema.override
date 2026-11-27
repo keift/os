@@ -3,8 +3,8 @@ accent-color="blue"
 show-battery-percentage=true
 
 [org.gnome.desktop.background]
-picture-uri="/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
-picture-uri-dark="/usr/share/backgrounds/arthur-shuraev-w8lqmAfvL_k-unsplash.jpg"
+picture-uri="/usr/share/backgrounds/blendpills-light.webp"
+picture-uri-dark="/usr/share/backgrounds/blendpills-dark.webp"
 
 [org.gnome.desktop.wm.preferences]
 button-layout="close,minimize,maximize:"
