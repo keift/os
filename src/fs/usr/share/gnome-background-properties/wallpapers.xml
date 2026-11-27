@@ -1,61 +1,60 @@
 <wallpapers>
   <wallpaper>
-    <name>Blendpills (Light)</name>
+    <name>1. Blendpills</name>
     <filename>/usr/share/backgrounds/blendpills-light.webp</filename>
+    <filename-dark>/usr/share/backgrounds/blendpills-dark.webp</filename-dark>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Blendpills (Dark)</name>
-    <filename>/usr/share/backgrounds/blendpills-dark.webp</filename>
-  </wallpaper>
-
-  <wallpaper>
-    <name>Curvaturingster (Light)</name>
+    <name>2. Curvaturingster</name>
     <filename>/usr/share/backgrounds/curvaturingster-light.webp</filename>
+    <filename-dark>/usr/share/backgrounds/curvaturingster-dark.webp</filename-dark>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Curvaturingster (Dark)</name>
-    <filename>/usr/share/backgrounds/curvaturingster-dark.webp</filename>
-  </wallpaper>
-
-  <wallpaper>
-    <name>Glass Chip (Light)</name>
+    <name>3. Glass Chip</name>
     <filename>/usr/share/backgrounds/glass-chip-light.webp</filename>
+    <filename-dark>/usr/share/backgrounds/glass-chip-dark.webp</filename-dark>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Glass Chip (Dark)</name>
-    <filename>/usr/share/backgrounds/glass-chip-dark.webp</filename>
+    <name>4. Geometrics</name>
+    <filename>/usr/share/backgrounds/geometrics-light.webp</filename>
+    <filename-dark>/usr/share/backgrounds/geometrics-dark.webp</filename-dark>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Tubes (Light)</name>
+    <name>5. Tubes</name>
     <filename>/usr/share/backgrounds/tubes-light.webp</filename>
+    <filename-dark>/usr/share/backgrounds/tubes-dark.webp</filename-dark>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Tubes (Dark)</name>
-    <filename>/usr/share/backgrounds/tubes-dark.webp</filename>
-  </wallpaper>
-
-  <wallpaper>
-    <name>Icescape</name>
+    <name>6. Icescape</name>
     <filename>/usr/share/backgrounds/icescape.webp</filename>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Cold and Warm</name>
+    <name>7. Cold and Warm</name>
     <filename>/usr/share/backgrounds/cold-and-warm.webp</filename>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Ice Twigs</name>
+    <name>8. Ice Twigs</name>
     <filename>/usr/share/backgrounds/ice-twigs.webp</filename>
+    <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>Sea Sunset</name>
+    <name>9. Sea Sunset</name>
     <filename>/usr/share/backgrounds/sea-sunset.webp</filename>
+    <options>zoom</options>
   </wallpaper>
 </wallpapers>
