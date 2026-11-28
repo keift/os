@@ -3,8 +3,8 @@ accent-color="blue"
 show-battery-percentage=true
 
 [org.gnome.desktop.background]
-picture-uri="/usr/share/backgrounds/blendpills-light.webp"
-picture-uri-dark="/usr/share/backgrounds/blendpills-dark.webp"
+picture-uri="/usr/share/backgrounds/glass-chip-light.webp"
+picture-uri-dark="/usr/share/backgrounds/glass-chip-dark.webp"
 
 [org.gnome.desktop.wm.preferences]
 button-layout="close,minimize,maximize:"

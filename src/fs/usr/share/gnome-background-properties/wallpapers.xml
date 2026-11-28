@@ -1,22 +1,22 @@
 <wallpapers>
   <wallpaper>
-    <name>1. Blendpills</name>
+    <name>1. Glass Chip</name>
+    <filename>/usr/share/backgrounds/glass-chip-light.webp</filename>
+    <filename-dark>/usr/share/backgrounds/glass-chip-dark.webp</filename-dark>
+    <options>zoom</options>
+  </wallpaper>
+
+  <wallpaper>
+    <name>2. Blendpills</name>
     <filename>/usr/share/backgrounds/blendpills-light.webp</filename>
     <filename-dark>/usr/share/backgrounds/blendpills-dark.webp</filename-dark>
     <options>zoom</options>
   </wallpaper>
 
   <wallpaper>
-    <name>2. Curvaturingster</name>
+    <name>3. Curvaturingster</name>
     <filename>/usr/share/backgrounds/curvaturingster-light.webp</filename>
     <filename-dark>/usr/share/backgrounds/curvaturingster-dark.webp</filename-dark>
-    <options>zoom</options>
-  </wallpaper>
-
-  <wallpaper>
-    <name>3. Glass Chip</name>
-    <filename>/usr/share/backgrounds/glass-chip-light.webp</filename>
-    <filename-dark>/usr/share/backgrounds/glass-chip-dark.webp</filename-dark>
     <options>zoom</options>
   </wallpaper>
 
